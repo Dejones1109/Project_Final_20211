@@ -1,12 +1,13 @@
+import {Button, Pressable, View} from 'native-base';
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
-import LayoutHomeScreen from './LayoutHomeScreen';
 
-
-class HomeScreen extends Component {
+class ToolNavigate extends Component {
     render() {
         return (
-            <LayoutHomeScreen />
+            <View>
+
+            </View>
         );
     }
 }
@@ -17,4 +18,4 @@ function mapStateToProps() {
 
 export default connect(
     mapStateToProps,
-)(HomeScreen);
+)(ToolNavigate);

@@ -1,12 +1,12 @@
 import React, {Component} from 'react';
+import {StyleSheet, Text, View, Button} from 'react-native';
 import {connect} from 'react-redux';
-import LayoutHomeScreen from './LayoutHomeScreen';
+import HomeScreen from "../../pages_app/HomeScreen/HomeScreen";
 
-
-class HomeScreen extends Component {
+class ShowContentScreen extends Component {
     render() {
         return (
-            <LayoutHomeScreen />
+            <HomeScreen/>
         );
     }
 }
@@ -17,4 +17,4 @@ function mapStateToProps() {
 
 export default connect(
     mapStateToProps,
-)(HomeScreen);
+)(ShowContentScreen);
