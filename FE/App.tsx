@@ -1,3 +1,4 @@
+import 'react-native-gesture-handler';
 import React from "react"
 import {
     Button,
@@ -19,14 +20,12 @@ import {
     ScrollView,
     View
 } from "native-base"
-
-import {AntDesign, MaterialIcons} from "@expo/vector-icons"
-import Navigation from "./src/navigation/Root";
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Navigation from "./src/navigation/Mobile/RootMobile";
 import useColorScheme from "./src/hooks/useColorScheme";
 import {Provider} from "react-redux";
 import { store } from "./src/app/store";
 import {TextConfig} from "./src/helps/TextStyles";
-
 
 export default function App () {
     const new_theme = extendTheme({TextConfig })
@@ -34,7 +33,9 @@ export default function App () {
     return (
         <Provider store={store}>
             <NativeBaseProvider theme={new_theme}>
-                <Navigation colorScheme={colorScheme}/>
+                <SafeAreaProvider>
+                    <Navigation colorScheme={colorScheme}/>
+                </SafeAreaProvider>
             </NativeBaseProvider>
         </Provider>
     )

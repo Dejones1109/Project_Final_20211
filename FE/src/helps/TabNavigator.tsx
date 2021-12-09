@@ -1,5 +1,5 @@
 import * as React from "react";
-import NavigationConstants from "../navigation/NavigationConstants";
+import NavigationConstants from "../navigation/Mobile/NavigationConstants";
 import {Ionicons} from "@expo/vector-icons";
 
 // https://icons.expo.fyi/
