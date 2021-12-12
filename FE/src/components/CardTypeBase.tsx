@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Box, Image, View, Heading} from 'native-base';
+import {Box, Image, View, Heading, Pressable, Avatar, Spacer, VStack, Center} from 'native-base';
 import TextBase from "./TextBase";
 import ButtonBase from "./ButtonBase";
 import {Col, Row} from './AutoLayout';
@@ -10,7 +10,7 @@ export type CardProps  = {
     infoSale?: any | JSX.Element,
     product?: any | JSX.Element,
     productType ?: any | JSX.Element,
-
+    viewOptions?:object,
 }
 
 
@@ -43,6 +43,8 @@ const CardProduct = (props:any) =>{
             borderColor={"light.300"}
             borderWidth={1}
             rounded={5}
+            ml={2}
+            my={2}
         >
             <Box
                 width={130}
@@ -61,6 +63,29 @@ const CardProduct = (props:any) =>{
     )
 }
 
+const CardDefault = (props:{viewOptions:any})=>{
+    return (
+        <Center  width={"95%"} height={50}>
+            <Box width={["100%","100%"]}  overflow={"hidden"}>
+                <Pressable  onPress={() => console.log('You touched me')}  >
+                    <Box
+                    >
+                        <Row  space={2} alignItems ={"space-between"}>
+                            <Col>
+                                {props.viewOptions.leftElement}
+                            </Col>
+                            <Col  >
+                                {props.viewOptions.colElement}
+                            </Col>
+                            <Spacer />
+                            {props.viewOptions.rightElement}
+                        </Row>
+                    </Box>
+                </Pressable>
+            </Box>
+        </Center>
+    )
+}
 
 const CardCategory = (props:any) =>{
     const item = props.item;
@@ -68,11 +93,13 @@ const CardCategory = (props:any) =>{
         <ButtonBase
             height={50}
             px={0}
+            ml={2}
+            my={2}
         >
             <Row  alignItems={"center"} >
                 <Image
                     roundedLeft={5}
-                    width={90}
+                    width={30}
                     height={50}
                     resizeMode={"stretch"}
                     source={{
@@ -81,38 +108,56 @@ const CardCategory = (props:any) =>{
                     alt="category type"
                 />
                  <Col
-                     width={100}
                      height={50}
                      pl={1}
                      bg={"light.200"}
                      roundedRight={5}
+                    justifyContent={"space-between"}
                  >
-                     <Heading fontSize={"md"}  >{item.type}</Heading>
-                     <TextBase fontSize={"xs"} color={"light.400"}>{item.view}</TextBase>
+                     <Heading fontSize={"xs"} my={1} >{item.type}</Heading>
+                     <TextBase my={1} >{item.view}</TextBase>
                  </Col>
             </Row>
         </ButtonBase>
     )
 }
 
-//     Default: <CardProductType/>,
-//     CardCategory: <CardProductType/>,
-//     CardInfoSale: <CardProductType/>,
-//     CardProduct: <CardProductType/>,
-//     CardProductType: <CardProductType/>,
+const CardInfoSale = (props:any)=>{
+    const item = props.item;
+    return (
+        <Box width={["100%","100%"]} my={2} overflow={"hidden"}>
+            <Pressable borderRadius={10} onPress={() => console.log('You touched me')} bg="white" >
+                <Box
+                >
+                    <Row  space={2} justifyContent={"flex-start"} alignItems ={"space-between"}>
+                        <Image rounded={10} size={["140","100"]}  source={{uri:`${item.img}`}} />
+                        <Col width={["50%","60%","65%"]} height={["140","100"]} py={2}   >
+                            <Box width={"100%"}>
+                                <Heading fontSize="lg"  width={"100%"}>{item.title}</Heading>
+                            </Box>
+                            <Spacer />
+                            <TextBase color={"light.400"} alignSelf={"flex-start"}>Đến {item.time }</TextBase>
+                        </Col>
+                    </Row>
+                </Box>
+            </Pressable>
+        </Box>
+    )
+}
+
+
 
 class CardTypeBase extends Component<CardProps> {
 
     elementList : CardProps = {
-        default:<CardProductType />,
+        default:<CardDefault viewOptions={this.props.viewOptions} />,
         category: <CardCategory item={this.props.category} />,
-        infoSale: <CardProductType />,
+        infoSale: <CardInfoSale item={this.props.infoSale} />,
         product: <CardProduct item={this.props.product}/>,
         productType:<CardProductType item={this.props.productType} />,
     }
 
     render() {
-        console.log({...this.props.category});
         const getType = () => {
             try{
                 const keyCardProps = Object.keys(this.props);
@@ -134,9 +179,9 @@ class CardTypeBase extends Component<CardProps> {
         // @ts-ignore
         const RenderElement = this.elementList[`${type}`]
         return (
-            <View my={2}>
+            <>
                 {RenderElement}
-            </View>
+            </>
         )
 
     }

@@ -5,6 +5,7 @@
     logout:"",
     user: "",
      //
+     product:"/product"
 }
 
  export default endpoints;

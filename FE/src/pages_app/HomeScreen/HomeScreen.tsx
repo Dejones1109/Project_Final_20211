@@ -1,14 +1,14 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import {connect, useDispatch} from 'react-redux';
 import LayoutHomeScreen from './LayoutHomeScreen';
+import {userDispatchToProps} from "../../app/controller/AuthAction";
+import {useGetProductByTypeQuery} from "../../app/service/product/productAPI";
 
-
-class HomeScreen extends Component {
-    render() {
-        return (
-            <LayoutHomeScreen />
-        );
-    }
+function HomeScreen() {
+    // @ts-ignore
+    return (
+        <LayoutHomeScreen />
+    );
 }
 
 function mapStateToProps() {
@@ -16,5 +16,5 @@ function mapStateToProps() {
 }
 
 export default connect(
-    mapStateToProps,
+    mapStateToProps, userDispatchToProps
 )(HomeScreen);

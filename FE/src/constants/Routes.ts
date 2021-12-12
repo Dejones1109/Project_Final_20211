@@ -26,6 +26,7 @@ export type AuthTabParamList = {
 
 export type HomeTabParamList = {
     homeScreen: undefined;
+    addProductScreen:undefined;
 };
 
 

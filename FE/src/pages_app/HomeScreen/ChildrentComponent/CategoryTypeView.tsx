@@ -47,8 +47,10 @@ const CategoryTypeView = () => {
             showsHorizontalScrollIndicator={false}
         >
             <FlatList
-                numColumns={4}
-                m={2}
+                contentContainerStyle={{
+                    marginVertical:2,
+                }}
+                numColumns={2}
                 data={data}
                 renderItem={({item})=><CardTypeBase category={item}/>}
                 keyExtractor={(item) => item.id}

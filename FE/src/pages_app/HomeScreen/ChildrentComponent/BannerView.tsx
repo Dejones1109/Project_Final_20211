@@ -4,7 +4,7 @@ import {Row} from "../../../components/AutoLayout";
 
 const BannerView = () => {
     return (
-        <Row justifyContent={"center"} >
+        <Row justifyContent={"center"}  mt={5} >
             <Image
                 source={{
                     uri: "https://wallpaperaccess.com/full/317501.jpg",
@@ -12,7 +12,7 @@ const BannerView = () => {
                 alt="Alternate Text"
                 height={[100,120]}
                 rounded={10}
-                w={"95%"}
+                width={{base:"95%",md:"100%"}}
             />
         </Row>
     );

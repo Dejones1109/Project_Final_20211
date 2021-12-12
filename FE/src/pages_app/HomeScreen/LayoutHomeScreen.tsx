@@ -3,15 +3,17 @@ import {AllProductTypeView, BannerView, CategoryTypeView, HotProductView, Search
 import {SafeAreaView} from "react-native";
 import {Container, Heading, ScrollView} from "native-base";
 import { Col } from '../../components/AutoLayout';
+import AllProductView from "./ChildrentComponent/AllProductView";
 
 
 
 export type LayoutHome  = {
-    SearchView: any,
-    BannerView:any,
-    AllProductTypeView : any,
-    HotProductView : any,
-    CategoryTypeView: any,
+    SearchView: JSX.Element,
+    BannerView:JSX.Element,
+    AllProductTypeView : JSX.Element,
+    HotProductView : JSX.Element,
+    CategoryTypeView: JSX.Element,
+    AllProductView : JSX.Element,
 }
 
 
@@ -24,10 +26,12 @@ const LayoutHomeScreen = (props:LayoutHome) => {
                 {props.SearchView}
                 {props.BannerView}
                 {props.AllProductTypeView}
-                <Heading  size={"md"}>Sản phẩm hot</Heading>
+                <Heading  mx={{base:"2.5%",lg:"1%"}} size={"md"}>Sản phẩm hot</Heading>
                 {props.HotProductView}
-                <Heading size={"md"}>Tìm kiếm phổ biến</Heading>
+                <Heading  mx={{base:"2.5%",lg:"1%"}} size={"md"}>Tìm kiếm phổ biến</Heading>
                 {props.CategoryTypeView}
+                <Heading  mx={{base:"2.5%",lg:"1%"}} size={"md"}>Tất cả sản phẩm</Heading>
+                {props.AllProductView}
             </Col>
         </ScrollView>
     );
@@ -38,5 +42,6 @@ LayoutHomeScreen.defaultProps ={
     AllProductTypeView:<AllProductTypeView />,
     HotProductView:<HotProductView />,
     CategoryTypeView:<CategoryTypeView />,
+    AllProductView:<AllProductView/>
 }
 export default LayoutHomeScreen;

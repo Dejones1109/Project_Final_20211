@@ -1,18 +1,17 @@
 import React, {Component} from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
+
 import {connect} from 'react-redux';
+import LayoutStoreScreen from "./LayoutStoreScreen";
 
 class StoreScreen extends Component {
     render() {
         return (
-            <Text>
-
-            </Text>
+            <LayoutStoreScreen />
         );
     }
 }
 
-function mapStateToProps(state) {
+function mapStateToProps() {
     return {};
 }
 
