@@ -17,8 +17,10 @@ public class Cart {
     @Column(name = "id")
     String id;
     @OneToOne
-    Product product;
+    @JoinColumn(name = "id_product")
+    Products products;
     @OneToOne
+    @JoinColumn(name = "id_partner")
     Partner partner;
     @Column(name = "quantity")
     Integer quantity;

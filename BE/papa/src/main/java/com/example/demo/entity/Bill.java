@@ -17,6 +17,7 @@ public class Bill {
     @Column(name = "id")
     String id;
     @OneToOne
+    @JoinColumn(name = "id_partner")
     Partner partner;
     @Column(name = "name_company")
     String nameCompany;
