@@ -36,11 +36,6 @@ public class GwResponseDto<T> {
 
     private String message = "Success";
 
-    public static <T> GwResponseDto<T> build() {
-        return new GwResponseDto<>();
-    }
-
-
     @PostConstruct
     private void init() {
         httpStatus = HttpStatus.OK;

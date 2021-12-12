@@ -19,10 +19,13 @@ public class Order {
     @Column(name = "id")
     String id;
     @OneToOne
+    @JoinColumn(name = "id_admin")
     Admin admin;
     @OneToOne
+    @JoinColumn(name = "id_partner")
     Partner partner;
     @OneToMany
+    @JoinColumn(name = "id_cart")
     @JsonIgnore
     List<Cart> listCart;
     @Column(name = "is_bill")

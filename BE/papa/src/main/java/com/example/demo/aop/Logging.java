@@ -43,10 +43,10 @@ public class Logging {
                     }
                 }
             }
-            logBuilder.append(String.format("[%s] ",joinPoint.getSignature()));
-            logBuilder.append(httpRequest.getRequestURL() + " request: \n");
+            logBuilder.append(String.format("[%s : %s] ",joinPoint.getSignature(),httpRequest.getRequestURL()));
+            logBuilder.append( "\n Request: \n");
             logBuilder.append(StringUtil.toJsonString(paramMap) + "\n");
-            logBuilder.append(" response: \n");
+            logBuilder.append(" Response: \n");
             Object result = joinPoint.proceed(args);
             logBuilder.append(StringUtil.toJsonString(result));
             log.info(logBuilder.toString());
