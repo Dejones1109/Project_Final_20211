@@ -36,7 +36,4 @@ public class DataUtil {
 
     }
 
-    public static void main(String[] args) {
-        new DataUtil().getNewId("P",28);
-    }
 }

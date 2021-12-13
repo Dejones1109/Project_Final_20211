@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -12,7 +13,8 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Bill {
+public class Bill implements Serializable {
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
     String id;

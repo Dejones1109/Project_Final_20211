@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -14,17 +15,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
     String id;
-    @OneToOne
-    @JoinColumn(name = "id_admin")
-    Admin admin;
-    @Column(name = "id_partner")
-    String id_partner;
-    @OneToMany
-    @JoinColumn(name = "id_cart")
+    @JoinColumn(name = "id_partner")
+    String idPartner;
+    @OneToMany(mappedBy = "order")
     @JsonIgnore
     List<Cart> listCart;
     @Column(name = "is_bill")
@@ -35,4 +33,6 @@ public class Order {
     Date createdDate;
     @Column(name = "updated_date")
     String updateDate;
+    @JoinColumn(name = "id_admin")
+    String idAdmin;
 }

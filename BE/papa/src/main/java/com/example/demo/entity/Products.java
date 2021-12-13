@@ -3,10 +3,7 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -19,25 +16,24 @@ import java.util.Date;
 public class Products  implements  Serializable{
     private static final long serialVersionUID = 6447416794596398975L;
     @Id
-    @Column(name = "id")
-    String id;
+    private String id;
     @Column(name = "product_name")
-    String productName;
+    private String productName;
     @Column(name = "image")
-    String image;
+    private String image;
     @Column(name = "price")
-    Integer price;
+    private Integer price;
     @Column(name = "type")
-    String type;
+    private String type;
     @Column(name = "desc")
-    String desc;
+    private String desc;
     @Column(name = "status")
-    Integer status;
+    private Integer status;
     @Column(name = "created_date")
-    String createdDate;
+    private String createdDate;
     @Column(name = "is_display")
-    Integer isDisplay;
+    private Integer isDisplay;
     @Column(name = "view")
-    Integer view;
+    private Integer view;
 
 }

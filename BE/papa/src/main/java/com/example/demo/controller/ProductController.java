@@ -115,17 +115,28 @@ public class ProductController {
         GwResponse<Products> response = new GwResponse<>();
         String newID = DataUtil.getNewId("C",productsService.getMaxLength());
         try {
-            Products products = new Products();
-            products.setId(newID);
-            products.setProductName(product.getProductName());
-            products.setImage(product.getImage());
-            products.setPrice(product.getPrice());
-            products.setType(product.getType());
-            products.setDesc(product.getDesc());
-            products.setStatus(401);
-            products.setIsDisplay(1);
-            products.setCreatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            products.setView(0);
+            Products products = Products.builder()
+                    .id(newID)
+                    .productName(product.getProductName())
+                    .price(product.getPrice())
+                    .image(product.getImage())
+                    .type(product.getType())
+                    .desc(product.getDesc())
+                    .status(401)
+                    .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .isDisplay(1)
+                    .view(1)
+                    .build();
+//            products.setId(newID);
+//            products.setProductName(product.getProductName());
+//            products.setImage(product.getImage());
+//            products.setPrice(product.getPrice());
+//            products.setType(product.getType());
+//            products.setDesc(product.getDesc());
+//            products.setStatus(401);
+//            products.setIsDisplay(1);
+//            products.setCreatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//            products.setView(0);
             System.out.println(products);
             productsService.save(products);
             response.setCode(Status.CODE_SUCCESS);

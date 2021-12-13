@@ -6,10 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.bytebuddy.implementation.bind.annotation.Empty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
@@ -17,7 +15,8 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Admin {
+public class Admin implements Serializable {
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name="id")
     String id;
@@ -25,5 +24,4 @@ public class Admin {
     String phone;
     @Column(name="password")
     String password;
-
 }
