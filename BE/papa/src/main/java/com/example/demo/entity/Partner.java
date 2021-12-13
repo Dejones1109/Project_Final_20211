@@ -32,5 +32,5 @@ public class Partner {
     @Column(name = "status")
     Integer status;
     @Column(name = "created_date")
-    Date createdDate;
+    String createdDate;
 }

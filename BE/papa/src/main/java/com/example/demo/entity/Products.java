@@ -15,48 +15,29 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Products {
-
+@Data
+public class Products  implements  Serializable{
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
-    @Getter
-    @Setter
     String id;
     @Column(name = "product_name")
-    @Getter
-    @Setter
     String productName;
     @Column(name = "image")
-    @Getter
-    @Setter
     String image;
     @Column(name = "price")
-    @Getter
-    @Setter
     Integer price;
     @Column(name = "type")
-    @Getter
-    @Setter
     String type;
     @Column(name = "desc")
-    @Getter
-    @Setter
     String desc;
     @Column(name = "status")
-    @Getter
-    @Setter
     Integer status;
     @Column(name = "created_date")
-    @Getter
-    @Setter
-    Date createdDate;
+    String createdDate;
     @Column(name = "is_display")
-    @Getter
-    @Setter
     Integer isDisplay;
     @Column(name = "view")
-    @Getter
-    @Setter
     Integer view;
 
 }

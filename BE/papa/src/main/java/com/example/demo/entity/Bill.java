@@ -26,7 +26,7 @@ public class Bill {
     @Column(name = "email")
     String email;
     @Column(name = "created_date")
-    Date createdDate;
+    String createdDate;
     @Column(name = "updated_date")
-    Date updateDate;
+    String updateDate;
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.lang.annotation.Native;
 import java.util.List;
 
-@Repository
+
 public interface ProductRepository extends CrudRepository<Products,String> {
     @Query("select count(p) from Products p ")
     Integer getMaxLength();

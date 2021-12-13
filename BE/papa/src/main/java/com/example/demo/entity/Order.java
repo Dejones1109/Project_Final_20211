@@ -21,9 +21,8 @@ public class Order {
     @OneToOne
     @JoinColumn(name = "id_admin")
     Admin admin;
-    @OneToOne
-    @JoinColumn(name = "id_partner")
-    Partner partner;
+    @Column(name = "id_partner")
+    String id_partner;
     @OneToMany
     @JoinColumn(name = "id_cart")
     @JsonIgnore
@@ -35,5 +34,5 @@ public class Order {
     @Column(name = "created_date")
     Date createdDate;
     @Column(name = "updated_date")
-    Date updateDate;
+    String updateDate;
 }
