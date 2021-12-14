@@ -10,8 +10,6 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 
 @SpringBootApplication(scanBasePackages = {"com.example.demo"})
-@EnableCaching
-@EnableWebMvc
 public class PapaApplication {
 
 	public static void main(String[] args) {

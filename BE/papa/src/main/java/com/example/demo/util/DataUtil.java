@@ -7,7 +7,7 @@ public class DataUtil {
     public static String getNewId(String character,Integer numberOld){
        int numberNew = numberOld +1;
        if(character!=null && character.length()<3){
-           System.out.println(concatString(character,numberNew));
+     //      System.out.println(concatString(character,numberNew));
                return concatString(character,numberNew);
        }
 

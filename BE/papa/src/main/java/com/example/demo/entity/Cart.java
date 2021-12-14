@@ -1,5 +1,7 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -27,8 +29,9 @@ public class Cart implements Serializable {
     @OneToOne
     @JoinColumn(name = "partner_id")
     private Partner partner;
-    @ManyToOne
-    @JoinColumn(name = "order_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "order_id",nullable = true)
+    @JsonIgnore
     private Order order;
     @Column(name = "quantity")
     Integer quantity;

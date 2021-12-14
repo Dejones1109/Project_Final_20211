@@ -7,6 +7,7 @@ import java.util.List;
 public interface ProductsService {
     List<Products> getAll();
     Products getById(Integer id);
+    Products findProductByProductCode(String code);
     void save(Products products);
     void delete(Products products);
     Integer getMaxLength();

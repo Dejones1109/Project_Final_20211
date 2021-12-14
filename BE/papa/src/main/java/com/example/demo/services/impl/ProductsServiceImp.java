@@ -36,6 +36,16 @@ public class ProductsServiceImp implements ProductsService {
     }
 
     @Override
+    public Products findProductByProductCode(String productCode) {
+        Products product = productRepository.findByProductCode(productCode);
+        if(product!=null){
+            return product;
+        }
+
+        return null;
+    }
+
+    @Override
     public void save(Products products) {
 
         productRepository.save(products);

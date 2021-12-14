@@ -21,13 +21,6 @@ public class Partner implements Serializable {
     Integer id;
     @Column(name = "partner_code")
     String partCode;
-    @OneToOne(mappedBy = "partner")
-    private Bill bill;
-    @OneToOne(mappedBy = "partner")
-    private Cart cart;
-
-//    @OneToOne(mappedBy = "partner")
-//    private Order order;
     @Column(name="phone")
     String phone;
     @Column(name="password")
