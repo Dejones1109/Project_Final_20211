@@ -56,7 +56,7 @@ public class ProductController {
 
     }
     @GetMapping("/{id}")
-    public ResponseEntity<GwResponse<Products>> findById(@PathVariable String id){
+    public ResponseEntity<GwResponse<Products>> findById(@PathVariable Integer id){
         GwResponse<Products> response = new GwResponse<>();
         try {
             Products products = productsService.getById(id);
@@ -116,7 +116,7 @@ public class ProductController {
         String newID = DataUtil.getNewId("C",productsService.getMaxLength());
         try {
             Products products = Products.builder()
-                    .id(newID)
+                    .productCode(newID)
                     .productName(product.getProductName())
                     .price(product.getPrice())
                     .image(product.getImage())

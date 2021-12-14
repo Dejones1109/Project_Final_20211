@@ -9,8 +9,8 @@ import org.springframework.stereotype.Repository;
 import java.lang.annotation.Native;
 import java.util.List;
 
-@Repository
-public interface ProductRepository extends JpaRepository<Products,String> {
+
+public interface ProductRepository extends CrudRepository<Products,Integer> {
     @Query("select count(p) from Products p ")
     Integer getMaxLength();
     @Query("select p from Products  p where p.type=:type")

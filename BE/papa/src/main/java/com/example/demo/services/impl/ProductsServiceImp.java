@@ -27,7 +27,7 @@ public class ProductsServiceImp implements ProductsService {
     }
 
     @Override
-    public Products getById(String id) {
+    public Products getById(Integer id) {
         Optional<Products> productOptional = productRepository.findById(id);
         if(productOptional.isPresent()){
             return  productOptional.get();

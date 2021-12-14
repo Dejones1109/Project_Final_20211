@@ -16,7 +16,13 @@ import java.util.Date;
 public class Products  implements  Serializable{
     private static final long serialVersionUID = 6447416794596398975L;
     @Id
-    private String id;
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    @Column(name = "product_code")
+    String productCode;
+    @OneToOne(mappedBy = "product")
+    private Cart cart;
     @Column(name = "product_name")
     private String productName;
     @Column(name = "image")

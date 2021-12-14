@@ -17,7 +17,17 @@ public class Partner implements Serializable {
     private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    @Column(name = "partner_code")
+    String partCode;
+    @OneToOne(mappedBy = "partner")
+    private Bill bill;
+    @OneToOne(mappedBy = "partner")
+    private Cart cart;
+
+//    @OneToOne(mappedBy = "partner")
+//    private Order order;
     @Column(name="phone")
     String phone;
     @Column(name="password")
@@ -32,4 +42,6 @@ public class Partner implements Serializable {
     Integer status;
     @Column(name = "created_date")
     String createdDate;
+    @Column(name = "updated_date")
+    String updatedDate;
 }

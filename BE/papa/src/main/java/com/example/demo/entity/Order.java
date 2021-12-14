@@ -19,12 +19,21 @@ public class Order implements Serializable {
     private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
-    String id;
-    @JoinColumn(name = "id_partner")
-    String idPartner;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    @Column(name = "order_code")
+    String orderCode;
+    @OneToOne
+    @JoinColumn(name = "admin_id")
+    Admin admin;
+    @Column(name = "partner_id")
+    Integer partnerId;
+//    @OneToOne
+//    @JoinColumn(name = "partner_id")
+//    Partner partner;
     @OneToMany(mappedBy = "order")
     @JsonIgnore
-    List<Cart> listCart;
+    private List<Cart> listCart;
     @Column(name = "is_bill")
     Integer isBill;
     @Column(name = "status")
@@ -33,6 +42,4 @@ public class Order implements Serializable {
     Date createdDate;
     @Column(name = "updated_date")
     String updateDate;
-    @JoinColumn(name = "id_admin")
-    String idAdmin;
 }

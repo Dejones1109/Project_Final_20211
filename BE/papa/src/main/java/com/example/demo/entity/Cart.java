@@ -17,16 +17,19 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
-    String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    @Column(name = "cart_code")
+    String cartCode;
     @OneToOne
-    @JoinColumn(name = "id_product")
-    Products products;
+    @JoinColumn(name = "product_id")
+    private Products product;
     @OneToOne
-    @JoinColumn(name = "id_partner")
-    Partner partner;
+    @JoinColumn(name = "partner_id")
+    private Partner partner;
     @ManyToOne
-    @JoinColumn(name = "id_order")
-    Order order;
+    @JoinColumn(name = "order_id")
+    private Order order;
     @Column(name = "quantity")
     Integer quantity;
     @Column(name = "price")
