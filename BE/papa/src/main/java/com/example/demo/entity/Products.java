@@ -44,8 +44,8 @@ public class Products  implements  Serializable{
     private String type;
     @Getter
     @Setter
-    @Column(name = "desc")
-    private String desc;
+    @Column(name = "remark")
+    private String remark;
     @Getter
     @Setter
     @Column(name = "status")

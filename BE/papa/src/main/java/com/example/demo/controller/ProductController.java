@@ -52,6 +52,9 @@ public class ProductController {
 
         }catch (Throwable e){
             e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
 
@@ -107,7 +110,10 @@ public class ProductController {
 
         }catch (Throwable e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
     @GetMapping(value = "/type")
@@ -134,7 +140,10 @@ public class ProductController {
 
         }catch (Throwable e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
 
@@ -149,7 +158,7 @@ public class ProductController {
                     .price(product.getPrice())
                     .image(product.getImage())
                     .type(product.getType())
-                    .desc(product.getDesc())
+                    .remark(product.getDesc())
                     .status(401)
                     .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                     .isDisplay(1)
@@ -157,17 +166,90 @@ public class ProductController {
                     .build();
             System.out.println(products);
             productsService.save(products);
-            response.setCode(Status.CODE_SUCCESS);
-            response.setMessage(Status.STATUS_SUCCESS);
+            response.setCode(Status.CODE_CREATED);
+            response.setMessage(Status.STATUS_CREATED);
             response.setData(products);
-            responseHeader.add("code", Status.CODE_SUCCESS);
-            responseHeader.add("message", Status.STATUS_SUCCESS);
+            responseHeader.add("code", Status.CODE_CREATED);
+            responseHeader.add("message", Status.STATUS_CREATED);
             responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             return ResponseEntity.ok().headers(responseHeader).body(response);
 
         }catch (Throwable e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @PutMapping("{/id}")
+    public ResponseEntity<GwResponse<Products>> update(@RequestBody Products productUpdate,@PathVariable Integer id) {
+        GwResponse<Products> response = new GwResponse<>();
+        Products productCurrent = productsService.getById(id);
+        try {
+            if (productCurrent != null) {
+                //TODPO Validate fields
+
+               // toValidateString()
+                Products products = Products.builder()
+                        .productName(productUpdate.getProductName())
+                        .price(productUpdate.getPrice())
+                        .image(productUpdate.getImage())
+                        .type(productUpdate.getType())
+                        .remark(productUpdate.getRemark())
+                        .status(401)
+                        .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                        .isDisplay(1)
+                        .view(0)
+                        .build();
+                System.out.println(products);
+                productsService.save(products);
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(products);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+                responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                return ResponseEntity.ok().headers(responseHeader).body(response);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                return ResponseEntity.notFound().build();
+            }
+
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    private void toValidateString(Products updateProduct,Products newsProducts,Integer id) {
+        Products productCurrent = productsService.getById(id);
+        newsProducts = new Products();
+        if (updateProduct.getProductName() != productCurrent.getProductName()) {
+            newsProducts.setProductName(updateProduct.getProductName());
+        }else {
+            newsProducts.setProductName(productCurrent.getProductName());
+        }
+        if (updateProduct.getPrice() != productCurrent.getPrice()) {
+            newsProducts.setPrice(updateProduct.getPrice());
+        }else {
+            newsProducts.setPrice(productCurrent.getPrice());
+        }
+        if (updateProduct.getRemark() != productCurrent.getRemark()) {
+            newsProducts.setRemark(updateProduct.getRemark());
+        }else {
+            newsProducts.setRemark(productCurrent.getRemark());
+        }
+        if (updateProduct.getImage() != productCurrent.getImage()) {
+            newsProducts.setImage(updateProduct.getImage());
+        }else {
+            newsProducts.setImage(productCurrent.getImage());
         }
     }
 
