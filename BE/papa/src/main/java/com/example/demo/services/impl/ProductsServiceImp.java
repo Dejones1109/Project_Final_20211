@@ -69,4 +69,9 @@ public class ProductsServiceImp implements ProductsService {
         }
         return null;
     }
+
+    @Override
+    public List<Products> getProductByView() {
+        return productRepository.getProductByView();
+    }
 }

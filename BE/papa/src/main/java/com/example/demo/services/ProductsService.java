@@ -12,4 +12,5 @@ public interface ProductsService {
     void delete(Products products);
     Integer getMaxLength();
     List<Products> listProductsByType(String type);
+    List<Products> getProductByView();
 }

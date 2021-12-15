@@ -56,8 +56,8 @@ public class Products  implements  Serializable{
     private String createdDate;
     @Getter
     @Setter
-    @Column(name = "is_display")
-    private Integer isDisplay;
+    @Column(name = "updated_date")
+    private String updatedDate;
     @Getter
     @Setter
     @Column(name = "view")

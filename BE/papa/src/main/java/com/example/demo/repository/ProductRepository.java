@@ -17,4 +17,6 @@ public interface ProductRepository extends CrudRepository<Products,Integer> {
     List<Products> getListProductsByType(String type);
     @Query("select p from Products p where p.productCode=:productCode")
     Products findByProductCode(String productCode);
+    @Query("select p from Products p order by p.view")
+    List<Products> getProductByView();
 }
