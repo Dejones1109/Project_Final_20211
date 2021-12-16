@@ -19,4 +19,6 @@ public interface ProductRepository extends CrudRepository<Products,Integer> {
     Products findByProductCode(String productCode);
     @Query("select p from Products p order by p.view")
     List<Products> getProductByView();
+    @Query("select p from Products p where p.productName like concat('%',:keyString,'%') or p.type like concat('%',:keyString,'%')")
+    List<Products> searchProductByKey(String keyString);
 }

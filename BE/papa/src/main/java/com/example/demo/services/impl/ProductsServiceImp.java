@@ -74,4 +74,13 @@ public class ProductsServiceImp implements ProductsService {
     public List<Products> getProductByView() {
         return productRepository.getProductByView();
     }
+
+    @Override
+    public List<Products> searchProductByKey(String keyString) {
+        List<Products> products = productRepository.searchProductByKey(keyString);
+        if(products!=null){
+            return products;
+        }
+        return null;
+    }
 }

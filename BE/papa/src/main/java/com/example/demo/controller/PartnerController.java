@@ -1,9 +1,157 @@
 package com.example.demo.controller;
 
+import com.example.demo.constant.Status;
+import com.example.demo.dto.GwResponse;
+import com.example.demo.entity.Partner;
+import com.example.demo.entity.Products;
+import com.example.demo.request.CreatePartnerRequest;
+import com.example.demo.request.CreateProductsRequest;
+import com.example.demo.services.PartnerService;
+import com.example.demo.util.DataUtil;
 import lombok.extern.log4j.Log4j;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
-@Component
-@Log4j
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+
+@RestController
+@RequestMapping("/partner")
+@Slf4j
+@CrossOrigin("*")
 public class PartnerController {
+    @Autowired
+    PartnerService partnerService;
+    HttpHeaders responseHeader = new HttpHeaders();
+    @GetMapping
+    public ResponseEntity<GwResponse<List<Partner>>> findAll() {
+        GwResponse<List<Partner>> response = new GwResponse<>();
+        try {
+            List<Partner> listPartner = partnerService.findAll();
+            if (listPartner != null) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(listPartner);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+    }
+    @GetMapping(value = "/{code}")
+    public ResponseEntity<GwResponse<Partner>> findById(@PathVariable String code) {
+        GwResponse<Partner> response = new GwResponse<>();
+        try {
+            Partner partner = partnerService.findByPartnerCode(code);
+            if (partner != null) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(partner);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @GetMapping( value = "/{status}",params = "query=status")
+    public ResponseEntity<GwResponse<List<Partner>>> getListPartnerByStatus(@PathVariable Integer status) {
+        GwResponse<List<Partner>> response = new GwResponse<>();
+        try {
+            List<Partner> partners = partnerService.getListPartnerByType(status);
+            if (partners != null) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(partners);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @PostMapping
+    public ResponseEntity<GwResponse<Partner>> save(@RequestBody CreatePartnerRequest request) {
+        GwResponse<Partner> response = new GwResponse<>();
+        String newCode = DataUtil.getNewId("P", partnerService.getMaxLength());
+        try {
+            Partner partner = Partner.builder()
+                    .partCode(newCode)
+                    .phone(request.getPhone())
+                    .name(request.getName())
+                    .address(request.getAddress())
+                    .nameStore(request.getNameStore())
+                    .status(201)
+                    .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .updatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .build();
+            //  System.out.println(products);
+            partnerService.save(partner);
+            response.setCode(Status.CODE_CREATED);
+            response.setMessage(Status.STATUS_CREATED);
+            response.setData(partner);
+            responseHeader.add("code", Status.CODE_CREATED);
+            responseHeader.add("message", Status.STATUS_CREATED);
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
 }

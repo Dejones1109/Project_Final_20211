@@ -9,5 +9,5 @@ public class UpdateProductRequest {
     protected Integer price;
     protected String type;
     protected String remark;
-    protected  Integer status;
+  //  protected  Integer status;
 }

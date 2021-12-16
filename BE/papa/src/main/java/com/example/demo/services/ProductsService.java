@@ -13,4 +13,5 @@ public interface ProductsService {
     Integer getMaxLength();
     List<Products> listProductsByType(String type);
     List<Products> getProductByView();
+    List<Products> searchProductByKey(String keyString);
 }
