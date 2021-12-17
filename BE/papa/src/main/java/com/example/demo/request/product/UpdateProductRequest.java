@@ -1,12 +1,13 @@
-package com.example.demo.request;
+package com.example.demo.request.product;
 
 import lombok.Data;
 
 @Data
-public class CreateProductsRequest {
+public class UpdateProductRequest {
     protected String productName;
     protected String image;
     protected Integer price;
     protected String type;
     protected String remark;
+  //  protected  Integer status;
 }

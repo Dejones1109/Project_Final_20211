@@ -33,6 +33,7 @@ public class Logging {
             StringBuilder logBuilder = new StringBuilder();
             String[] argNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames(); // parameter name
             Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("Content-Type","application/json");
             paramMap.put("requestId", httpRequest.getHeader("requestId"));
             paramMap.put("clientTime", httpRequest.getHeader("clientTime"));
             if (ArrayUtils.isNotEmpty(args)) {
