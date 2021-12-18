@@ -6,7 +6,7 @@ import com.example.demo.entity.Partner;
 import com.example.demo.request.partner.CreatePartnerRequest;
 import com.example.demo.request.partner.UpdatePartnerRequest;
 import com.example.demo.services.PartnerService;
-import com.example.demo.util.DataUtil;
+import com.example.demo.utils.DataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;

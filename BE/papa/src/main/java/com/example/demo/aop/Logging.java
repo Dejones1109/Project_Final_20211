@@ -1,7 +1,7 @@
 package com.example.demo.aop;
 
 
-import com.example.demo.util.StringUtil;
+import com.example.demo.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;

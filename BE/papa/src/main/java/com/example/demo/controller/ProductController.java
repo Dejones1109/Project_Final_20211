@@ -6,7 +6,7 @@ import com.example.demo.entity.Products;
 import com.example.demo.request.product.CreateProductsRequest;
 import com.example.demo.request.product.UpdateProductRequest;
 import com.example.demo.services.ProductsService;
-import com.example.demo.util.DataUtil;
+import com.example.demo.utils.DataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
 import org.springframework.beans.factory.annotation.Autowired;
