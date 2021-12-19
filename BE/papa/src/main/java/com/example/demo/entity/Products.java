@@ -24,8 +24,6 @@ public class Products  implements  Serializable{
     @Setter
     @Column(name = "product_code")
     String productCode;
-//    @OneToOne(mappedBy = "product")
-//    private Cart cart;
     @Getter
     @Setter
     @Column(name = "product_name")

@@ -1,7 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entity.Partner;
-import org.springframework.security.core.userdetails.UserDetails;
+
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ public interface PartnerService {
     Partner save(Partner partner);
     List<Partner> getListPartnerByType(Integer status);
     Integer getMaxLength();
-    public UserDetails loadUserByUsername(String username);
+ //   public UserDetails loadUserByUsername(String username);
 }

@@ -6,9 +6,7 @@ import com.example.demo.repository.PartnerRepository;
 import com.example.demo.services.PartnerService;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -59,13 +57,13 @@ public class PartnerServiceImp implements PartnerService {
         return partnerRepository.getMaxLength();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        if("papadashi@2021".equals(username)){
-            return new User("papadashi@2021", "$2a$10$nb/w3qSy.qjF.iYxkOAhOeCo9q2VVwa3APPdWCBsaBowWCpeltxsO",
-                    new ArrayList<>());
-        } else {
-            throw new UsernameNotFoundException("User not found with username: " + username);
-        }
-    }
+//    @Override
+//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+//        if("papadashi@2021".equals(username)){
+//            return new User("papadashi@2021", "$2a$10$nb/w3qSy.qjF.iYxkOAhOeCo9q2VVwa3APPdWCBsaBowWCpeltxsO",
+//                    new ArrayList<>());
+//        } else {
+//            throw new UsernameNotFoundException("User not found with username: " + username);
+//        }
+//    }
 }

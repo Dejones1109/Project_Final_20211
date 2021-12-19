@@ -33,7 +33,7 @@ public class PartnerController {
         GwResponse<List<Partner>> response = new GwResponse<>();
         try {
             List<Partner> listPartner = partnerService.findAll();
-            if (listPartner != null) {
+            if (!listPartner.isEmpty()) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
                 response.setData(listPartner);
@@ -93,7 +93,7 @@ public class PartnerController {
         GwResponse<List<Partner>> response = new GwResponse<>();
         try {
             List<Partner> partners = partnerService.getListPartnerByType(status);
-            if (partners != null) {
+            if (!partners.isEmpty()) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
                 response.setData(partners);

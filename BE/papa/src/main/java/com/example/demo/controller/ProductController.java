@@ -2,9 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.constant.Status;
 import com.example.demo.dto.GwResponse;
+import com.example.demo.entity.Cart;
 import com.example.demo.entity.Products;
 import com.example.demo.request.product.CreateProductsRequest;
 import com.example.demo.request.product.UpdateProductRequest;
+import com.example.demo.services.CartService;
 import com.example.demo.services.ProductsService;
 import com.example.demo.utils.DataUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/product")
@@ -27,14 +31,17 @@ import java.util.List;
 public class ProductController {
     @Autowired
     ProductsService productsService;
+    @Autowired
+    CartService cartService;
     HttpHeaders responseHeader = new HttpHeaders();
+
 
     @GetMapping
     public ResponseEntity<GwResponse<List<Products>>> findAll() {
         GwResponse<List<Products>> response = new GwResponse<>();
         try {
             List<Products> listProduct = productsService.getAll();
-            if (listProduct != null) {
+            if (!listProduct.isEmpty()) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
                 response.setData(listProduct);
@@ -88,25 +95,34 @@ public class ProductController {
 //        }
 //    }
     @GetMapping(value = "/{code}")
-    public ResponseEntity<GwResponse<Products>> findById(@PathVariable String code) {
-        GwResponse<Products> response = new GwResponse<>();
+    public ResponseEntity<GwResponse<Object>> findById(@PathVariable String code, @RequestParam Integer partnerId) {
+        GwResponse<Object> response = new GwResponse<>();
         try {
             Products products = productsService.findProductByProductCode(code);
             if (products != null) {
+
+                System.out.println(products.getId());
+                Cart cart = cartService.getCartExist(partnerId, products.getId());
+                if (cart != null) {
+                    response.setData(cart);
+                } else {
+                    response.setData(products);
+                }
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
-                response.setData(products);
                 responseHeader.add("code", Status.CODE_SUCCESS);
                 responseHeader.add("message", Status.STATUS_SUCCESS);
+                responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                return ResponseEntity.ok().headers(responseHeader).body(response);
             } else {
                 response.setCode(Status.CODE_NOT_FOUND);
                 response.setMessage(Status.STATUS_NOT_FOUND);
                 response.setData(null);
                 responseHeader.add("code", Status.CODE_NOT_FOUND);
                 responseHeader.add("message", Status.STATUS_NOT_FOUND);
+                responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                return ResponseEntity.ok().headers(responseHeader).body(response);
             }
-            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            return ResponseEntity.ok().headers(responseHeader).body(response);
 
 
         } catch (Throwable e) {
@@ -118,12 +134,12 @@ public class ProductController {
         }
     }
 
-    @GetMapping(value = "/{type}",params = "query=type")
+    @GetMapping(value = "/{type}", params = "query=type")
     public ResponseEntity<GwResponse<List<Products>>> getListProductsByType(@PathVariable String type) {
         GwResponse<List<Products>> response = new GwResponse<>();
         try {
             List<Products> products = productsService.listProductsByType(type);
-            if (products != null) {
+            if (!products.isEmpty()) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
                 response.setData(products);
@@ -221,7 +237,8 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    @PutMapping(value = "/{id}",params = "query=status")
+
+    @PutMapping(value = "/{id}", params = "query=status")
     public ResponseEntity<GwResponse<Products>> updateByStatus(@RequestParam Integer status, @PathVariable Integer id) {
         GwResponse<Products> response = new GwResponse<>();
         Products productCurrent = productsService.getById(id);
@@ -249,12 +266,13 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
     @GetMapping(params = "query=view")
     public ResponseEntity<GwResponse<List<Products>>> getProductByView() {
         GwResponse<List<Products>> response = new GwResponse<>();
         try {
             List<Products> listProduct = productsService.getProductByView();
-            if (listProduct != null) {
+            if (!listProduct.isEmpty()) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
                 response.setData(listProduct);
@@ -279,15 +297,56 @@ public class ProductController {
         }
 
     }
-    @GetMapping(value = "/{keyString}",params = "query=search")
+
+    @GetMapping(value = "/{keyString}", params = "query=search")
     public ResponseEntity<GwResponse<List<Products>>> searchProductByKey(@PathVariable String keyString) {
         GwResponse<List<Products>> response = new GwResponse<>();
         try {
             List<Products> listProduct = productsService.searchProductByKey(keyString);
-            if (listProduct != null) {
+            if (!listProduct.isEmpty()) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
                 response.setData(listProduct);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+
+    }
+
+    @GetMapping(params = "query=viewByType")
+    public ResponseEntity<GwResponse<Map<String,Integer>>> getViewProductByType() {
+        GwResponse<Map<String,Integer>> response = new GwResponse<>();
+        try {
+            List<Products> listProduct = productsService.getAll();
+            Map<String,Integer> map = new HashMap<>();
+            if (!listProduct.isEmpty()) {
+                for (Products product : listProduct) {
+                    List<Products> productType = productsService.listProductsByType(product.getType());
+                    int countView = 0;
+                    for (Products type : productType) {
+                        countView+=type.getView();
+                    }
+                    map.put(product.getType(),countView);
+                }
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(map);
                 responseHeader.add("code", Status.CODE_SUCCESS);
                 responseHeader.add("message", Status.STATUS_SUCCESS);
             } else {
