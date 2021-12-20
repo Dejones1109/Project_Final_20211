@@ -19,4 +19,8 @@ public interface CartRepository extends CrudRepository<Cart,Integer> {
     List<Cart> getListToCart(Integer partnerId);
     @Query("select c from Cart c where c.order.id=:orderId")
     List<Cart> getListToCartNoStatus(Integer orderId);
+    @Query("select c.product.productName,c.partner,c.quantity from Cart c where c.partner.id=:partnerId and c.status=103")
+    List<Object> getListCartToPartnerId(Integer partnerId);
+
+
 }

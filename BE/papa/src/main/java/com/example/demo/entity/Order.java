@@ -45,6 +45,10 @@ public class Order implements Serializable {
     @Setter
     @JsonIgnore
     private List<Cart> listCart;
+    @Column(name = "total_quantity")
+    @Getter
+    @Setter
+    Integer totalQuantity;
     @Column(name = "total_price")
     @Getter
     @Setter

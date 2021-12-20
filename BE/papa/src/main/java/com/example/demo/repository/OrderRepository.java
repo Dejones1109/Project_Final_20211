@@ -1,8 +1,6 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Order;
-import com.example.demo.response.admin.GetPartnerByQuantity;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -25,6 +23,10 @@ public interface OrderRepository  extends CrudRepository<Order,Integer> {
     List<Order> getListAllOrderByDay(String date);
     @Query("select o from Order  o where o.status=:status and o.updatedDate like concat('%',:date,'%')")
     List<Order> getListOrderStatusByDay(Integer status,String date);
-    @Query("select o.partner,sum(o.totalPrice) as totalPrice from Order o where o.status=303 group by o.partner.id order by totalPrice desc")
-    List<Object> getPartnerByQuantity();
+    @Query("Select o.partner.id,o.partner.nameStore,sum(o.totalQuantity) as quantity,sum(o.totalPrice) as totalPrice from Order o where o.status = 303 group by o.partner.id order by totalPrice desc")
+    List<Object> getPartnerByTotalPrice();
+    @Query("Select o.partner.id,o.partner.nameStore,sum(o.totalQuantity) as quantity,sum(o.totalPrice) as totalPrice from Order o where o.status = 303 group by o.partner.id order by quantity desc")
+    List<Object> getPartnerByTotalQuantity();
+    @Query("select sum(c.totalPrice) as totalPrice,sum(c.totalQuantity) as totalQuantity from Order c where  c.status=306")
+    Object getTotalPriceAndTotalQuantity();
 }

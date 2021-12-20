@@ -144,7 +144,7 @@ public class CartController {
         }
     }
 //    @PutMapping(value = "/{id}",params = "query=choose")
-//    public ResponseEntity<GwResponse<List<Cart>>> updateByChoose(@RequestParam Integer choose, @PathVariable Integer id) {
+//    public ResponseEntity<GwResponse<List<Cart>>> updateByChoose(@RequestParam Integer status, @PathVariable Integer id) {
 //        GwResponse<List<Cart>> response = new GwResponse<>();
 //        Cart cartCurrent = cartService.findById(id);
 //        try {

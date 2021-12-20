@@ -1,11 +1,10 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.entity.Admin;
-import com.example.demo.entity.Cart;
 import com.example.demo.entity.Order;
 import com.example.demo.repository.AdminRepository;
+import com.example.demo.repository.CartRepository;
 import com.example.demo.repository.OrderRepository;
-import com.example.demo.response.admin.GetPartnerByQuantity;
 import com.example.demo.services.AdminService;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +20,8 @@ public class AdminServiceImp implements AdminService {
     AdminRepository adminRepository;
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
+    CartRepository cartRepository;
 
     @Override
     public Admin findById(Integer id) {
@@ -33,6 +34,7 @@ public class AdminServiceImp implements AdminService {
 
     @Override
     public List<Order> getListAllOrderByDay(String date) {
+
         return orderRepository.getListAllOrderByDay(date);
     }
 
@@ -42,7 +44,24 @@ public class AdminServiceImp implements AdminService {
     }
 
     @Override
-    public List<Object> getPartnerByQuantity() {
-        return orderRepository.getPartnerByQuantity();
+    public List<Object> getPartnerByTotalPrice() {
+        return orderRepository.getPartnerByTotalPrice();
     }
+
+    @Override
+    public List<Object> getPartnerByTotalQuantity() {
+        return orderRepository.getPartnerByTotalQuantity();
+    }
+
+    @Override
+    public List<Object> getListCartToPartnerId(Integer partnerId) {
+        return cartRepository.getListCartToPartnerId(partnerId);
+    }
+
+    @Override
+    public Object getTotalPriceAndTotalQuantity() {
+        return orderRepository.getTotalPriceAndTotalQuantity();
+    }
+
+
 }

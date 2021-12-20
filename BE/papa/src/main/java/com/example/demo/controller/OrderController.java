@@ -201,6 +201,17 @@ public class OrderController {
             response.setData(null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
+        finally {
+            if(status == 303){
+                List<Cart> cartList = cartService.getListToCartNoStatus(id);
+                for (Cart c:cartList
+                     ) {
+                    c.setStatus(103);
+                    c.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                    cartService.save(c);
+                }
+            }
+        }
     }
 
     @PutMapping(value = "/{id}")
