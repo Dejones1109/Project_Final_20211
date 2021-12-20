@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.constant.Status;
 import com.example.demo.dto.GwResponse;
+import com.example.demo.entity.Cart;
 import com.example.demo.entity.Order;
 import com.example.demo.services.AdminService;
 import lombok.extern.slf4j.Slf4j;
@@ -149,6 +150,35 @@ public class AdminController {
         GwResponse<List<Object>> response = new GwResponse<>();
         try {
             List<Object> orderList = adminService.getListCartToPartnerId(partnerId);
+            if (!orderList.isEmpty()) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(orderList);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @GetMapping(value = "/{orderId}",params = "query=orderId")
+    public ResponseEntity<GwResponse<List<Cart>>> getListToCartToOrderId(@PathVariable Integer orderId) {
+        GwResponse<List<Cart>> response = new GwResponse<>();
+        try {
+            List<Cart> orderList = adminService.getListToCartNoStatus(orderId);
             if (!orderList.isEmpty()) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);

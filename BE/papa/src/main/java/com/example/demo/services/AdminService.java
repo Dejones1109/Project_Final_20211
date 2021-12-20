@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Cart;
 import com.example.demo.entity.Order;
 
 import java.util.List;
@@ -13,5 +14,6 @@ public interface AdminService {
     List<Object> getPartnerByTotalQuantity();
     List<Object> getListCartToPartnerId(Integer partnerId);
     Object getTotalPriceAndTotalQuantity();
+    List<Cart> getListToCartNoStatus(Integer orderId);
 
 }

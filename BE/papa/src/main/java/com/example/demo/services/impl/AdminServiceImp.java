@@ -1,6 +1,7 @@
 package com.example.demo.services.impl;
 
 import com.example.demo.entity.Admin;
+import com.example.demo.entity.Cart;
 import com.example.demo.entity.Order;
 import com.example.demo.repository.AdminRepository;
 import com.example.demo.repository.CartRepository;
@@ -61,6 +62,11 @@ public class AdminServiceImp implements AdminService {
     @Override
     public Object getTotalPriceAndTotalQuantity() {
         return orderRepository.getTotalPriceAndTotalQuantity();
+    }
+
+    @Override
+    public List<Cart> getListToCartNoStatus(Integer orderId) {
+        return cartRepository.getListToCartNoStatus(orderId);
     }
 
 
