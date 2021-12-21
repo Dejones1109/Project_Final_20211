@@ -5,7 +5,9 @@
     logout:"",
     user: "",
      //
-     product:"/product"
+     product:"/product",
+     cart:"/cart",
+     order:"/orders"
 }
 
  export default endpoints;

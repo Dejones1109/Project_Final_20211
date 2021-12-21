@@ -1,23 +1,10 @@
 import * as React from "react";
-import NavigationConstants from "../navigation/Mobile/NavigationConstants";
-import {Ionicons} from "@expo/vector-icons";
+import {Entypo, FontAwesome, Foundation, Ionicons} from "@expo/vector-icons";
 
 // https://icons.expo.fyi/
-const IconBottomTab = (props:{ name: React.ComponentProps<typeof Ionicons>['name']; color: string })=>{
-  return <Ionicons size={24} style={{ marginBottom: -3 }} {...props} />
-}
+const IconHome = (props:{color:any}) => <Ionicons name={"home"} size={24} color={props.color} style={{ marginBottom: -3 }} />
+const IconNotify  = (props:{color:any}) => <Entypo name="message" size={24} color={props.color}  style={{ marginBottom: -3 }} />
+const IconSale  = (props:{color:any}) =><Foundation name="burst-sale" size={24} color={props.color}  style={{ marginBottom: -3 }} />
+const IconStore  = (props:{color:any}) => <FontAwesome name="user" size={24}color={props.color}  style={{ marginBottom: -3 }}  />
 
-const IconHome = <IconBottomTab name={"home"} color={"black"} />
-const IconNotify = <IconBottomTab name={"home"} color={"black"} />
-const TabBarIcon = (props:{routeName :string}) => {
-  switch (props.routeName) {
-    case NavigationConstants.user.home.main:
-      return IconHome;
-    case NavigationConstants.user.notify.main:
-      return IconNotify;
-    default:
-      return null;
-  }
-};
-
-export default TabBarIcon;
+export {IconHome,IconSale,IconNotify,IconStore}

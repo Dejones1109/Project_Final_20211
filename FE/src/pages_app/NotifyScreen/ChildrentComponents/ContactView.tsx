@@ -7,8 +7,8 @@ import { NotifyViewNavigate } from './NotifyElementsView';
 const ContactView = () => {
     const data = [
         {
+            iconLeft :<MainIcon name={"contacts"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
-            iconLeft:<MainIcon name={"arrow-right"} />,
             textTop:"Liên hệ tư vấn",
             textBottom:"Trò chuyện đặt hàng ngay",
         },

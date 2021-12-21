@@ -1,40 +1,50 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {FlatList, HStack, ScrollView, Text, VStack} from "native-base";
-import CardTypeBase from "../../../components/CardTypeBase";
+import FrameBase from "../../../components/FrameBase";
+import {useNavigation} from "@react-navigation/native";
 
 const AllProductTypeView = () => {
+    const navigation = useNavigation();
     const data = [
         {
+            type:"Cháo hái sản",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo hái sản"
         },
         {
+            type:"Cháo thịt",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo thịt",
         },
         {
+            type:"Cháo tim cận",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo tim cận"
         },
         {
+            type:"Cháo cá",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo cá"
         },
         {
+            type:"Cháo lươn",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo lươn"
         },
         {
+            type:"Cháo ếch",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo ếch"
         },
         {
+            type:"Cháo chim",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo chim"
         },
         {
+            type:"Cháo cua",
             img:"https://wallpaperaccess.com/full/317501.jpg",
-            heading:"Combo uu dai"
+            heading:"Cháo cua"
         },
     ]
     return (
@@ -42,7 +52,7 @@ const AllProductTypeView = () => {
             horizontal
             _contentContainerStyle={{
                 mx: "auto",
-                mb: "4",
+                my: "4",
                 minW: "72",
                 flexWrap:"wrap",
             }}
@@ -50,8 +60,8 @@ const AllProductTypeView = () => {
         >
             <FlatList
                 data={data}
-                renderItem = {({item})=><CardTypeBase productType={item}/>}
-                numColumns ={5}
+                renderItem = {({item})=><FrameBase productType={item} navigation={navigation}/>}
+                numColumns ={4}
                 keyExtractor={(item) => item.id}
             />
         </ScrollView>

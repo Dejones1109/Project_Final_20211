@@ -14,7 +14,7 @@ const LayoutNotifyScreen = (props:LayoutNotify) => {
 
         >
             <Center>
-                <Center  >
+                <Center width={"95%"}  >
                     {props.NotifyElementsView}
                     {props.ContactView}
                 </Center>

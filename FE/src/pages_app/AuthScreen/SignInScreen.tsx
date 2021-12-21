@@ -13,8 +13,7 @@ import {
     NativeBaseProvider,
 } from "native-base"
 import {useNavigation} from "@react-navigation/native";
-export const LoginForm = (props) => {
-    const navigation = useNavigation();
+export const LoginForm = (props:{navigation?:any}) => {
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
             <Heading
@@ -78,7 +77,7 @@ export const LoginForm = (props) => {
                             fontWeight: "medium",
                             fontSize: "sm",
                         }}
-                        onPress={() =>navigation.navigate("Register")}
+                        onPress={() =>props.navigation.navigate("Register")}
                     >
                         Sign Up
                     </Link>

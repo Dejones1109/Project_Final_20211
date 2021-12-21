@@ -1,23 +1,21 @@
-
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
 import { ColorSchemeName } from 'react-native';
-import BottomTabNavigator from './BottomTabNavigator';
-import LinkingConfiguration from './LinkingConfiguration';
-import {AuthTabParamList, RootStackParamList} from "../../constants/Routes";
-import SignInScreen from "../../pages_app/AuthScreen/SignInScreen";
-import RegisterScreen from "../../pages_app/AuthScreen/RegisterScreen";
-import {useBreakpointValue} from "native-base";
-import RootTable from "../Table/Root.Table";
-
+import {AuthTabParamList, RootStackParamList } from '../constants/Routes';
+import SignInScreen from '../pages_app/AuthScreen/SignInScreen';
+import BottomTabUserNavigator from './user/BottomTabUserNavigator';
+import RegisterScreen from "../pages_app/AuthScreen/RegisterScreen";
+import LinkingConfigurationForAdmin from "./admin/LinkingConfigurationForAdmin";
+import BottomTabAdminNavigator from './admin/BottomTabAdminNavigator';
+import { AsyncStorage } from 'react-native';
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     return (
         <NavigationContainer
-            linking ={LinkingConfiguration}
-            >
+            linking ={LinkingConfigurationForAdmin}
+        >
             <RootNavigator  />
         </NavigationContainer>
     );
@@ -26,17 +24,16 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
 const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
-    const user = true;
-    const NextLogin = useBreakpointValue({
-        base:BottomTabNavigator,
-        sm:BottomTabNavigator,
-        md:RootTable,
-    })
+    localStorage.setItem("partnerId","6");
+    localStorage.setItem("partnerId","1");
+    const user = localStorage.getItem("partnerId");
+    const admin = localStorage.getItem("admin");
+
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false,  }}
         >
-            <Stack.Screen name="Root" component={user ? NextLogin : AuthenticationNavigator} />
+            <Stack.Screen name="Root" component={admin ? BottomTabAdminNavigator : AuthenticationNavigator} />
         </Stack.Navigator>
     );
 }

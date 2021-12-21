@@ -1,45 +1,15 @@
-import React from 'react';
+import React ,{useContext} from 'react';
 import {FlatList, HStack, Row, ScrollView,} from "native-base";
-import CardTypeBase from "../../../components/CardTypeBase";
+import FrameBase from "../../../components/FrameBase";
+import {HomeContext} from "../HomeScreen";
+import {useNavigation} from "@react-navigation/native";
 
 const HotProductView = () => {
-    const data =[
-        {
-            img:"https://wallpaperaccess.com/full/317501.jpg",
-            price:"100000 đ",
-            product_name:"Cháo PAPA"
-        },
-        {
-            img:"https://wallpaperaccess.com/full/317501.jpg",
-            price:"100000 đ",
-            product_name:"Cháo PAPA"
-        },
-        {
-            img:"https://wallpaperaccess.com/full/317501.jpg",
-            price:"100000 đ",
-            product_name:"Cháo PAPA"
-        },
-        {
-            img:"https://wallpaperaccess.com/full/317501.jpg",
-            price:"100000 đ",
-            product_name:"Cháo PAPA"
-        },
-        {
-            img:"https://wallpaperaccess.com/full/317501.jpg",
-            price:"100000 đ",
-            product_name:"Cháo PAPA"
-        },
-        {
-            img:"https://wallpaperaccess.com/full/317501.jpg",
-            price:"100000 đ",
-            product_name:"Cháo PAPA"
-        },
-        {
-            img:"https://wallpaperaccess.com/full/317501.jpg",
-            price:"100000 đ",
-            product_name:"Cháo PAPA"
-        }
-    ]
+    const navigation = useNavigation();
+    // @ts-ignore
+    const {productByView} = useContext(HomeContext);
+    // @ts-ignore
+    const value = Object.assign([], Object.assign({}, productByView).data);
 
     return (
         <ScrollView
@@ -52,9 +22,10 @@ const HotProductView = () => {
             showsHorizontalScrollIndicator={false}
         >
             <FlatList
-                data={data}
+                data={value.slice(0,-10)}
+                inverted
                 horizontal={true}
-                renderItem = {({item})=><CardTypeBase product={item} />}
+                renderItem = {({item})=><FrameBase product={item} navigation={navigation} />}
                 keyExtractor={(item) => item.id}
             />
 

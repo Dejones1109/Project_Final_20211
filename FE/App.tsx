@@ -9,12 +9,13 @@ import {Provider} from "react-redux";
 import { store } from "./src/app/store";
 import {TextConfig} from "./src/helps/TextStyles";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import Navigation from "./src/navigation/Mobile/RootMobile";
+import { LogBox } from 'react-native';
+import Navigation from './src/navigation/RootMobile';
 
 export default function App () {
     const new_theme = extendTheme({TextConfig })
     const colorScheme = useColorScheme();
-
+    LogBox.ignoreAllLogs();
     return (
 
         <Provider store={store}>

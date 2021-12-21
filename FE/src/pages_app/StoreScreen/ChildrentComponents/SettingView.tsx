@@ -9,19 +9,19 @@ import Layout from "../../../constants/Layout";
 const SettingView = () => {
     const data = [
         {
-            iconLeft:<MainIcon name={"arrow-right"} />,
+            iconLeft:<MainIcon name={"settings"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Cài đặt",
             textRight:"thông tin,bảo mật",
         },
         {
-            iconLeft:<MainIcon name={"arrow-right"} />,
+            iconLeft:<MainIcon name={"policy"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Điều khoản và chính sách",
             textRight:"",
         },
         {
-            iconLeft:<MainIcon name={"arrow-right"} />,
+            iconLeft:<MainIcon name={"feedback"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Gửi phản hồi",
             textRight:"",

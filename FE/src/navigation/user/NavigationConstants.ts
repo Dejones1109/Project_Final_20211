@@ -5,13 +5,13 @@ export default {
             main:"home"
         },
         sale:{
-
+            main:"sale"
         },
         notify:{
             main:"notify"
         },
         store:{
-
+            main:"store"
         },
     },
     admin:{

@@ -3,7 +3,7 @@ import axios from 'axios';
 
 const APPLICATION_JSON = 'application/json';
 const CONTENT_TYPE = 'Content-Type';
-export const Base_URL = process.env.REACT_APP_BASE_URL;
+export const Base_URL = "http://112.78.1.28:8888/";
 
 
 export const client = axios.create({

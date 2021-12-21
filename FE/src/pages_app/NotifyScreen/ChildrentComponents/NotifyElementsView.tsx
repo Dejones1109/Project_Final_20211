@@ -13,15 +13,17 @@ export const NotifyViewNavigate = (props:any)=>{
                 <Pressable  onPress={() => console.log('You touched me')}  >
                     <Box
                     >
-                        <Row  space={2}  alignItems ={"space-between"} alignSelf={"center"}>
-                            <Col mx={3} justifyContent={"center"}>
+
+                        <Row  space={2}  alignItems ={"space-between"}>
+                            <Col  >
                                 {item.iconLeft}
                             </Col>
-                            <Col   py={2}   >
+                            <Col>
                                 <TextBase fontSize={"md"}>{item.textTop}</TextBase>
                                 <TextBase color={"light.300"}>{item.textBottom}</TextBase>
                             </Col>
                             <Spacer />
+                            <TextBase  alignSelf={"center"} color={"light.300"} >{item.textRight}</TextBase>
                             <Col justifyContent={"center"} >
                                 {item.iconRight}
                             </Col>
@@ -36,50 +38,40 @@ export const NotifyViewNavigate = (props:any)=>{
 const NotifyElementsView = () => {
     const data = [
         {
+            iconLeft:<MainIcon name={"newspaper-o"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
-            iconLeft:<MainIcon name={"arrow-right"} />,
             textTop:"Tin tức",
             textBottom:"Tính năng mới, bảo trì",
         },
         {
+            iconLeft:<MainIcon name={"notification"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
-            iconLeft:<MainIcon name={"arrow-right"} />,
             textTop:"Thông báo",
             textBottom:"Đơn hàng, thông tin giao dich",
         },
         {
+            iconLeft:<MainIcon name={"sale"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
-            iconLeft:<MainIcon name={"arrow-right"} />,
             textTop:"Khuyến mãi",
             textBottom:"Khuyến mãi, quà tặng",
         },
         {
+            iconLeft:<MainIcon name={"appstore-o"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
-            iconLeft:<MainIcon name={"arrow-right"} />,
             textTop:"Trưng bày",
             textBottom:"Thông tin",
         }
     ]
     return (
         <>
-            <FlatList
-                contentContainerStyle={{
-                    width:0.95*Layout.window.width,
-                }}
-                scrollEnabled={false}
-                renderItem = {({item})=>
-                    <>
-                        <NotifyViewNavigate item={item} />
-                        <Divider my={1} />
-                    </>
-                }
-
-                numColumns ={1}
-                data={data.slice(0,-1)}
-                keyExtractor={(item) => item.id}
-            />
-            <NotifyViewNavigate item={data[data.length-1]} />
-
+            <NotifyViewNavigate  item={data[0]} />
+            <Divider my={1} />
+            <NotifyViewNavigate  item={data[1]} />
+            <Divider my={1} />
+            <NotifyViewNavigate  item={data[2]} />
+            <Divider my={1} />
+            <NotifyViewNavigate  item={data[3]} />
+            <Divider my={1} />
         </>
     );
 };

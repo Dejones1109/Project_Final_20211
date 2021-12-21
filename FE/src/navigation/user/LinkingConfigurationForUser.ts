@@ -1,9 +1,8 @@
 import { LinkingOptions } from '@react-navigation/native';
 import * as Linking from 'expo-linking';
-import {RootStackParamList} from "../constants/Routes";
-import NotifyScreen from "../pages_app/NotifyScreen/NotifyScreen";
+import {RootStackParamList} from "../../constants/Routes";
 
-const LinkingConfiguration: LinkingOptions<RootStackParamList> = {
+const LinkingConfigurationForUser: LinkingOptions<RootStackParamList> = {
   prefixes: [Linking.makeUrl('/')],
   config: {
     screens: {
@@ -19,7 +18,7 @@ const LinkingConfiguration: LinkingOptions<RootStackParamList> = {
               }
             }
           },
-          bottomTab:{
+          bottomTabUser:{
             screens: {
               home: {
                 screens: {
@@ -50,4 +49,4 @@ const LinkingConfiguration: LinkingOptions<RootStackParamList> = {
   },
 };
 
-export default LinkingConfiguration;
+export default LinkingConfigurationForUser;

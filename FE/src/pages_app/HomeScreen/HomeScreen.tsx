@@ -1,13 +1,27 @@
-import React, {Component} from 'react';
-import {connect, useDispatch} from 'react-redux';
+import React, { createContext,} from 'react';
+import {connect} from 'react-redux';
 import LayoutHomeScreen from './LayoutHomeScreen';
 import {userDispatchToProps} from "../../app/controller/AuthAction";
-import {useGetProductByTypeQuery} from "../../app/service/product/productAPI";
+import {useGetProductByViewQuery, useGetTotalViewProductByTypeQuery} from "../../app/selectors";
 
-function HomeScreen() {
+export const HomeContext = createContext({});
+
+function HomeScreen(props:any) {
+
+    // @ts-ignore
+    const productByView = useGetProductByViewQuery();
+    const productByViewCp = Object.assign({}, productByView);
+    // @ts-ignore
+    const totalViewByType = useGetTotalViewProductByTypeQuery();
+    const totalViewByTypeCp = Object.assign({}, totalViewByType);
     // @ts-ignore
     return (
-        <LayoutHomeScreen />
+        <HomeContext.Provider value={{
+            productByView: productByViewCp.data,
+            totalViewByType:totalViewByTypeCp.data,
+        }}>
+            <LayoutHomeScreen />
+        </HomeContext.Provider>
     );
 }
 
