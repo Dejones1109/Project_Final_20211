@@ -3,10 +3,7 @@ package com.example.demo.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -15,48 +12,53 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Products {
-
+public class Products  implements  Serializable{
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
+    @Getter
+    @Setter
     @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
     @Getter
     @Setter
-    String id;
+    @Column(name = "product_code")
+    String productCode;
+    @Getter
+    @Setter
     @Column(name = "product_name")
+    private String productName;
     @Getter
     @Setter
-    String productName;
     @Column(name = "image")
+    private String image;
     @Getter
     @Setter
-    String image;
     @Column(name = "price")
+    private Integer price;
     @Getter
     @Setter
-    Integer price;
     @Column(name = "type")
+    private String type;
     @Getter
     @Setter
-    String type;
-    @Column(name = "desc")
+    @Column(name = "remark")
+    private String remark;
     @Getter
     @Setter
-    String desc;
     @Column(name = "status")
+    private Integer status;
     @Getter
     @Setter
-    Integer status;
     @Column(name = "created_date")
+    private String createdDate;
     @Getter
     @Setter
-    Date createdDate;
-    @Column(name = "is_display")
+    @Column(name = "updated_date")
+    private String updatedDate;
     @Getter
     @Setter
-    Integer isDisplay;
     @Column(name = "view")
-    @Getter
-    @Setter
-    Integer view;
+    private Integer view;
 
 }

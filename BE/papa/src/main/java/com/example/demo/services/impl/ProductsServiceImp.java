@@ -27,7 +27,7 @@ public class ProductsServiceImp implements ProductsService {
     }
 
     @Override
-    public Products getById(String id) {
+    public Products getById(Integer id) {
         Optional<Products> productOptional = productRepository.findById(id);
         if(productOptional.isPresent()){
             return  productOptional.get();
@@ -36,8 +36,19 @@ public class ProductsServiceImp implements ProductsService {
     }
 
     @Override
+    public Products findProductByProductCode(String productCode) {
+        Products product = productRepository.findByProductCode(productCode);
+        if(product!=null){
+            return product;
+        }
+
+        return null;
+    }
+
+    @Override
     public void save(Products products) {
-         productRepository.save(products);
+
+        productRepository.save(products);
     }
 
     @Override
@@ -55,6 +66,20 @@ public class ProductsServiceImp implements ProductsService {
         List<Products> productOptional = productRepository.getListProductsByType(type);
         if(productOptional!=null){
             return  productOptional;
+        }
+        return null;
+    }
+
+    @Override
+    public List<Products> getProductByView() {
+        return productRepository.getProductByView();
+    }
+
+    @Override
+    public List<Products> searchProductByKey(String keyString) {
+        List<Products> products = productRepository.searchProductByKey(keyString);
+        if(products!=null){
+            return products;
         }
         return null;
     }

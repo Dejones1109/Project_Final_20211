@@ -1,13 +1,9 @@
 package com.example.demo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
@@ -15,22 +11,48 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Partner {
+public class Partner implements Serializable {
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
-    String id;
+    @Getter
+    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    @Column(name = "partner_code")
+    @Getter
+    @Setter
+    String partCode;
     @Column(name="phone")
+    @Getter
+    @Setter
     String phone;
     @Column(name="password")
+    @Getter
+    @Setter
     String password;
     @Column(name = "name")
+    @Getter
+    @Setter
     String name;
     @Column(name = "name_store")
+    @Getter
+    @Setter
     String nameStore;
     @Column(name = "address")
+    @Getter
+    @Setter
     String address;
     @Column(name = "status")
+    @Getter
+    @Setter
     Integer status;
     @Column(name = "created_date")
-    Date createdDate;
+    @Getter
+    @Setter
+    String createdDate;
+    @Column(name = "updated_date")
+    @Getter
+    @Setter
+    String updatedDate;
 }

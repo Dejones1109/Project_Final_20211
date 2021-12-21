@@ -1,39 +1,72 @@
 package com.example.demo.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name = "id")
-    String id;
+    @Getter
+    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer id;
+    @Getter
+    @Setter
+    @Column(name = "order_code")
+    String orderCode;
     @OneToOne
-    @JoinColumn(name = "id_admin")
+    @Getter
+    @Setter
+    @JoinColumn(name = "admin_id")
     Admin admin;
+//    @Column(name = "partner_id")
+//    Integer partnerId;
     @OneToOne
-    @JoinColumn(name = "id_partner")
+    @Getter
+    @Setter
+    @JoinColumn(name = "partner_id")
     Partner partner;
-    @OneToMany
-    @JoinColumn(name = "id_cart")
+    @OneToMany(mappedBy = "order")
+    @Getter
+    @Setter
     @JsonIgnore
-    List<Cart> listCart;
+    private List<Cart> listCart;
+    @Column(name = "total_quantity")
+    @Getter
+    @Setter
+    Integer totalQuantity;
+    @Column(name = "total_price")
+    @Getter
+    @Setter
+    Integer totalPrice;
     @Column(name = "is_bill")
+    @Getter
+    @Setter
     Integer isBill;
     @Column(name = "status")
+    @Getter
+    @Setter
     Integer status;
     @Column(name = "created_date")
-    Date createdDate;
+    @Getter
+    @Setter
+    String createdDate;
     @Column(name = "updated_date")
-    Date updateDate;
+    @Getter
+    @Setter
+    String updatedDate;
 }

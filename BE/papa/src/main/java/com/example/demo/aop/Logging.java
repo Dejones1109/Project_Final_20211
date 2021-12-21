@@ -1,7 +1,7 @@
 package com.example.demo.aop;
 
 
-import com.example.demo.util.StringUtil;
+import com.example.demo.utils.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ArrayUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -33,6 +33,7 @@ public class Logging {
             StringBuilder logBuilder = new StringBuilder();
             String[] argNames = ((MethodSignature) joinPoint.getSignature()).getParameterNames(); // parameter name
             Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("Content-Type","application/json");
             paramMap.put("requestId", httpRequest.getHeader("requestId"));
             paramMap.put("clientTime", httpRequest.getHeader("clientTime"));
             if (ArrayUtils.isNotEmpty(args)) {

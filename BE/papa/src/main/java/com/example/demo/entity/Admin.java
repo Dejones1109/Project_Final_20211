@@ -1,15 +1,10 @@
 package com.example.demo.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.bytebuddy.implementation.bind.annotation.Empty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Data
 @Entity
@@ -17,13 +12,29 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Admin {
+public class Admin implements Serializable {
+    private static final long serialVersionUID = 6447416794596398975L;
     @Id
     @Column(name="id")
-    String id;
+    @Getter
+    @Setter
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+
+    @Column(name = "admin_code")
+    @Getter
+    @Setter
+    String adminCode;
     @Column(name="phone")
+    @Getter
+    @Setter
     String phone;
     @Column(name="password")
+    @Getter
+    @Setter
     String password;
-
+    @Column(name = "created_date")
+    @Getter
+    @Setter
+    String createdDate;
 }
