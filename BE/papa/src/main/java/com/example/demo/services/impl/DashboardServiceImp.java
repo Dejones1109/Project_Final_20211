@@ -3,6 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.entity.Products;
 import com.example.demo.repository.DashBoardRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.response.OrderQuantityByStatus;
 import com.example.demo.response.admin.DashboardByProductAndPriceResponse;
 import com.example.demo.response.admin.DashboardByProductType;
 import com.example.demo.services.DashboardService;
@@ -83,5 +84,10 @@ public class DashboardServiceImp implements DashboardService {
         resultList.add(new DashboardByProductType("Cháo ếch",percentChaoEch,priceChaoEch));
         resultList.add(new DashboardByProductType("Cháo cua",percentChaoCua,priceChaoCua));
         return resultList;
+    }
+
+    @Override
+    public OrderQuantityByStatus orderQuantityByStatusOfAdmin() {
+        return dashBoardRepository.orderQuantityByStatusOfAdmin();
     }
 }

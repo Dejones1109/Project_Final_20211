@@ -1,6 +1,7 @@
 package com.example.demo.repository.Imp;
 
 import com.example.demo.repository.DashBoardRepository;
+import com.example.demo.response.OrderQuantityByStatus;
 import com.example.demo.response.admin.DashboardByProductAndPriceResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -39,5 +40,49 @@ public class DashBoardRepositoryImp implements DashBoardRepository {
         });
 
         return resultList;
+    }
+
+    @Override
+    public OrderQuantityByStatus orderQuantityByStatusOfPartner(Integer partnerId) {
+        OrderQuantityByStatus dashboard = new OrderQuantityByStatus();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("orderQuantityByStatusOfPartner");
+        Map<String, Object> inputParams = new HashMap<>();
+        inputParams.put("id", partnerId);
+        Map<String, Object> execute = jdbcCall.execute(inputParams);
+        ArrayList<Map> dataMap = (ArrayList<Map>) execute.get("#result-set-1");
+        dataMap.forEach(map -> {
+
+            dashboard.setOrderWaiting((Long) map.get("waiting"));
+            dashboard.setOrderShip((Long) map.get("ship"));
+            dashboard.setOrderDone((Long) map.get("done"));
+            dashboard.setOrderCancel((Long) map.get("cancel"));
+            dashboard.setOrderNoPay((Long) map.get("nopay"));
+            dashboard.setOrderPayed((Long) map.get("payed"));
+
+
+        });
+        return dashboard;
+
+    }
+
+    @Override
+    public OrderQuantityByStatus orderQuantityByStatusOfAdmin() {
+        OrderQuantityByStatus dashboard = new OrderQuantityByStatus();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("orderQuantityByStatusOfAdmin");
+        Map<String, Object> inputParams = new HashMap<>();
+        Map<String, Object> execute = jdbcCall.execute(inputParams);
+        ArrayList<Map> dataMap = (ArrayList<Map>) execute.get("#result-set-1");
+        dataMap.forEach(map -> {
+
+            dashboard.setOrderWaiting((Long) map.get("waiting"));
+            dashboard.setOrderShip((Long) map.get("ship"));
+            dashboard.setOrderDone((Long) map.get("done"));
+            dashboard.setOrderCancel((Long) map.get("cancel"));
+            dashboard.setOrderNoPay((Long) map.get("nopay"));
+            dashboard.setOrderPayed((Long) map.get("payed"));
+
+
+        });
+        return dashboard;
     }
 }
