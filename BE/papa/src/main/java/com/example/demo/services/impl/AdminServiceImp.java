@@ -69,5 +69,10 @@ public class AdminServiceImp implements AdminService {
         return cartRepository.getListToCartNoStatus(orderId);
     }
 
+    @Override
+    public Admin login(String phone, String password) {
+        return adminRepository.login(phone, password);
+    }
+
 
 }

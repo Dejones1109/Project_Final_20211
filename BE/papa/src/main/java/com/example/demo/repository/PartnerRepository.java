@@ -17,4 +17,8 @@ public interface PartnerRepository extends CrudRepository<Partner,Integer > {
     List<Partner> getListPartnerByType(Integer status);
     @Query("select count(p) from Partner p ")
     Integer getMaxLength();
+    @Query("select p from Partner p where p.phone=:phone")
+    Partner isCheckPhone(String phone);
+    @Query("select p from Partner p where p.phone=:phone and p.password=:password")
+    Partner login(String phone,String password);
 }

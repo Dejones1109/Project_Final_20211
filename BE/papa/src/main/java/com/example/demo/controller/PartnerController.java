@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.constant.Status;
 import com.example.demo.dto.GwResponse;
 import com.example.demo.entity.Partner;
+import com.example.demo.request.LoginRequest;
 import com.example.demo.request.partner.CreatePartnerRequest;
 import com.example.demo.request.partner.UpdatePartnerRequest;
 import com.example.demo.response.OrderQuantityByStatus;
@@ -154,6 +155,17 @@ public class PartnerController {
     @PutMapping("/{id}")
     public ResponseEntity<GwResponse<List<Partner>>> update(@RequestBody UpdatePartnerRequest request, @PathVariable Integer id) {
         GwResponse<List<Partner>> response = new GwResponse<>();
+        List<Partner> partners = new ArrayList<>();
+        Partner partnerCheckPhone =partnerService.isCheckPhone(request.getPhone());
+        if(partnerCheckPhone!=null){
+            partners.add(partnerCheckPhone);
+            response.setCode(Status.CODE_SUCCESS);
+            response.setMessage(Status.STATUS_USERNAME_EXITS);
+            responseHeader.add("code", Status.CODE_SUCCESS);
+            responseHeader.add("message", Status.STATUS_USERNAME_EXITS);
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+        }
         Partner partnerCurrent = partnerService.findById(id);
         try {
             //TODPO Validate fields
@@ -169,7 +181,6 @@ public class PartnerController {
             partnerService.save(partnerCurrent);
             response.setCode(Status.CODE_SUCCESS);
             response.setMessage(Status.STATUS_SUCCESS);
-            List<Partner> partners = new ArrayList<>();
             partners.add(partnerClone);
             partners.add(partnerCurrent);
             response.setData(partners);
@@ -272,4 +283,33 @@ public ResponseEntity<GwResponse<OrderQuantityByStatus>> orderQuantityByStatusOf
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 }
+    @GetMapping(params = "query=login")
+    public ResponseEntity<GwResponse<Partner>> Login(@RequestBody LoginRequest request) {
+        GwResponse<Partner> response = new GwResponse<>();
+        try {
+            Partner obj = partnerService.login(request.getUsername(),request.getPassword());
+            if (obj!=null) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(obj);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return  ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

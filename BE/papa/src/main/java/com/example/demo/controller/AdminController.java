@@ -2,8 +2,11 @@ package com.example.demo.controller;
 
 import com.example.demo.constant.Status;
 import com.example.demo.dto.GwResponse;
+import com.example.demo.entity.Admin;
 import com.example.demo.entity.Cart;
 import com.example.demo.entity.Order;
+import com.example.demo.entity.Partner;
+import com.example.demo.request.LoginRequest;
 import com.example.demo.services.AdminService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -224,6 +227,35 @@ public class AdminController {
             }
             responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @GetMapping(params = "query=login")
+    public ResponseEntity<GwResponse<Admin>> Login(@RequestBody LoginRequest request) {
+        GwResponse<Admin> response = new GwResponse<>();
+        try {
+            Admin obj = adminService.login(request.getUsername(),request.getPassword());
+            if (obj!=null) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(obj);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return  ResponseEntity.ok().headers(responseHeader).body(response);
 
         } catch (Throwable e) {
             e.printStackTrace();

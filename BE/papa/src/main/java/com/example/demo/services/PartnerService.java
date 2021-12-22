@@ -14,5 +14,7 @@ public interface PartnerService {
     List<Partner> getListPartnerByType(Integer status);
     Integer getMaxLength();
     OrderQuantityByStatus orderQuantityByStatusOfPartner(Integer partnerId);
+    Partner login(String phone,String password);
+    Partner isCheckPhone(String phone);
  //   public UserDetails loadUserByUsername(String username);
 }

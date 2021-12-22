@@ -66,6 +66,18 @@ public class PartnerServiceImp implements PartnerService {
         return dashBoardRepository.orderQuantityByStatusOfPartner(partnerId);
     }
 
+    @Override
+    public Partner login(String phone, String password) {
+        return partnerRepository.login(phone,password);
+    }
+
+    @Override
+    public Partner isCheckPhone(String phone) {
+        return isCheckPhone(phone);
+    }
+
+
+
 //    @Override
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 //        if("papadashi@2021".equals(username)){
