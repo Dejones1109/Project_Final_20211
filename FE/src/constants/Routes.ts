@@ -65,6 +65,8 @@ export type CartTabAdminParamList = {
 
 export type StatisticsTabAdminParamList = {
     statisticsScreen: undefined;
+    quantityStatisticsScreen: undefined;
+    moneyStatisticsScreen: undefined;
 }
 
 export type InfoTabAdminParamList = {

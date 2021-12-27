@@ -9,14 +9,15 @@ import {
     InfoTabAdminParamList, StatisticsTabAdminParamList,
 } from "../../constants/Routes";
 import useColorScheme from "../../hooks/useColorScheme";
-import  {IconHome,} from '../../helps/TabNavigator';
+import {IconGood, IconHome, IconInfo, IconStatistics,} from '../../helps/TabNavigator';
 import {CartScreen, HomeScreen, InfoScreen, StatisticsScreen} from '../../pages_admin';
-import {createNativeStackNavigator} from "react-native-screens/native-stack";
-import ProductListScreen from "../../pages_admin/CommonScreen/ProductListScreen";
-import StoreListScreen from '../../pages_admin/CommonScreen/StoreListScreen';
-import StoreDetailInfoScreen from "../../pages_admin/CommonScreen/StoreDetailInfoScreen";
-import ProductDetailInfoScreen from '../../pages_admin/CommonScreen/ProductDetailInfoScreen';
-import {BillScreen} from "../../pages_admin/CommonScreen";
+import {
+    BillScreen,
+    StoreDetailInfoScreen,
+    StoreListScreen,
+    ProductListScreen,
+    ProductDetailInfoScreen
+} from "../../pages_admin/CommonScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabAdminParamList>();
 
@@ -37,30 +38,35 @@ export default function BottomTabAdminNavigator() {
                 options={{
                     tabBarIcon: ({ color }) => <IconHome color={color}/>,
                     headerShown: false,
+                    tabBarLabel:"Trang chủ",
                 }}
             />
             <BottomTab.Screen
                 name ="carts"
                 component={CartNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <IconHome color={color}/>,
+                    tabBarIcon: ({ color }) => <IconGood color={color}/>,
                     headerShown: false,
-                }}
-            />
-            <BottomTab.Screen
-                name ="info"
-                component={InfoNavigator}
-                options={{
-                    tabBarIcon: ({ color }) => <IconHome color={color}/>,
-                    headerShown: false,
+                    tabBarLabel:"Đơn hàng",
                 }}
             />
             <BottomTab.Screen
                 name ="statistics"
                 component={StatisticsNavigator}
                 options={{
-                    tabBarIcon: ({ color }) => <IconHome color={color}/>,
+                    tabBarIcon: ({ color }) => <IconInfo color={color}/>,
                     headerShown: false,
+                    tabBarLabel:"Thống kê",
+                }}
+            />
+
+            <BottomTab.Screen
+                name ="info"
+                component={InfoNavigator}
+                options={{
+                    tabBarIcon: ({ color }) => <IconStatistics color={color}/>,
+                    headerShown: false,
+                    tabBarLabel:"Thông tin khác",
                 }}
             />
 
@@ -74,11 +80,7 @@ function HomeNavigator() {
     return (
         <HomeStack.Navigator
             initialRouteName="homeScreen"
-            screenOptions={{
-                headerStyle:{
-                    height:50,
-                }
-            }}
+
         >
             <HomeStack.Screen
                 name="homeScreen"
@@ -104,11 +106,6 @@ function CartNavigator(){
     return (
         <CartStack.Navigator
             initialRouteName="cartScreen"
-            screenOptions={{
-                headerStyle:{
-                    height:50,
-                }
-            }}
         >
             <CartStack.Screen
                 name="cartScreen"
@@ -129,9 +126,6 @@ function InfoNavigator(){
         <InfoStack.Navigator
             initialRouteName="infoScreen"
             screenOptions={{
-                headerStyle:{
-                    height:50,
-                },
                 headerTitleAlign:"center"
             }}
         >
@@ -139,7 +133,7 @@ function InfoNavigator(){
                 name="infoScreen"
                 component={InfoScreen}
                 options={{
-                    headerTitle: 'Trang chủ',
+                    headerTitle:"Thông tin",
                 }}
             />
             <InfoStack.Screen
@@ -164,7 +158,6 @@ function InfoNavigator(){
                 options={{
                     headerTitle: 'Danh sách sản phẩm',
                     headerShown:false
-
                 }}
             />
             <InfoStack.Screen
@@ -186,16 +179,17 @@ function StatisticsNavigator(){
         <StatisticsStack.Navigator
             initialRouteName="statisticsScreen"
             screenOptions={{
-
             }}
         >
             <StatisticsStack.Screen
                 name="statisticsScreen"
                 component={StatisticsScreen}
                 options={{
-                    headerTitle: 'Trang chủ',
+                    headerTitle: 'Thống kê',
+                    headerShown:false
                 }}
             />
+
         </StatisticsStack.Navigator>
     );
 }

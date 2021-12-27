@@ -9,6 +9,9 @@ import RegisterScreen from "../pages_app/AuthScreen/RegisterScreen";
 import LinkingConfigurationForAdmin from "./admin/LinkingConfigurationForAdmin";
 import BottomTabAdminNavigator from './admin/BottomTabAdminNavigator';
 import { AsyncStorage } from 'react-native';
+import {getData} from "../helps/localStorage";
+import base64url from "base64url";
+import {useState} from "react";
 
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -24,16 +27,17 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
 const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
-    localStorage.setItem("partnerId","6");
-    localStorage.setItem("partnerId","1");
-    const user = localStorage.getItem("partnerId");
-    const admin = localStorage.getItem("admin");
 
+
+    const [user,setUser] = useState(null);
+    const [admin,setAdmin] = useState(null);
+    getData("user").then(r =>setUser(r));
+    getData("admin").then(r=>setAdmin(r));
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false,  }}
         >
-            <Stack.Screen name="Root" component={admin ? BottomTabAdminNavigator : AuthenticationNavigator} />
+            <Stack.Screen name="Root" component={typeof admin === 'string' ? BottomTabAdminNavigator :(typeof user === 'string' ? BottomTabUserNavigator :AuthenticationNavigator) } />
         </Stack.Navigator>
     );
 }

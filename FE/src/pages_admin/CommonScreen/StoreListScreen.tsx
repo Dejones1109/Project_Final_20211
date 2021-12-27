@@ -1,96 +1,166 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import TextBase from '../../components/TextBase';
 import FrameBase from "../../components/FrameBase";
-import {Avatar, Box, Center, Circle, Fab, FlatList, Icon, Input, Pressable, View} from "native-base";
+import {
+    Actionsheet,
+    Avatar,
+    Box,
+    Button,
+    Center,
+    Circle,
+    Fab,
+    FlatList,
+    Icon,
+    Input,
+    Pressable, Row, StatusBar, useDisclose,
+    View
+} from "native-base";
 import {Col} from "../../components/AutoLayout";
 import MainIcon from "../../assets/icon/Icon";
 import {AntDesign} from "@expo/vector-icons";
 import {useGetAllStoreQuery} from "../../app/selectors";
+import ButtonBase from "../../components/ButtonBase";
+import Layout from "../../constants/Layout";
+import LoadingScreen from "../../helps/LoadingScreen";
+import {LoadingContext} from "../../helps/LoadingScreen";
 
 const CardStoreView = (props:{item:any,navigation ?: any})=>{
     const item = props.item;
     return(
-        <Pressable onPress={()=>props.navigation.navigate("storeDetailInfo",{item:item})}>
-            <Center width={"100%"}>
-                <FrameBase
-                    default
-                    styled={{
-                        borderWidth:1,
-                        borderColor:"light.300",
-                        borderRadius:10,
-                        my:2,
-                        p:3,
-                        height:70,
-                        shadow:3
-                    }}
-                    viewOptions={{
-                        leftElement:<>
-                            <Avatar
-                                bg="pink.600"
-                                alignSelf="center"
-                                size={50}
-                                source={{
-                                    uri: `${item.image}`,
-                                }}
-                            >
-                                {item.name.slice(0,2)}
-                            </Avatar>
-                        </>,
-                        colElement:<Col>
-                            <TextBase alignItems={"flex-end"}>{item.nameStore.slice(0,20)}</TextBase>
-                            <TextBase>{item.name}</TextBase>
-                        </Col>,
-                        rightElement:<Col justifyContent={"space-around"} alignItems={"flex-end"}>
-                            <TextBase color={"red.500"}></TextBase>
-                            <TextBase color={"blue.200"}>Xem chi tiết</TextBase>
-                        </Col>,
-                    }}
-                />
+        <Pressable my={1} onPress={()=>props.navigation.navigate("storeDetailInfo",{item:item})}>
+            <Center>
+                <Center width={"90%"}>
+                    <FrameBase
+                        default
+                        styled={{
+                            borderWidth:1,
+                            borderColor:"light.300",
+                            borderRadius:10,
+                            px:2,
+                        }}
+                        viewOptions={{
+                            leftElement:<>
+                                <Avatar
+                                    bg="pink.600"
+                                    alignSelf="center"
+                                    size={50}
+                                    source={{
+                                        uri: `${item.image}`,
+                                    }}
+                                >
+                                    {item.name.slice(0,2)}
+                                </Avatar>
+                            </>,
+                            colElement:<Col>
+                                <TextBase alignItems={"flex-end"}>{item.nameStore.slice(0,20)}</TextBase>
+                                <TextBase>{item.name}</TextBase>
+                            </Col>,
+                            rightElement:<Col justifyContent={"space-around"} alignItems={"flex-end"}>
+                                <TextBase color={"red.500"}></TextBase>
+                                <TextBase color={"blue.200"}>Xem chi tiết</TextBase>
+                            </Col>,
+                        }}
+                    />
+                </Center>
             </Center>
         </Pressable>
     )
 }
-
-const StoreListScreen = (props:{navigation:any}) => {
+const  LayoutStoreListScreen = (props:{navigation:any}) =>{
     // @ts-ignore
-    const {data} = useGetAllStoreQuery();
-    const dataCp = Object.assign([], Object.assign({},data).data);
-    console.log(dataCp);
+    const {context } = useContext(LoadingContext);
+    const data = context[0].data;
+    const { isOpen, onOpen, onClose } = useDisclose();
     return (
         <View flex={1} bg={"white"}>
-            <Box  w="100%">
-                <Circle
-                    bg={"blue"}
-                    position="fixed"
-                    right={3}
-                    bottom={60}
-                    size="sm"
-                >
-                    <Icon color="white" as={<AntDesign name="plus" />} size="sm" />
-                </Circle>
-            </Box>
-            <Input
-                placeholder="Search People & Places"
-                bg="#fff"
-                width="100%"
-                borderRadius="4"
-                py="3"
-                px="1"
-                fontSize="14"
-                _web={{
-                    _focus: { borderColor: 'muted.300',  },
-                }}
-                InputLeftElement={
-                    <MainIcon name={"search"} />
-                }
-            />
+            <Button
+                bg={"blue.400"}
+                position="absolute"
+                right={3}
+                bottom={10}
+                size="sm"
+                borderRadius={"full"}
+                zIndex={3}
+                onPress={onOpen}
+            >
+                <Icon color="white" as={<AntDesign name="plus" />} size="sm" />
+            </Button>
+            <Center >
+                <Actionsheet isOpen={isOpen} onClose={onClose} size="full">
+                    <Actionsheet.Content>
+                        <Box w="100%"  px={4}  justifyContent="center">
+                            <Input
+                                my={2}
+                                InputLeftElement={<MainIcon name={"arrow-right"} />}
+                                placeholder="Tên "
+                            />
+                            <Input
+                                my={2}
+                                InputLeftElement={<MainIcon name={"arrow-right"} />}
+                                type={"number"}
+                                placeholder="số điện thoại"
+                            />
+                            <Input
+                                my={2}
+                                InputLeftElement={<MainIcon name={"arrow-right"} />}
+                                placeholder="Tên cửa hàng"
+                            />
+                            <Input
+                                my={2}
+                                InputLeftElement={<MainIcon name={"arrow-right"} />}
+                                placeholder="địa chỉ"
+                            />
+                            <Row justifyContent={"space-around"} my={2}>
+                                <ButtonBase bg={"blue.400"} onPress={onClose}>Cancel</ButtonBase>
+                                <ButtonBase bg={"danger.400"}>Đăng</ButtonBase>
+                            </Row>
+                        </Box>
+                    </Actionsheet.Content>
+                </Actionsheet>
+            </Center>
+            <>
+                <StatusBar backgroundColor="white" barStyle="light-content"  />
+                <Center>
+                    <Input
+                        placeholder="Search Store"
+                        bg="#fff"
+                        width="95%"
+                        borderRadius="4"
+                        py="3"
+                        px="1"
+
+                        fontSize="14"
+                        _web={{
+                            _focus: { borderColor: 'muted.300',  },
+                        }}
+                        InputLeftElement={
+                            <MainIcon name={"search"} />
+                        }
+                    />
+                </Center>
+            </>
+
             <FlatList
+                contentContainerStyle={{
+                    width:Layout.window.width,
+                    justifyContent: 'center'
+                }}
+                numColumns={1}
                 renderItem = {({item})=><CardStoreView item={item} navigation={props.navigation} />}
-                data={dataCp}
+                data={data.data}
                 keyExtractor={({index}) => index}
             />
         </View>
     );
+}
+const StoreListScreen = (props:{navigation:any}) => {
+    // @ts-ignore
+    const allStore = useGetAllStoreQuery();
+    return(
+        <LoadingScreen data={[allStore]}>
+            <LayoutStoreListScreen  navigation={props.navigation}/>
+        </LoadingScreen>
+    )
 };
 
 export default StoreListScreen;

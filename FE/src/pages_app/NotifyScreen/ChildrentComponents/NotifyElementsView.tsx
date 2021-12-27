@@ -14,7 +14,7 @@ export const NotifyViewNavigate = (props:any)=>{
                     <Box
                     >
 
-                        <Row  space={2}  alignItems ={"space-between"}>
+                        <Row  space={2}  alignItems ={"baseline"}>
                             <Col  >
                                 {item.iconLeft}
                             </Col>

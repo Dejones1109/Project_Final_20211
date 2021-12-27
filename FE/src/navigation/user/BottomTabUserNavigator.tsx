@@ -32,6 +32,7 @@ export default function BottomTabUserNavigator() {
         options={{
           tabBarIcon: ({ color }) => <IconHome color={color}/>,
             headerShown: false,
+            tabBarLabel:"Trang chủ",
         }}
       />
 
@@ -41,6 +42,7 @@ export default function BottomTabUserNavigator() {
             options={{
                 tabBarIcon: ({ color }) => <IconSale color={color}/>,
                 headerShown: false,
+                tabBarLabel:"Ưu đãi",
             }}
         />
         <BottomTab.Screen
@@ -50,6 +52,7 @@ export default function BottomTabUserNavigator() {
                 tabBarIcon: ({ color }) => <IconNotify color={color}/>,
                 headerTitle:"Hộp thư",
                 headerTitleAlign:"center",
+                tabBarLabel:"Hộp thư",
             }}
         />
         <BottomTab.Screen
@@ -59,6 +62,7 @@ export default function BottomTabUserNavigator() {
                 tabBarIcon: ({ color }) => <IconStore color={color}/>,
                 headerTitle:"Tạp hóa PAPA",
                 headerShown: false,
+                tabBarLabel:"Cửa hàng",
             }}
         />
     </BottomTab.Navigator>

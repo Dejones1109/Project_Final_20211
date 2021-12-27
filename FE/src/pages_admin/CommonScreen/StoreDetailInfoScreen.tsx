@@ -1,78 +1,80 @@
-import React from 'react';
+import React, {createContext, useContext} from 'react';
 import TextBase from "../../components/TextBase";
-import {Avatar, Box, Center, Divider, FlatList, Pressable, ScrollView} from "native-base";
+import {Avatar, Box, Center, Divider, FlatList, Pressable, ScrollView,Image} from "native-base";
 import {Col, Row} from "../../components/AutoLayout";
 import FrameBase from "../../components/FrameBase";
 import Layout from "../../constants/Layout";
-import {ProductDataTableView} from "../CartScreen/ChildrentComponent";
 import ButtonBase from "../../components/ButtonBase";
 import MainIcon from "../../assets/icon/Icon";
 import {status} from "../../helps/Status";
-
-const StoreDetailInfoScreen = (props:{route:any}) => {
-    const {item} = props.route.params;
+import {ProductDataTableFinish, ProductDataTableWaiting } from '../CartScreen/ChildrentComponent';
+import LoadingScreen, {LoadingContext} from '../../helps/LoadingScreen';
+import {useGetListCartToPartnerIdQuery} from "../../app/selectors";
+const StoreDetailInfoScreenSection = (props:{item:any})=>{
+    const item= props.item;
+    // @ts-ignore
+    const {context} = useContext(LoadingContext);
+    const dataTable = context[0].data;
     const data = [
         {
-            leftElement: <Avatar
-                my={2}
-                bg="pink.600"
-                alignSelf="center"
-                size={50}
-                source={{
-                    uri: "https://pbs.twimg.com/profile_images/1177303899243343872/B0sUJIH0_400x400.jpg",
-                }}
-            >
-                GG
-            </Avatar>,
+            leftElement: <MainIcon name={"user"} />,
             colElement:<TextBase>{item.name}</TextBase>,
-            rightElement:"",
         },
         {
-            leftElement: <MainIcon name={"arrow-right"} />,
+            leftElement: <MainIcon name={"phone"} />,
             colElement:<TextBase>{item.phone}</TextBase>,
-            rightElement:"",
         },
         {
-            leftElement: <MainIcon name={"arrow-right"} />,
+            leftElement: <MainIcon name={"address"} />,
             colElement:<TextBase>{item.address}</TextBase>,
-            rightElement:"",
         },
         {
-            leftElement: <MainIcon name={"arrow-right"} />,
+            leftElement: <MainIcon name={"start-active"} />,
             colElement:<TextBase>{item.createdDate}</TextBase>,
-            rightElement:"",
         },
         {
-            leftElement: <MainIcon name={"arrow-right"} />,
+            leftElement: <MainIcon name={"active"} />,
             colElement:<TextBase>{item.updatedDate}</TextBase>,
-            rightElement:"",
         },
         {
-            leftElement: <MainIcon name={"arrow-right"} />,
+            leftElement: <MainIcon name={"status"} />,
             colElement:<TextBase>{status(item.status)}</TextBase>,
-            rightElement:"",
         },
     ]
-    console.log(item);
-    return (
+    return(
         <ScrollView bg={"white"}>
-            <Center >
-                <Center>
-                    <FrameBase
-                        default
-                        styled={{
-                            height:50,
+            <Center  >
+                <Center width={"100%"} >
+                    <Image
+                        height={100}
+                        width={"100%"}
+                        resizeMode={"cover"}
+                        source={{
+                            uri: "https://img.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg?size=626&ext=jpg",
                         }}
-                        viewOptions={{
-                            leftElement:data[0].leftElement,
-                            colElement:data[0].colElement,
-                            rightElement:data[0].rightElement,
-                        }}
+                        alt="Cover"
                     />
+                    <Box position={"absolute"}  top={25}>
+                        <Avatar
+                            bg="pink.600"
+                            alignSelf="center"
+                            size={150}
+                            source={{
+                                uri: "https://pbs.twimg.com/profile_images/1177303899243343872/B0sUJIH0_400x400.jpg",
+                            }}
+                        >
+                            {item.name.slice(0,2)}
+                        </Avatar>
+                    </Box>
                 </Center>
-                <Center width={"100%"}>
+
+                <Center width={"100%"} mt={100}>
+                    <Row justifyContent={"space-around"} my={3}>
+                        <ButtonBase bg={"blue.400"}>Tạm khóa</ButtonBase>
+                        <ButtonBase bg={"red.400"}>Khóa vĩnh viễn</ButtonBase>
+                    </Row>
                     <FlatList
-                        data={data.slice(1,data.length)}
+                        data={data}
                         renderItem={({item})=><FrameBase
                             default
                             styled={{
@@ -89,14 +91,23 @@ const StoreDetailInfoScreen = (props:{route:any}) => {
                             width:0.95*Layout.window.width,
                         }}
                     />
-                    <ProductDataTableView />
-                    <Row justifyContent={"space-around"} my={3}>
-                        <ButtonBase bg={"blue.400"}>Tạm khóa</ButtonBase>
-                        <ButtonBase bg={"red.400"}>Khóa vĩnh viễn</ButtonBase>
-                    </Row>
+
+                    <ProductDataTableFinish data={dataTable.data}  />
                 </Center>
             </Center>
         </ScrollView>
+    )
+}
+const StoreDetailInfoScreen = (props:{route:any}) => {
+    const {item} = props.route.params;
+    // get the number of cart finished by partner
+    // @ts-ignore
+    const listCartFinish = useGetListCartToPartnerIdQuery()
+    // @ts-ignore
+    return (
+        <LoadingScreen data={[listCartFinish]}>
+            <StoreDetailInfoScreenSection item={item} />
+        </LoadingScreen>
     );
 };
 

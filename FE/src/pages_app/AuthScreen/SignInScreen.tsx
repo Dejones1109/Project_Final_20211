@@ -1,4 +1,4 @@
-import * as React from "react"
+import React,{useState}  from "react"
 import {
     Box,
     Text,
@@ -11,9 +11,27 @@ import {
     HStack,
     Center,
     NativeBaseProvider,
-} from "native-base"
-import {useNavigation} from "@react-navigation/native";
+} from "native-base";
+import {useDispatch, useSelector} from "react-redux";
+import {adminLogin} from "../../app/service/admin/adminSlice";
+import {userLogin} from "../../app/service/user/userSlice";
+import {getData} from "../../helps/localStorage";
+
 export const LoginForm = (props:{navigation?:any}) => {
+    const [user ,setUser] = useState("");
+    const [password ,setPassword] = useState("");
+    const payload = {
+        username:user,
+        password:password,
+    }
+    // const data = useSelector(state=>state);
+    // console.log(data );
+    const dispatch = useDispatch();
+    // const login = useLoginAdminQuery(payload);
+    const login = async ()=>{
+        await dispatch(userLogin(payload));
+        await dispatch(adminLogin(payload));
+    }
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
             <Heading
@@ -41,11 +59,21 @@ export const LoginForm = (props:{navigation?:any}) => {
             <VStack space={3} mt="5">
                 <FormControl>
                     <FormControl.Label>Email ID</FormControl.Label>
-                    <Input />
+                    <Input
+                        value={user}
+                        onChangeText={(text:string)=>{
+                            setUser(text)
+                        }}
+                    />
                 </FormControl>
                 <FormControl>
                     <FormControl.Label>Password</FormControl.Label>
-                    <Input type="password" />
+                    <Input type="password"
+                           value={password}
+                           onChangeText={(text:string)=>{
+                               setPassword(text)
+                           }}
+                    />
                     <Link
                         _text={{
                             fontSize: "xs",
@@ -58,7 +86,7 @@ export const LoginForm = (props:{navigation?:any}) => {
                         Forget Password?
                     </Link>
                 </FormControl>
-                <Button mt="2" colorScheme="indigo" >
+                <Button mt="2" colorScheme="indigo" onPress={() =>login()} >
                     Sign in
                 </Button>
                 <HStack mt="6" justifyContent="center">
@@ -87,10 +115,13 @@ export const LoginForm = (props:{navigation?:any}) => {
     )
 }
 
-export default function SignInScreen()  {
+export default function SignInScreen(props:{navigation:any})  {
+
+
+
     return (
         <Center flex={1} px="3">
-            <LoginForm />
+            <LoginForm  navigation={props.navigation}/>
         </Center>
     )
 }

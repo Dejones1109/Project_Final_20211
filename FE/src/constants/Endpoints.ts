@@ -7,7 +7,8 @@
      //
      product:"/product",
      cart:"/cart",
-     order:"/orders"
+     order:"/orders",
+     partner:"/partner",
 }
 
  export default endpoints;

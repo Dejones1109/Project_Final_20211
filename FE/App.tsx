@@ -9,7 +9,7 @@ import {Provider} from "react-redux";
 import { store } from "./src/app/store";
 import {TextConfig} from "./src/helps/TextStyles";
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { LogBox } from 'react-native';
+import {LogBox, YellowBox} from 'react-native';
 import Navigation from './src/navigation/RootMobile';
 
 export default function App () {

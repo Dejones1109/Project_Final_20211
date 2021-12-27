@@ -1,25 +1,20 @@
 import {createAsyncThunk , createSlice} from "@reduxjs/toolkit";
 import AuthService from "./userAPI"
-
+import base64url from "base64url";
+import {storeData} from "../../../helps/localStorage";
 
 
 let  initialState = {
-    token_current :'',
-    status_login:false,
-    status_register: false,
-    message: '',
+    code: 404,
 }
 
-export const login = createAsyncThunk(
+export const userLogin = createAsyncThunk(
     'auth/login',
     async (params ,{rejectWithValue})=>{
         const response = await AuthService.login(params,rejectWithValue);
-        // Save access token to storage
-        // @ts-ignore
-        const { access_token, token_type,expires_at } = response;
-        const accessToken = `${token_type} ${access_token}`;
-        localStorage.setItem('access_token', accessToken);
-        localStorage.setItem('expired_at', expires_at); // expired_at is a timestamp
+        const {phone, password,partCode} = response.data;
+        const encode = base64url(`${partCode}.${phone}.${password}.${new Date()}`);
+        return response.data;
     }
 );
 
@@ -30,39 +25,35 @@ export const register = createAsyncThunk(
     }
 );
 
-export const userReducer = createSlice({
+
+export const userSlice = createSlice({
     initialState:initialState,
-    name:'user',
+    name:'auth',
     reducers: {
 
     },
     extraReducers: (builder) => {
         builder
-            .addCase(login.pending,(state)=>{
-                state.status_login  = 'loading';
+            .addCase(userLogin.pending,(state)=>{
+                state.code  = 404;
             })
-            .addCase(login.fulfilled,(state )=>{
-                state.status_login = 'true';
-                state.token_current =localStorage.getItem('access_token');
+            .addCase(userLogin.fulfilled,(state )=>{
+                state.code  = 201;
             })
-            .addCase(login.rejected, (state )=>{
-                state.status = false;
+            .addCase(userLogin.rejected, (state )=>{
+                state.code  = 500;
             });
         builder
             .addCase(register.pending,(state )=>{
-                state.status_register = 'loading';
+                state.code  = 404;
             })
             .addCase(register.fulfilled,(state )=>{
-                state.status_register = 'true';
-                state.message = "Đăng ký thành công ! Vui lòng xác nhận email của bạn."
+                state.code  = 201;
             })
             .addCase(register.rejected, (state )=>{
-                state.status_register = false;
-                state.message = "Đăng ký thất bại ! Tài khoản này đã tồn tại."
+                state.code  = 500;
             })
     }
 })
 
 
-export const {actions,reducers } = userReducer;
-export default reducers;

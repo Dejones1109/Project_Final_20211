@@ -10,10 +10,10 @@ const ButtonBase = (props:any) => {
             bg: 'light.300'
         }}
         _pressed={{
-            bg: 'light.600'
+            bg: '#FFFFFF'
         }}
         _focus ={{
-            bg: 'light'
+            bg: 'success.400'
         }}
         {...props}
     >

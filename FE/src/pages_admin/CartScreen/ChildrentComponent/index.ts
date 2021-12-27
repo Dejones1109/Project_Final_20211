@@ -1,3 +1,4 @@
-import ProductDataTableView from "./ProductDataTable";
+import ProductDataTableFinish from "./ProductDataTableFinish";
+import ProductDataTableWaiting from "./ProductDataTableWaiting";
 
-export {ProductDataTableView,}
+export {ProductDataTableWaiting,ProductDataTableFinish}

@@ -8,7 +8,7 @@ let  initialState = {
 
 export const storeReducer = createSlice({
     initialState:initialState,
-    name:'cart',
+    name:'store',
     reducers: {},
     extraReducers: (builder) => {
 

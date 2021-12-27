@@ -3,10 +3,9 @@ import {Text} from "native-base";
 const TextBase = (props:any) => {
     return (
         <Text
-              my={1}
+            my={1}
               fontSize={["sm","md","lg"]}
               fontStyle={"normal"}
-              letterSpacing={"lg"}
               {...props}
         >
             {props.children}

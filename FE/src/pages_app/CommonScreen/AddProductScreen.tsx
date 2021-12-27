@@ -58,7 +58,6 @@ const AddProductScreen = (props:{route:any}) => {
     const {data} = useCheckExistProductOnCartQuery(item.productCode);
     const dataCp = Object.assign({},Object.assign({}, data).data);
     const {quantity,id} = dataCp;
-    console.log(dataCp);
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [quantities,setQuantities] = useState(quantity );
@@ -77,12 +76,7 @@ const AddProductScreen = (props:{route:any}) => {
             "quantity" : quantities
         };
         await dispatch(updateQuantity(update_quantity));
-        // if(quantity){
-        //
-        // }
-        // else{
-        //     await dispatch(createCart(cart));
-        // }
+
         navigation.goBack();
     }
 

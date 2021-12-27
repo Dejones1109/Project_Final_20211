@@ -16,7 +16,7 @@ export const HistoryViewNavigate = (props:{item:any}) => {
                 <Pressable  onPress={() => navigation.navigate(item.routeName)}  >
                     <Box
                     >
-                        <Row  space={2} alignItems ={"space-between"}>
+                        <Row  space={2} alignItems ={"baseline"}>
                             <Col>
                                 {item.iconLeft}
                             </Col>
@@ -36,7 +36,7 @@ export const HistoryViewNavigate = (props:{item:any}) => {
     );
 };
 
-const HistoryView = (props:{item:any}) => {
+const HistoryView = () => {
     const data = [
         {
             iconLeft:<MainIcon name={"time"} />,
@@ -63,7 +63,7 @@ const HistoryView = (props:{item:any}) => {
                     <Pressable   >
                         <Box
                         >
-                            <Row  justifyContent={"space-between"} alignItems ={"space-between"}>
+                            <Row  justifyContent={"space-between"} alignItems ={"baseline"}>
                                 <Col width={"33%"} alignItems={"center"}>
                                     <MainIcon name={"ampproject"} />
                                     <TextBase fontSize={12}>Đang xử lý</TextBase>

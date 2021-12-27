@@ -1,73 +1,107 @@
 import React, {useState} from 'react';
-import {Avatar, Box, Center, Divider, FlatList, Pressable, ScrollView} from "native-base";
+import {Avatar, Box, Button, Center, Divider, FlatList, Pressable, ScrollView, View} from "native-base";
 import {Col, Row} from "../../components/AutoLayout";
 import MainIcon from "../../assets/icon/Icon";
 import TextBase from "../../components/TextBase";
 import FrameBase from '../../components/FrameBase';
-import DatePicker from 'react-native-datepicker';
 import Layout from "../../constants/Layout";
 import { useGetAllCartWaitingForAdminQuery } from '../../app/selectors';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import {Platform} from "react-native";
+import {useDispatch} from "react-redux";
+import ButtonBase from "../../components/ButtonBase";
 
 const CardForCartWaiting = (props:{item:any, navigation ?:any})=>{
     const {partner} = props.item;
     return(
-        <Pressable onPress={() =>props.navigation.navigate("billScreen", {item: partner})}>
-            <Center width={"100%"}>
-                <FrameBase
-                    default
-                    styled={{
-                        borderWidth:1,
-                        borderColor:"light.300",
-                        borderRadius:10,
-                        my:2,
-                        p:3,
-                        height:70,
-                        shadow:5
-                    }}
-                    viewOptions={{
-                        leftElement:<>
-                            <Avatar
-                                bg="pink.600"
-                                alignSelf="center"
-                                size={50}
-                                source={{
-                                    uri: "https://pbs.twimg.com/profile_images/1177303899243343872/B0sUJIH0_400x400.jpg",
-                                }}
-                            >
-                                GG
-                            </Avatar>
-                        </>,
-                        colElement:<Col>
-                            <TextBase alignItems={"flex-end"}>{partner.nameStore.slice(0,20)}</TextBase>
-                            <TextBase>{partner.name}</TextBase>
-                        </Col>,
-                        rightElement:<Col justifyContent={"space-around"} alignItems={"flex-end"}>
-                            <MainIcon name={"arrow-right"} />
-                            <TextBase>{partner.updatedDate.split(" ")[1]}</TextBase>
-                        </Col>,
-                    }}
-                />
+        <Pressable my={2} onPress={() =>props.navigation.navigate("billScreen", {item: partner})}>
+            <Center>
+                <Center width={"90%"}>
+                    <FrameBase
+                        default
+                        styled={{
+                            borderWidth:1,
+                            borderColor:"light.300",
+                            borderRadius:10,
+                            px:2,
+                        }}
+                        viewOptions={{
+                            leftElement:<>
+                                <Avatar
+                                    bg="pink.600"
+                                    alignSelf="center"
+                                    size={50}
+                                    source={{
+                                        uri: "https://pbs.twimg.com/profile_images/1177303899243343872/B0sUJIH0_400x400.jpg",
+                                    }}
+                                >
+                                    GG
+                                </Avatar>
+                            </>,
+                            colElement:<Col>
+                                <TextBase color={"red.400"} alignItems={"flex-end"}>{partner.nameStore.slice(0,20)}</TextBase>
+                                <TextBase>{partner.name}</TextBase>
+                            </Col>,
+                            rightElement:<Col  alignItems={"flex-end"}>
+                                <TextBase color={"blue.400"} fontSize={10} alignItems={"flex-end"}>Xem chi tiết</TextBase>
+                                <TextBase>{partner.updatedDate.split(" ")[1]}</TextBase>
+                            </Col>,
+                        }}
+                    />
+                </Center>
             </Center>
         </Pressable>
     )
 }
 const HomeScreen = (props:{navigation?:any}) => {
-    const [date, setDate] = useState("2021-12-19");
+    const [date, setDate] = useState(new Date());
+    const [show, setShow] = useState(false);
+
+    const onChange = (event:any, selectedDate :any) => {
+
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS === 'ios');
+        setDate(currentDate);
+    };
+    const dispatch = useDispatch();
+    const showMode = (currentMode:any) => {
+        setShow(true);
+    };
+
+    const showDatepicker = () => {
+        showMode('date');
+    };
+
     // @ts-ignore
     const payload = {
         status: 301 ,
-        date:date ,
+        date:`${date.getUTCFullYear()}-${date.getUTCMonth()+1}-${date.getUTCDate()}` ,
     }
     const {data} = useGetAllCartWaitingForAdminQuery(payload);
     const dataCp = Object.assign([],Object.assign({},data).data);
     return (
         <ScrollView bg={"white"}>
+
+            <View>
+                {show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={"date"}
+                        timeZoneOffsetInMinutes={60}
+                        is24Hour={true}
+                        display="default"
+                        maximumDate={new Date()}
+                        onChange={onChange}
+                    />
+                )}
+            </View>
             <Center  width={"100%"} height={50} my={2}  >
                 <Box width={["100%","100%"]}   overflow={"hidden"}   >
                     <Pressable   >
                         <Box
                         >
-                            <Row  justifyContent={"space-between"} alignItems ={"space-between"}>
+                            <Row  justifyContent={"space-between"} alignContent ={"space-between"}>
                                 <Col width={"33%"} alignItems={"center"}>
                                     <TextBase fontSize={16} color={"red.500"}>10</TextBase>
                                     <TextBase fontSize={14} textAlign={"center"} color={"light.400"}>Đơn đang chờ</TextBase>
@@ -88,34 +122,22 @@ const HomeScreen = (props:{navigation?:any}) => {
                 </Box>
 
             </Center>
+            <Box>
+                <Row justifyContent={"flex-end"}  mr={3} space={2}>
+                    <TextBase bg={"success.500"} p={3} rounded={4} >
+                        {payload.date}
+                    </TextBase>
+                    <ButtonBase onPress={showDatepicker} >
+                        <MainIcon name={"calendar"} />
+                    </ButtonBase>
+                </Row>
+            </Box>
             <Center >
-                <DatePicker
-                    style={{width: 200 , marginVertical: 10}}
-                    date={date}
-                    mode="date"
-                    placeholder="select date"
-                    format="YYYY-MM-DD"
-                    minDate="2016-05-01"
-                    maxDate="2022-06-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                        // ... You can check the source to find the other keys.
-                    }}
-                    onDateChange={(date) => {setDate(date)}}
-                />
+
                 <FlatList
                     contentContainerStyle={{
-                        width:Layout.window.width
+                        width:Layout.window.width,
+                        justifyContent:"center"
                     }}
                     renderItem = {({item})=><CardForCartWaiting item={item} navigation={props.navigation} />}
                     data={dataCp}

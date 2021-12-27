@@ -4,9 +4,8 @@ import endpoints from "../../../constants/Endpoints";
 class AuthService {
     // api login
     async login(payload  , rejectWithValue  )   {
-        console.log(payload);
         // payload is form data to login , can  consists of email and password
-        const response = await client.post(`${endpoints.login}`,payload)
+        const response = await client.post(`${endpoints.partner}?query=login`,payload)
             .catch(error => rejectWithValue(error.json()));
         return response.data;
     }
@@ -14,7 +13,7 @@ class AuthService {
     // api register
     async register(payload , rejectWithValue  ){
         // payload is form data to register , can consists of name, email and password
-        const response = await client.post(`${endpoints.register}`,payload)
+        const response = await client.post(`${endpoints.partner}`,payload)
             .catch(error =>  rejectWithValue(error.json()))
         return response.data;
     }

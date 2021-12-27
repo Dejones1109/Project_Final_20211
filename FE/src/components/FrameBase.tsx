@@ -21,18 +21,18 @@ export type CardProps  = {
 }
 
 
-const CardDefault = (props:{viewOptions:any,styled :any})=>{
+const CardDefault = (props:{viewOptions:{leftElement ?:any, colElement?:any, rightElement ?:any},styled :any})=>{
     return (
-        <Center  width={"95%"} height={50}  {...props.styled} >
-            <Box width={["100%","100%"]}  overflow={"hidden"}>
+        <Center  width={"100%"}  {...props.styled} >
+            <Box width={"100%"}  overflow={"hidden"}>
                 <Box>
                     <Box
                     >
-                        <Row  space={2} alignItems ={"space-between"}>
-                            <Col>
+                        <Row  space={2} alignContent ={"space-between"}>
+                            <Col alignContent={"center"}>
                                 {props.viewOptions.leftElement}
                             </Col>
-                            <Col  >
+                            <Col alignContent={"center"} >
                                 {props.viewOptions.colElement}
                             </Col>
                             <Spacer />
@@ -140,7 +140,7 @@ const CardInfoSale = (props:{item:any})=>{
             <Box borderRadius={10} bg="white" >
                 <Box
                 >
-                    <Row  space={2} justifyContent={"flex-start"} alignItems ={"space-between"}>
+                    <Row  space={2} justifyContent={"flex-start"} alignItems ={"baseline"}>
                         <Image rounded={10} size={["140","100"]}  source={{uri:`${item.img}`}} />
                         <Col width={["50%","60%","65%"]} height={["140","100"]} py={2}   >
                             <Box width={"100%"}>
