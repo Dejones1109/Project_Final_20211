@@ -2,7 +2,9 @@ package com.example.demo.services.impl;
 
 import com.example.demo.entity.Partner;
 import com.example.demo.entity.Products;
+import com.example.demo.repository.DashBoardRepository;
 import com.example.demo.repository.PartnerRepository;
+import com.example.demo.response.OrderQuantityByStatus;
 import com.example.demo.services.PartnerService;
 import org.apache.commons.collections4.IterableUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import java.util.Optional;
 public class PartnerServiceImp implements PartnerService {
     @Autowired
     PartnerRepository partnerRepository;
+    @Autowired
+    DashBoardRepository dashBoardRepository;
 
     @Override
     public List<Partner> findAll() {
@@ -56,6 +60,23 @@ public class PartnerServiceImp implements PartnerService {
     public Integer getMaxLength() {
         return partnerRepository.getMaxLength();
     }
+
+    @Override
+    public OrderQuantityByStatus orderQuantityByStatusOfPartner(Integer partnerId) {
+        return dashBoardRepository.orderQuantityByStatusOfPartner(partnerId);
+    }
+
+    @Override
+    public Partner login(String phone, String password) {
+        return partnerRepository.login(phone,password);
+    }
+
+    @Override
+    public Partner isCheckPhone(String phone) {
+        return isCheckPhone(phone);
+    }
+
+
 
 //    @Override
 //    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

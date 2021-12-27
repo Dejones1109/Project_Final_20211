@@ -13,5 +13,8 @@ public class DashboardByProductType {
     protected String productType;
     protected Double percent;
     protected Integer price;
+    protected String color;
+    protected String legendFontColor;
+    protected Integer legendFontSize;
 
 }

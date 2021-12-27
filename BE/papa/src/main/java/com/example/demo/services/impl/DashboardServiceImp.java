@@ -3,6 +3,7 @@ package com.example.demo.services.impl;
 import com.example.demo.entity.Products;
 import com.example.demo.repository.DashBoardRepository;
 import com.example.demo.repository.ProductRepository;
+import com.example.demo.response.OrderQuantityByStatus;
 import com.example.demo.response.admin.DashboardByProductAndPriceResponse;
 import com.example.demo.response.admin.DashboardByProductType;
 import com.example.demo.services.DashboardService;
@@ -74,14 +75,19 @@ public class DashboardServiceImp implements DashboardService {
                 priceChaoCua+=dashboard1.getPrice();
             }
         }
-        resultList.add(new DashboardByProductType("Cháo thịt",percentChaoThit,priceChaoThit));
-        resultList.add(new DashboardByProductType("Cháo tim cận",percentChaoTimCan,priceChaoTimCan));
-        resultList.add(new DashboardByProductType("Cháo cá",percentChaoCa,priceChaoCa));
-        resultList.add(new DashboardByProductType("Cháo lươn",percentChaoLuon,priceChaoLuon));
-        resultList.add(new DashboardByProductType("Cháo hải sản",percentChaoHaiSan,priceChaoHaiSan));
-        resultList.add(new DashboardByProductType("Cháo chim",percentChaoChim,priceChaoChim));
-        resultList.add(new DashboardByProductType("Cháo ếch",percentChaoEch,priceChaoEch));
-        resultList.add(new DashboardByProductType("Cháo cua",percentChaoCua,priceChaoCua));
+        resultList.add(new DashboardByProductType("Cháo thịt",percentChaoThit,priceChaoThit,"#007bff","#007bff",15));
+        resultList.add(new DashboardByProductType("Cháo tim cận",percentChaoTimCan,priceChaoTimCan,"#6f42c1","#6f42c1",15));
+        resultList.add(new DashboardByProductType("Cháo cá",percentChaoCa,priceChaoCa,"#fd7e14","#fd7e14",15));
+        resultList.add(new DashboardByProductType("Cháo lươn",percentChaoLuon,priceChaoLuon,"#ffc107","#ffc107",15));
+        resultList.add(new DashboardByProductType("Cháo hải sản",percentChaoHaiSan,priceChaoHaiSan,"#17a2b8","#17a2b8",15));
+        resultList.add(new DashboardByProductType("Cháo chim",percentChaoChim,priceChaoChim,"#ffc107","#ffc107",15));
+        resultList.add(new DashboardByProductType("Cháo ếch",percentChaoEch,priceChaoEch,"#dc3545","#dc3545",15));
+        resultList.add(new DashboardByProductType("Cháo cua",percentChaoCua,priceChaoCua,"#343a40","#343a40",15));
         return resultList;
+    }
+
+    @Override
+    public OrderQuantityByStatus orderQuantityByStatusOfAdmin() {
+        return dashBoardRepository.orderQuantityByStatusOfAdmin();
     }
 }

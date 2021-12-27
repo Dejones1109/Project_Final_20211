@@ -15,5 +15,6 @@ public interface AdminService {
     List<Object> getListCartToPartnerId(Integer partnerId);
     Object getTotalPriceAndTotalQuantity();
     List<Cart> getListToCartNoStatus(Integer orderId);
+    Admin login(String phone,String password);
 
 }
