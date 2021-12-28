@@ -14,6 +14,7 @@ export const userLogin = createAsyncThunk(
         const response = await AuthService.login(params,rejectWithValue);
         const {phone, password,partCode} = response.data;
         const encode = base64url(`${partCode}.${phone}.${password}.${new Date()}`);
+        await storeData(`user`,encode);
         return response.data;
     }
 );

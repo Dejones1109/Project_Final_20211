@@ -7,8 +7,10 @@ import {Col} from "../../components/AutoLayout";
 import MainIcon from "../../assets/icon/Icon";
 import {LoadingContext} from "../../helps/LoadingScreen";
 import {deleteData} from "../../helps/localStorage";
+import {NavigationContext} from "../../navigation/RootMobile";
 
 const LayoutInfoScreen = (props:{navigation:any}) => {
+    const {auth}:any = useContext(NavigationContext);
     const data = [
         {
             leftElement:<Col>
@@ -126,9 +128,9 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
                         }}
                     />
                 </Pressable>
-                <Pressable width={"100%"} onPress={()=>{
-                    deleteData("admin").then(r => console.log(r));
-                    deleteData("user").then(r=>console.log(r));
+                <Pressable width={"100%"} onPress={async ()=>{
+                    await deleteData("admin").then(r => auth.setAdmin(null));
+                    await deleteData("user").then(r=>auth.setUser(null));
 
                 }}>
                     <FrameBase

@@ -11,15 +11,34 @@ import BottomTabAdminNavigator from './admin/BottomTabAdminNavigator';
 import { AsyncStorage } from 'react-native';
 import {getData} from "../helps/localStorage";
 import base64url from "base64url";
-import {useState} from "react";
+import {createContext, useContext, useState} from "react";
 
+export const NavigationContext = createContext({});
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+    const [user,setUser] = useState(null);
+    const [admin,setAdmin] = useState(null);
+    // @ts-ignore
+    getData("user").then(r =>setUser(r));
+    // @ts-ignore
+    getData("admin").then(r=>setAdmin(r));
+    const data = {
+        auth:{
+            user:user,
+            admin:admin,
+            // @ts-ignore
+            setUser:(user:string)=>setUser(user),
+            // @ts-ignore
+            setAdmin:(admin:string )=>setAdmin(admin),
+        }
+    }
     return (
         <NavigationContainer
             linking ={LinkingConfigurationForAdmin}
         >
-            <RootNavigator  />
+            <NavigationContext.Provider value={data}>
+                <RootNavigator  />
+            </NavigationContext.Provider>
         </NavigationContainer>
     );
 }
@@ -27,12 +46,9 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
 const Stack = createStackNavigator<RootStackParamList>();
 function RootNavigator() {
-
-
-    const [user,setUser] = useState(null);
-    const [admin,setAdmin] = useState(null);
-    getData("user").then(r =>setUser(r));
-    getData("admin").then(r=>setAdmin(r));
+    const {auth} : any= useContext(NavigationContext);
+    const user = auth.user;
+    const admin = auth.admin ;
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false,  }}

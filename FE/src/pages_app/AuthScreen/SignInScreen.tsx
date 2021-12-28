@@ -1,4 +1,4 @@
-import React,{useState}  from "react"
+import React, {useContext, useState} from "react"
 import {
     Box,
     Text,
@@ -16,6 +16,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {adminLogin} from "../../app/service/admin/adminSlice";
 import {userLogin} from "../../app/service/user/userSlice";
 import {getData} from "../../helps/localStorage";
+import {NavigationContext} from "../../navigation/RootMobile";
 
 export const LoginForm = (props:{navigation?:any}) => {
     const [user ,setUser] = useState("");
@@ -28,9 +29,12 @@ export const LoginForm = (props:{navigation?:any}) => {
     // console.log(data );
     const dispatch = useDispatch();
     // const login = useLoginAdminQuery(payload);
+    const {auth}:any  = useContext(NavigationContext);
     const login = async ()=>{
         await dispatch(userLogin(payload));
         await dispatch(adminLogin(payload));
+        getData("user").then(r =>auth.setUser(r));
+        getData("admin").then(r =>auth.setAdmin(r));
     }
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
