@@ -6,7 +6,7 @@ import ButtonBase from "../../components/ButtonBase";
 import Layout from "../../constants/Layout";
 import {Col, Row} from "../../components/AutoLayout";
 import { useDispatch } from 'react-redux';
-import {createOrder} from "../../app/service/product/productSlice";
+import {createOrder} from "../../app/service/order/orderSlice";
 import {useNavigation} from "@react-navigation/native";
 import {useGetCartListByPartnerQuery} from "../../app/selectors";
 import LoadingScreen , {LoadingContext} from "../../helps/LoadingScreen";

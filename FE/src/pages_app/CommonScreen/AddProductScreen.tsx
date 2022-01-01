@@ -7,7 +7,7 @@ import ButtonBase from "../../components/ButtonBase";
 import {Col, Row } from '../../components/AutoLayout';
 import MainIcon from "../../assets/icon/Icon";
 import {useDispatch} from "react-redux";
-import {createCart, updateQuantity} from "../../app/service/product/productSlice";
+import {updateQuantity,createCart} from '../../app/service/cart/cartSlice'
 import { useNavigation } from '@react-navigation/native';
 import { useCheckExistProductOnCartQuery } from '../../app/selectors';
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";

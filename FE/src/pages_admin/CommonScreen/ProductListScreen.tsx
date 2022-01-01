@@ -21,6 +21,7 @@ import {useGetAllProductsQuery} from "../../app/selectors";
 import ButtonBase from "../../components/ButtonBase";
 import Layout from '../../constants/Layout';
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+
 const CardProductView = (props:{item:any, navigation: any})=>{
     const item = props.item;
     return(
@@ -63,7 +64,7 @@ const CardProductView = (props:{item:any, navigation: any})=>{
 
     )
 }
-const  LayoutProductListScreen = (props:{navigation?: any})=>{
+const  ShowProductListScreen = (props:{navigation?: any})=>{
     // @ts-ignore
     const {context} = useContext(LoadingContext);
     const data = context[0].data;
@@ -160,7 +161,7 @@ const ProductListScreen = (props:{navigation?: any}) => {
     const allProducts = useGetAllProductsQuery();
     return(
         <LoadingScreen data={[allProducts]}>
-            <LayoutProductListScreen navigation={props.navigation} />
+            <ShowProductListScreen navigation={props.navigation} />
         </LoadingScreen>
     )
 };

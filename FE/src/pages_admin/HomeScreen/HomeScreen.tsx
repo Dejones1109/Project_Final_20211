@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Avatar, Box, Button, Center, Divider, FlatList, Pressable, ScrollView, View} from "native-base";
 import {Col, Row} from "../../components/AutoLayout";
 import MainIcon from "../../assets/icon/Icon";
@@ -10,6 +10,8 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import {Platform} from "react-native";
 import {useDispatch} from "react-redux";
 import ButtonBase from "../../components/ButtonBase";
+import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+import {useNavigation} from "@react-navigation/native";
 
 const CardForCartWaiting = (props:{item:any, navigation ?:any})=>{
     const {partner} = props.item;
@@ -53,6 +55,31 @@ const CardForCartWaiting = (props:{item:any, navigation ?:any})=>{
         </Pressable>
     )
 }
+const LoadingHomeByData = (props:{payload:any})=>{
+    const data = useGetAllCartWaitingForAdminQuery(props.payload);
+
+    return (
+        <LoadingScreen data={[data]}>
+            <ShowHomeScreen />
+        </LoadingScreen>
+    )
+}
+const ShowHomeScreen =()=>{
+    const navigation = useNavigation();
+    const {context}:any = useContext(LoadingContext);
+    const data = context[0].data.data;
+    return(
+        <FlatList
+            contentContainerStyle={{
+                width:Layout.window.width,
+                justifyContent:"center"
+            }}
+            renderItem = {({item})=><CardForCartWaiting item={item} navigation={navigation} />}
+            data={data}
+            keyExtractor={(item) => item.id}
+        />
+    )
+}
 const HomeScreen = (props:{navigation?:any}) => {
     const [date, setDate] = useState(new Date());
     const [show, setShow] = useState(false);
@@ -77,8 +104,7 @@ const HomeScreen = (props:{navigation?:any}) => {
         status: 301 ,
         date:`${date.getUTCFullYear()}-${date.getUTCMonth()+1}-${date.getUTCDate()}` ,
     }
-    const {data} = useGetAllCartWaitingForAdminQuery(payload);
-    const dataCp = Object.assign([],Object.assign({},data).data);
+
     return (
         <ScrollView bg={"white"}>
 
@@ -133,17 +159,7 @@ const HomeScreen = (props:{navigation?:any}) => {
                 </Row>
             </Box>
             <Center >
-
-                <FlatList
-                    contentContainerStyle={{
-                        width:Layout.window.width,
-                        justifyContent:"center"
-                    }}
-                    renderItem = {({item})=><CardForCartWaiting item={item} navigation={props.navigation} />}
-                    data={dataCp}
-                    keyExtractor={(item) => item.id}
-                />
-
+                <LoadingHomeByData payload={payload}  />
             </Center>
 
         </ScrollView>

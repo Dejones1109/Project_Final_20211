@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TextBase from "../../components/TextBase";
 import {StatusBar, StyleSheet, useWindowDimensions} from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -7,17 +7,27 @@ import {Box, Center, FlatList, View} from 'native-base';
 import {status} from "../../helps/Status";
 import {useGetOrderListByStatusQuery} from "../../app/selectors";
 import Layout from "../../constants/Layout";
+import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
 
-const CommonRoute = (props:{status:number}) => {
-    const {data} = useGetOrderListByStatusQuery(props.status);
-    const dataCp = Object.assign([],Object.assign({},data).data);
+const CommonRoute = (props:{status:number}) =>{
+    const data = useGetOrderListByStatusQuery(props.status);
+    return(
+        <LoadingScreen data={[data]}>
+            <ShowCommonRoute status={props.status}/>
+        </LoadingScreen>
+    )
+}
+const ShowCommonRoute = (props:{status:number}) => {
+
+    const {context }:any = useContext(LoadingContext);
+    const data= context[0].data.data;
     return(
         <View flex={1} bg={"white"}>
             <FlatList
                 renderItem = {({item})=>{
                     return(
                         <>
-                            <Center borderWidth={1} pb={2}   m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
+                            <Center borderWidth={1} p={2}   m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
                                 <FrameBase
                                     default
                                     viewOptions={{
@@ -55,8 +65,8 @@ const CommonRoute = (props:{status:number}) => {
                     )
                 }}
                 numColumns ={1}
-                data={dataCp}
-                keyExtractor={(item) => item.id}
+                data={data}
+                keyExtractor={({index}) => index}
             />
 
         </View>

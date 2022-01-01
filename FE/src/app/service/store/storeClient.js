@@ -20,6 +20,12 @@ class StoreClient {
         console.log(response.data);
         return response.data;
     }
+    async createPartner (payload  , rejectWithValue){
+        const response = await client.post(`${endpoints.partner}`,payload)
+            .catch(error => rejectWithValue(error.json()));
+        console.log(response.data);
+        return response.data;
+    }
 }
 
 export default new StoreClient();

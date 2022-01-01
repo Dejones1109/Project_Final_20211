@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Avatar, Box, Center, Divider, FlatList, Pressable, ScrollView, Text} from "native-base";
 import {Col, Row} from "../../components/AutoLayout";
 import MainIcon from "../../assets/icon/Icon";
@@ -14,17 +14,27 @@ import {
     useGetOrderQuantityByStatusOfPartnerQuery
 } from "../../app/selectors";
 import {useDispatch} from "react-redux";
+import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
 
-
-const BillScreen = (props:{route:any}) => {
+const BillScreen = (props:{route:any})=>{
     const {item} = props.route.params;
     const payload = {
         status:301,
         id:item.id
     }
-    const {data} = useGetOrderListByStatusOfUserForAdminQuery(payload);
+    const orderList = useGetOrderListByStatusOfUserForAdminQuery(payload);
     const quantity = useGetOrderQuantityByStatusOfPartnerQuery(item.id);
-    const dataCp = Object.assign([],Object.assign({},data).data);
+    return(
+        <LoadingScreen data={[orderList,quantity]}>
+            <ShowBillScreen route={props.route}/>
+        </LoadingScreen>
+    )
+}
+const ShowBillScreen = (props:{route:any}) => {
+    const {item} = props.route.params;
+    const {context}:any= useContext(LoadingContext);
+    const orderList = context[0].data.data;
+    const quantity = context[1].data.data;
     const dispatch = useDispatch();
     const dataCpp = [
         {
@@ -66,7 +76,7 @@ const BillScreen = (props:{route:any}) => {
 
     return (
         <ScrollView bg={"white"}>
-            {data && quantity.data ? <>
+            <>
                 <Center  width={"100%"} height={50} my={2}  >
                     <Box width={["100%","100%"]}   overflow={"hidden"}   >
                         <Pressable   >
@@ -74,17 +84,17 @@ const BillScreen = (props:{route:any}) => {
                             >
                                 <Row  justifyContent={"space-between"} alignContent ={"space-between"}>
                                     <Col width={"33%"} alignItems={"center"}>
-                                        <TextBase fontSize={16} color={"red.500"}>{quantity.data.data.orderWaiting}</TextBase>
+                                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderWaiting}</TextBase>
                                         <TextBase fontSize={14} textAlign={"center"} color={"light.400"}>Đơn đang chờ</TextBase>
                                     </Col>
                                     <Divider orientation={"vertical"}/>
                                     <Col width={"33%"} alignItems={"center"} >
-                                        <TextBase fontSize={16} color={"red.500"}>{quantity.data.data.orderShip}</TextBase>
+                                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderShip}</TextBase>
                                         <TextBase  fontSize={14} textAlign={"center"} color={"light.400"}>Đơn vận chuyển</TextBase>
                                     </Col>
                                     <Divider  orientation={"vertical"}/>
                                     <Col width={"33%"} alignItems={"center"}>
-                                        <TextBase fontSize={16} color={"red.500"}>{quantity.data.data.orderDone}</TextBase>
+                                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderDone}</TextBase>
                                         <TextBase  fontSize={14} textAlign={"center"} color={"light.400"} >Đơn hoàn thành</TextBase>
                                     </Col>
                                 </Row>
@@ -114,12 +124,11 @@ const BillScreen = (props:{route:any}) => {
                                 justifyContent:"center"
                             }}
                         />
-                        <ProductDataTableWaiting  data={dataCp} dispatch={dispatch} />
+                        <ProductDataTableWaiting  data={orderList} dispatch={dispatch} />
 
                     </Center>
                 </Center>
-            </> :            <TextBase>loading</TextBase>}
-
+            </>
         </ScrollView>
     );
 };

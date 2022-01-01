@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import TextBase from "../../components/TextBase";
 import { StyleSheet,  StatusBar } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
@@ -8,10 +8,18 @@ import {status} from "../../helps/Status";
 import {useGetOrderListByStatusForAdminQuery, useGetOrderListByStatusQuery} from "../../app/selectors";
 import Layout from "../../constants/Layout";
 import {backgroundColor} from "styled-system";
-
-const CommonRoute = (props:{payload:any}) => {
-    const {data} = useGetOrderListByStatusForAdminQuery(props.payload);
-    const dataCp = Object.assign([],Object.assign({},data).data);
+import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+const CommonRoute = (props:{payload:any}) =>{
+    const data= useGetOrderListByStatusForAdminQuery(props.payload);
+    return(
+        <LoadingScreen data={[data]}>
+            <ShowCommonRoute payload={props.payload}/>
+        </LoadingScreen>
+    )
+}
+const ShowCommonRoute = (props:{payload:any}) => {
+    const {context}:any = useContext(LoadingContext);
+    const data= context[0].data.data;
     return(
         <View flex={1} bg={"white"}>
             <FlatList
@@ -56,7 +64,7 @@ const CommonRoute = (props:{payload:any}) => {
                     )
                 }}
                 numColumns ={1}
-                data={dataCp}
+                data={data}
                 keyExtractor={(item) => item.id}
             />
 

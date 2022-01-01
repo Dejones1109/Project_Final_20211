@@ -6,8 +6,15 @@ import ButtonBase from "../../components/ButtonBase";
 import { NoteAboutProduct } from './AddProductScreen';
 import {Row} from "../../components/AutoLayout";
 import {useNavigation} from "@react-navigation/native";
-
-const ProductDetailInfoScreen = () => {
+import LoadingScreen from "../../helps/LoadingScreen";
+const ProductDetailInfoScreen = ()=>{
+    return(
+        <LoadingScreen data={[]}>
+            <ShowProductDetailInfoScreen />
+        </LoadingScreen>
+    )
+}
+const ShowProductDetailInfoScreen = () => {
     return (
         <ScrollView bg={"white"}>
             <Center>

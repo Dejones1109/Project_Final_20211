@@ -1,4 +1,4 @@
-import {adminApi, productApi, storeApi, orderApi, dashboardApi} from "../controller/index";
+import {adminApi, productApi, storeApi, orderApi, dashboardApi, cartApi} from "../controller/index";
 
 export const  {
     useGetOrderListByStatusForAdminQuery,
@@ -14,8 +14,6 @@ export const { useGetProductByTypeQuery,
     useGetAllProductsQuery,
     useGetProductByViewQuery,
     useCheckExistProductOnCartQuery,
-    useGetCartListByPartnerQuery,
-    useGetOrderListByStatusQuery,
     useGetTotalViewProductByTypeQuery
 } = productApi;
 
@@ -32,3 +30,5 @@ export const {
 export const {
     useGetDashboardByProductTypeQuery,
 } = dashboardApi;
+
+export const {useGetCartListByPartnerQuery,useGetOrderListByStatusQuery,} = cartApi;

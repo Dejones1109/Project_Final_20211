@@ -5,8 +5,15 @@ import TextBase from "../../components/TextBase";
 import {useNavigation} from "@react-navigation/native";
 import { Col } from '../../components/AutoLayout';
 import Layout from '../../constants/Layout';
-
-const InfoSaleScreen = (props:{navigation ?:any}) => {
+import LoadingScreen from "../../helps/LoadingScreen";
+const InfoSaleScreen = (props:{navigation ?:any})=>{
+    return(
+        <LoadingScreen data={[]}>
+            <ShowInfoSaleScreen navigation={props.navigation}/>
+        </LoadingScreen>
+    )
+}
+const ShowInfoSaleScreen = (props:{navigation ?:any}) => {
     return (
         <Box w="100%"  p={3} justifyContent="flex-start" height={"100%"} bg={"white"} >
             <Heading

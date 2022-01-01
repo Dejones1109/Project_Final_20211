@@ -1,4 +1,3 @@
-
 // Define a service using a base URL and expected endpoints
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {AsyncStorage} from "react-native";
@@ -23,11 +22,6 @@ export const productApi = createApi({
         checkExistProductOnCart :builder.query({
             query: (productCode) => `product/${productCode}?partnerId=${partnerId}`,
         }),
-        getCartListByPartner :builder.query({
-            query: () => `cart?partnerId=${partnerId}`,
-        }),
-        getOrderListByStatus :builder.query({
-            query: (status) => `orders?query=status&partnerId=${partnerId}&status=${status}`,
-        }),
+
     }),
 });
