@@ -5,12 +5,11 @@ import {HomeContext} from "../HomeScreen";
 import {typeList} from "../../../constants/Product";
 import {useNavigation} from "@react-navigation/native";
 
-const CategorySearchView = () => {
-    const navigation = useNavigation();
+const CategorySearchView = (props:{navigation:any, data?:any }) => {
     // @ts-ignore
-    const {totalViewByType} = useContext(HomeContext);
+
     // @ts-ignore
-    const value = Object.assign([], Object.assign({}, totalViewByType).data);
+    const value = Object.assign([], Object.assign({}, props.data).data);
     const getData = ()=>{
         let data = [];
         for (const property in value) {
@@ -43,7 +42,7 @@ const CategorySearchView = () => {
                 }}
                 numColumns={2}
                 data={data.slice(0,4)}
-                renderItem={({item})=><FrameBase category={item} navigation={navigation}/>}
+                renderItem={({item})=><FrameBase category={item} navigation={props.navigation}/>}
                 keyExtractor={(item) => item.id}
             />
         </ScrollView>

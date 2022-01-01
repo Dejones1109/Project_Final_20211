@@ -7,8 +7,6 @@ import {
     Box,
     Button,
     Center,
-    Circle,
-    Fab,
     FlatList,
     Icon,
     Input,

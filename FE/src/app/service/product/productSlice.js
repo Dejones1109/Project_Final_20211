@@ -28,7 +28,7 @@ export const createOrder = createAsyncThunk(
 );
 
 
-export const productReducer = createSlice({
+export const productSlice = createSlice({
     initialState:initialState,
     name:'cart',
     reducers: {},
@@ -67,5 +67,3 @@ export const productReducer = createSlice({
 })
 
 
-export const {actions,reducers } = productReducer;
-export default reducers;

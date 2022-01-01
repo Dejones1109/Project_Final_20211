@@ -179,6 +179,7 @@ const LayoutStatisticsScreen = () => {
                                 width={0.95*Layout.window.width}
                                 height={180}
                                 chartConfig={chartConfig}
+                                paddingLeft="0"
                                 yLabelsOffset={3}
                                 yAxisInterval={3}
                                 accessor={"percent"}
@@ -186,10 +187,9 @@ const LayoutStatisticsScreen = () => {
                                 hasLegend={true}
                                 center={[0,0]}
                                 absolute
-                        />
+                            />
                         :
                             <LineChart
-                                padding={5}
                                 data={lineChart}
                                 width={0.95*Layout.window.width}
                                 height={220}

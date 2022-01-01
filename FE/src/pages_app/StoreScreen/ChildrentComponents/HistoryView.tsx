@@ -7,8 +7,8 @@ import {useNavigation} from "@react-navigation/native";
 
 
 
-export const HistoryViewNavigate = (props:{item:any}) => {
-    const item = props.item;
+export const HistoryViewNavigate = (props:{item:{iconLeft?:any, textLeft?:any,textRight?:any,iconRight?:any}}) => {
+    const item:any  = props.item;
     const navigation = useNavigation();
     return (
         <Center  width={"95%"} height={50}>
@@ -16,7 +16,7 @@ export const HistoryViewNavigate = (props:{item:any}) => {
                 <Pressable  onPress={() => navigation.navigate(item.routeName)}  >
                     <Box
                     >
-                        <Row  space={2} alignItems ={"baseline"}>
+                        <Row  space={2} alignContent ={"space-between"}>
                             <Col>
                                 {item.iconLeft}
                             </Col>
@@ -50,7 +50,6 @@ const HistoryView = () => {
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Thống kê đơn hàng",
             routeName:"cartStatisticsScreen",
-            textRight:"",
         },
     ]
     return(
@@ -63,7 +62,7 @@ const HistoryView = () => {
                     <Pressable   >
                         <Box
                         >
-                            <Row  justifyContent={"space-between"} alignItems ={"baseline"}>
+                            <Row  justifyContent={"space-between"} alignContent={"space-between"}>
                                 <Col width={"33%"} alignItems={"center"}>
                                     <MainIcon name={"ampproject"} />
                                     <TextBase fontSize={12}>Đang xử lý</TextBase>

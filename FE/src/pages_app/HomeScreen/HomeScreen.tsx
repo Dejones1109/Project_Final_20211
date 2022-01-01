@@ -1,37 +1,32 @@
 import React, { createContext,} from 'react';
-import {connect} from 'react-redux';
 import LayoutHomeScreen from './LayoutHomeScreen';
-import {userDispatchToProps} from "../../app/controller/AuthAction";
 import {useGetProductByViewQuery, useGetTotalViewProductByTypeQuery} from "../../app/selectors";
-import { SafeAreaView } from 'react-native-safe-area-context';
+import LoadingScreen from '../../helps/LoadingScreen';
+import {useGetAllProductsQuery} from "../../app/selectors";
 
 export const HomeContext = createContext({});
 
-function HomeScreen(props:any) {
+function HomeScreen() {
 
     // @ts-ignore
     const productByView = useGetProductByViewQuery();
-    const productByViewCp = Object.assign({}, productByView);
     // @ts-ignore
     const totalViewByType = useGetTotalViewProductByTypeQuery();
-    const totalViewByTypeCp = Object.assign({}, totalViewByType);
     // @ts-ignore
+    const allProducts = useGetAllProductsQuery();
     return (
-        <SafeAreaView>
+        <LoadingScreen data={[totalViewByType,productByView, allProducts]}>
             <HomeContext.Provider value={{
-                productByView: productByViewCp.data,
-                totalViewByType:totalViewByTypeCp.data,
+                productByView: productByView.data,
+                totalViewByType:totalViewByType.data,
+                allProducts :allProducts.data,
             }}>
                 <LayoutHomeScreen />
             </HomeContext.Provider>
-        </SafeAreaView>
+        </LoadingScreen>
     );
 }
 
-function mapStateToProps() {
-    return {};
-}
+export default HomeScreen;
 
-export default connect(
-    mapStateToProps, userDispatchToProps
-)(HomeScreen);
+

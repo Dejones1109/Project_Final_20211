@@ -11,10 +11,4 @@ class StoreScreen extends Component {
     }
 }
 
-function mapStateToProps() {
-    return {};
-}
-
-export default connect(
-    mapStateToProps,
-)(StoreScreen);
+export default StoreScreen;

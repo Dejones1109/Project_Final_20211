@@ -10,14 +10,13 @@ const SearchView = (props:{navigation?:any}) => {
     return (
         <>
             <StatusBar backgroundColor="white" barStyle="light-content"  />
-            <Row width="95%" bg={"bg='#6200ee'"} m={2}  justifyContent={"space-between"}    >
+            <Row width="95%"  m={2}  justifyContent={"space-between"}    >
                 <Input
                     placeholder="Search"
                     bg="#fff"
                     width={"75%"}
                     borderRadius="7"
                     p="3"
-
                     fontSize="14"
                     _web={{
                         _focus: { borderColor: 'muted.300', },

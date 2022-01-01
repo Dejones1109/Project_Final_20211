@@ -1,15 +1,7 @@
 import React ,{useContext} from 'react';
 import {FlatList, HStack, Row, ScrollView,} from "native-base";
 import FrameBase from "../../../components/FrameBase";
-import {HomeContext} from "../HomeScreen";
-import {useNavigation} from "@react-navigation/native";
-
-const HotProductView = () => {
-    const navigation = useNavigation();
-    // @ts-ignore
-    const {productByView} = useContext(HomeContext);
-    // @ts-ignore
-    const value = Object.assign([], Object.assign({}, productByView).data);
+const HotProductView = (props:{navigation?:any, data?:any}) => {
 
     return (
         <ScrollView
@@ -22,10 +14,10 @@ const HotProductView = () => {
             showsHorizontalScrollIndicator={false}
         >
             <FlatList
-                data={value.slice(0,-10)}
+                data={props.data.slice(0,-10)}
                 inverted
                 horizontal={true}
-                renderItem = {({item})=><FrameBase product={item} navigation={navigation} />}
+                renderItem = {({item})=><FrameBase product={item} navigation={props.navigation} />}
                 keyExtractor={(item) => item.id}
             />
 

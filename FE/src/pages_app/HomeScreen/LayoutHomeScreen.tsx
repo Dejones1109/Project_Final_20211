@@ -1,10 +1,10 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {AllProductTypeView, BannerView, CategorySearchView, HotProductView, SearchView} from "./ChildrentComponent";
 import {Box, Center, Heading, ScrollView} from "native-base";
 import { Col } from '../../components/AutoLayout';
 import AllProductView from "./ChildrentComponent/AllProductView";
-import { useGetAllProductsQuery} from "../../app/selectors";
-
+import {useNavigation} from "@react-navigation/native";
+import {HomeContext} from "./HomeScreen";
 
 export type LayoutHome  = {
     SearchView?: JSX.Element,
@@ -13,20 +13,22 @@ export type LayoutHome  = {
     HotProductView ?: JSX.Element,
     CategoryTypeView ?: JSX.Element,
     AllProductView ?: JSX.Element,
+    navigation ?: any,
 }
 
 
+
 const LayoutHomeScreen = (props:LayoutHome) => {
+    const navigation = useNavigation();
     // @ts-ignore
-    const products = useGetAllProductsQuery();
-    const productsCp = Object.assign({},products.data);
+    const {allProducts,totalViewByType,productByView} = useContext(HomeContext);
     props = {
-        SearchView: <SearchView />,
+        SearchView: <SearchView navigation={navigation} />,
         BannerView: <BannerView />,
-        AllProductTypeView:<AllProductTypeView />,
-        HotProductView:<HotProductView />,
-        CategoryTypeView:<CategorySearchView />,
-        AllProductView:<AllProductView data={productsCp.data}/>
+        AllProductTypeView:<AllProductTypeView navigation={navigation}/>,
+        HotProductView:<HotProductView navigation={navigation} data={productByView.data} />,
+        CategoryTypeView:<CategorySearchView navigation={navigation} data={totalViewByType} />,
+        AllProductView:<AllProductView data={allProducts.data}/>
     }
     return (
         <>

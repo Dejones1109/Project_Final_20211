@@ -11,7 +11,7 @@ export const updateOrderStatus = createAsyncThunk(
 );
 
 
-export const orderReducer = createSlice({
+export const orderSlice = createSlice({
     initialState:initialState,
     name:'orders',
     reducers: {},
@@ -31,4 +31,3 @@ export const orderReducer = createSlice({
 })
 
 
-export const {actions,reducers } = orderReducer;

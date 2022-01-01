@@ -31,7 +31,9 @@ export const LoginForm = (props:{navigation?:any}) => {
     // const login = useLoginAdminQuery(payload);
     const {auth}:any  = useContext(NavigationContext);
     const login = async ()=>{
+        // @ts-ignore
         await dispatch(userLogin(payload));
+        // @ts-ignore
         await dispatch(adminLogin(payload));
         getData("user").then(r =>auth.setUser(r));
         getData("admin").then(r =>auth.setAdmin(r));
@@ -39,14 +41,14 @@ export const LoginForm = (props:{navigation?:any}) => {
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
             <Heading
-                size="lg"
+                size="md"
                 fontWeight="600"
                 color="coolGray.800"
                 _dark={{
                     color: "warmGray.50",
                 }}
             >
-                Welcome
+                WELCOME TO PAPA DASHI
             </Heading>
             <Heading
                 mt="1"
@@ -93,27 +95,7 @@ export const LoginForm = (props:{navigation?:any}) => {
                 <Button mt="2" colorScheme="indigo" onPress={() =>login()} >
                     Sign in
                 </Button>
-                <HStack mt="6" justifyContent="center">
-                    <Text
-                        fontSize="sm"
-                        color="coolGray.600"
-                        _dark={{
-                            color: "warmGray.200",
-                        }}
-                    >
-                        I'm a new user.{" "}
-                    </Text>
-                    <Link
-                        _text={{
-                            color: "indigo.500",
-                            fontWeight: "medium",
-                            fontSize: "sm",
-                        }}
-                        onPress={() =>props.navigation.navigate("Register")}
-                    >
-                        Sign Up
-                    </Link>
-                </HStack>
+
             </VStack>
         </Box>
     )

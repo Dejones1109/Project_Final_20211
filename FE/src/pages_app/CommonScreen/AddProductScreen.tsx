@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Avatar, Box, Button, Center, Divider, Image, ScrollView,} from 'native-base';
 import TextBase from '../../components/TextBase';
 import FrameBase from "../../components/FrameBase";
@@ -10,6 +10,7 @@ import {useDispatch} from "react-redux";
 import {createCart, updateQuantity} from "../../app/service/product/productSlice";
 import { useNavigation } from '@react-navigation/native';
 import { useCheckExistProductOnCartQuery } from '../../app/selectors';
+import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
 
 const note = [
     {
@@ -43,7 +44,6 @@ export const NoteAboutProduct =()=>{
                         default
                         viewOptions={{
                             leftElement:<TextBase  >{item.key}</TextBase>,
-                            colElement:"",
                             rightElement:<TextBase color={"light.400"}>{item.value}</TextBase>,
                         }}
                     />
@@ -53,17 +53,18 @@ export const NoteAboutProduct =()=>{
     )
 }
 
-const AddProductScreen = (props:{route:any}) => {
+const LoadingProductScreen = (props:{route:any}) => {
+    // @ts-ignore
+    const {context} = useContext(LoadingContext);
     const item = props.route.params.data;
-    const {data} = useCheckExistProductOnCartQuery(item.productCode);
-    const dataCp = Object.assign({},Object.assign({}, data).data);
+    let dataCp = context[0].data.data;
     const {quantity,id} = dataCp;
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [quantities,setQuantities] = useState(quantity );
     useEffect(()=>{
         setQuantities(quantity ||1);
-    },data)
+    },dataCp)
 
     async function addProduct() {
         let cart = {
@@ -75,32 +76,31 @@ const AddProductScreen = (props:{route:any}) => {
             "id" : id,
             "quantity" : quantities
         };
+        // @ts-ignore
         await dispatch(updateQuantity(update_quantity));
-
         navigation.goBack();
     }
 
     return (
         <>
-            <ScrollView>
+            <ScrollView mb={60}>
                 <Center  width={"100%"} bg={"white"}>
-                    <Box bg={"white"} my={3}>
-                        <Image
-                            size={200}
-                            resizeMode={"contain"}
-                            source={{
-                                uri: `${item.image}`,
-                            }}
-                            alt="Alternate Text"
-                        />
-                    </Box>
+                    <Image
+                        source={{
+                            uri: `${item.image}`,
+                        }}
+                        height={500}
+                        alt="Alternate Text"
+                        resizeMode={"cover"}
+                        rounded={10}
+                    />
                     <Box width={"95%"}>
                         <TextBase bold  fontSize={18} >Tên sản phẩm : {item.productName}</TextBase>
                         <TextBase color={"yellow.500"} fontSize={16} >Price : {item.price} đ / gói</TextBase>
                         <TextBase light fontSize={16} >Mô tả chi tiết : </TextBase>
                         <TextBase light  fontSize={16} ml={2}  >{item.remark}</TextBase>
                     </Box>
-                    <Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>
+                    <Divider bg={"light.200"} width ={Layout.window.width} height={1} my={3}/>
                     <FrameBase
                         default
                         viewOptions={{
@@ -132,7 +132,6 @@ const AddProductScreen = (props:{route:any}) => {
                                 <TextBase light color={"light.300"}>Chọn Voucher</TextBase>
                                 <TextBase>Khuyến mãi 10%</TextBase>
                             </>,
-                            rightElement:"",
                         }}
                     />
                     <Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>
@@ -141,7 +140,7 @@ const AddProductScreen = (props:{route:any}) => {
                 </Center>
 
             </ScrollView>
-           <Col  position={"fixed"} zIndex={1} bottom={50} width={Layout.window.width} bg={"white"} shadow={-4} borderTopWidth={1} borderColor={"light.300"}>
+           <Col  position={"absolute"} zIndex={1} bottom={0} left={0} right={0} width={Layout.window.width} bg={"white"} shadow={-4} borderTopWidth={1} borderColor={"light.300"}>
                <Row
                    justifyContent={"space-around"} my={1}
                >
@@ -159,6 +158,15 @@ const AddProductScreen = (props:{route:any}) => {
         </>
     );
 };
+const AddProductScreen = (props:{route:any})=>{
+    const item = props.route.params.data;
+    const data = useCheckExistProductOnCartQuery(item.productCode);
+    return(
+        <LoadingScreen data={[data]}>
+            <LoadingProductScreen route={props.route} />
+        </LoadingScreen>
+    )
+}
 
 export default AddProductScreen;
 

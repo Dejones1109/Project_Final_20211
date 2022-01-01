@@ -13,7 +13,7 @@ const ProductListView = (props:{data:Array<object>}) => {
                 width: Layout.window.width,
             }}
             columnWrapperStyle={{
-                justifyContent:"space-around",
+                justifyContent:"flex-start",
             }}
             data={data}
             numColumns ={2}

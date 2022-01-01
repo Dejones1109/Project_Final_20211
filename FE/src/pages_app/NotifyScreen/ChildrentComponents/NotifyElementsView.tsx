@@ -13,8 +13,7 @@ export const NotifyViewNavigate = (props:any)=>{
                 <Pressable  onPress={() => console.log('You touched me')}  >
                     <Box
                     >
-
-                        <Row  space={2}  alignItems ={"baseline"}>
+                        <Row  space={2}  alignContent ={"space-between"}>
                             <Col  >
                                 {item.iconLeft}
                             </Col>
@@ -24,7 +23,7 @@ export const NotifyViewNavigate = (props:any)=>{
                             </Col>
                             <Spacer />
                             <TextBase  alignSelf={"center"} color={"light.300"} >{item.textRight}</TextBase>
-                            <Col justifyContent={"center"} >
+                            <Col  >
                                 {item.iconRight}
                             </Col>
                         </Row>

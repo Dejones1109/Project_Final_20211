@@ -57,7 +57,6 @@ const InfoSaleScreen = (props:{navigation ?:any}) => {
                                 default
                                 viewOptions={{
                                     leftElement: <TextBase>185.000đ / Thùng</TextBase>,
-                                    colElement: "",
                                     rightElement:<TextBase >185.000đ</TextBase>,
                                 }}
                             />

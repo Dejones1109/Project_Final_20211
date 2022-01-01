@@ -18,10 +18,18 @@ export const NavigationContext = createContext({});
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     const [user,setUser] = useState(null);
     const [admin,setAdmin] = useState(null);
-    // @ts-ignore
-    getData("user").then(r =>setUser(r));
-    // @ts-ignore
-    getData("admin").then(r=>setAdmin(r));
+    getData("user").then(r =>{
+        // @ts-ignore
+        setUser(r);
+        console.log("user",r);
+    });
+
+    getData("admin").then(r=>{
+        // @ts-ignore
+        setAdmin(r);
+        console.log("admin",r);
+    });
+
     const data = {
         auth:{
             user:user,

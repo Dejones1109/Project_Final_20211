@@ -1,13 +1,9 @@
 import React from 'react';
 import TextBase from "../../components/TextBase";
 import {Avatar, Box, Center, FlatList, Image, ScrollView} from "native-base";
-import MainIcon from "../../assets/icon/Icon";
 import {status} from "../../helps/Status";
 import FrameBase from "../../components/FrameBase";
 import Layout from "../../constants/Layout";
-import {ProductDataTableView} from "../CartScreen/ChildrentComponent";
-import {Row} from "../../components/AutoLayout";
-import ButtonBase from "../../components/ButtonBase";
 
 const ProductDetailInfoScreen = (props:{route:any}) => {
     const {item} = props.route.params;

@@ -27,10 +27,4 @@ LayoutStoreScreen.defaultProps ={
     HistoryView :<HistoryView />,
     SettingView : <SettingView/>
 }
-function mapStateToProps() {
-    return {};
-}
-
-export default connect(
-    mapStateToProps,
-)(LayoutStoreScreen);
+export default LayoutStoreScreen

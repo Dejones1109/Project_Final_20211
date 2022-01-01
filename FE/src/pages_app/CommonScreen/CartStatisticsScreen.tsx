@@ -1,6 +1,6 @@
 import React from 'react';
 import TextBase from "../../components/TextBase";
-import {  useWindowDimensions } from 'react-native';
+import {StatusBar, StyleSheet, useWindowDimensions} from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import FrameBase from "../../components/FrameBase";
 import {Box, Center, FlatList, View} from 'native-base';
@@ -23,7 +23,6 @@ const CommonRoute = (props:{status:number}) => {
                                     viewOptions={{
                                         leftElement:  <TextBase color={"light.400"}>Mã Order : </TextBase>,
                                         colElement:<TextBase >{item.orderCode}</TextBase>,
-                                        rightElement:"",
                                     }}
                                     styled={{height:12}}
                                 />
@@ -31,7 +30,6 @@ const CommonRoute = (props:{status:number}) => {
                                     default
                                     viewOptions={{
                                         leftElement:<TextBase color={"light.400"}>Trạng thái</TextBase>,
-                                        colElement:"",
                                         rightElement:<TextBase color={"light.400"}>{status(item.status)}</TextBase>,
                                     }}
                                     styled={{height:6}}
@@ -40,7 +38,6 @@ const CommonRoute = (props:{status:number}) => {
                                     default
                                     viewOptions={{
                                         leftElement:<TextBase color={"light.400"}>Sản phẩm</TextBase>,
-                                        colElement:"",
                                         rightElement:<TextBase color={"light.400"}>Cháo gà x 1 , Cháo thịt x2</TextBase>,
                                     }}
                                     styled={{height:6}}
@@ -49,7 +46,6 @@ const CommonRoute = (props:{status:number}) => {
                                     default
                                     viewOptions={{
                                         leftElement:<TextBase color={"light.400"}>Thành tiền</TextBase>,
-                                        colElement:"",
                                         rightElement:<TextBase color={"red.500"}>185.000đ</TextBase>,
                                     }}
                                     styled={{height:6}}
@@ -81,6 +77,17 @@ const renderScene = SceneMap({
     first: FirstRoute,
 
 });
+const renderLabel = (props:{ route:any, focused:any, color:any }) => {
+    return (
+        <View>
+            <TextBase
+                color={"dark"}
+            >
+                {props.route.title}
+            </TextBase>
+        </View>
+    )
+}
 const CartStatisticsScreen = () => {
     const layout = useWindowDimensions();
 
@@ -100,20 +107,26 @@ const CartStatisticsScreen = () => {
             renderTabBar={props => (
                 <TabBar
                     {...props}
-                    indicatorStyle={{ backgroundColor: '#60a5fa',  }}
-                    tabStyle={{ width: 0.5*Layout.window.width}}
+                    indicatorStyle={{ backgroundColor: "#0077e6",  }}
+                    tabStyle={{ width: Layout.window.width/2  }}
                     scrollEnabled={true}
-                    style={{ backgroundColor: 'white', }}
-                    labelStyle={{color:"light.400"}}
-
+                    style={styles.container}
+                    renderLabel={renderLabel}
                 />
             )}
             initialLayout={{
-                width: layout.width,
+                width: Layout.window.width,
                 height: 100,
             }}
         />
     );
 };
-
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor :"#FFFFFF",
+    },
+    scene: {
+        flex: 1,
+    },
+});
 export default CartStatisticsScreen;

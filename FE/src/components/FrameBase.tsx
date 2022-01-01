@@ -1,12 +1,9 @@
 import React, {Component} from 'react';
-import {Box, Image, View, Heading, Pressable, Avatar, Spacer, VStack, Center, ScrollView, Checkbox} from 'native-base';
+import {Box, Center, Checkbox, Heading, Image, Spacer} from 'native-base';
 import TextBase from "./TextBase";
 import ButtonBase from "./ButtonBase";
 import {Col, Row} from './AutoLayout';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import Layout from "../constants/Layout";
-import {HomeTabUserParamList} from "../constants/Routes";
 
 export type CardProps  = {
     default?:any  | JSX.Element,
@@ -15,13 +12,14 @@ export type CardProps  = {
     product?: any | JSX.Element,
     productType ?: any | JSX.Element,
     cart ?: any | JSX.Element,
-    viewOptions?:object,
+    viewOptions?:any,
     styled?:any,
     navigation ?:any,
 }
 
 
-const CardDefault = (props:{viewOptions:{leftElement ?:any, colElement?:any, rightElement ?:any},styled :any})=>{
+const CardDefault = (props:{viewOptions?:{leftElement ?:any, colElement?:any, rightElement ?:any},styled :any})=>{
+    const {colElement,leftElement,rightElement}:any = props.viewOptions;
     return (
         <Center  width={"100%"}  {...props.styled} >
             <Box width={"100%"}  overflow={"hidden"}>
@@ -30,13 +28,13 @@ const CardDefault = (props:{viewOptions:{leftElement ?:any, colElement?:any, rig
                     >
                         <Row  space={2} alignContent ={"space-between"}>
                             <Col alignContent={"center"}>
-                                {props.viewOptions.leftElement}
+                                {leftElement}
                             </Col>
                             <Col alignContent={"center"} >
-                                {props.viewOptions.colElement}
+                                {colElement}
                             </Col>
                             <Spacer />
-                            {props.viewOptions.rightElement}
+                            {rightElement}
                         </Row>
                     </Box>
                 </Box>
@@ -75,7 +73,6 @@ const CardProduct = (props:{ item:any,navigation?:any}) =>{
             borderWidth={1}
             rounded={5}
             my={1}
-            shadow={2}
             onPress={()=>props.navigation.navigate("addProductScreen", {data: item })}
         >
             <Box
@@ -103,17 +100,17 @@ const CardCategory = (props:{item:any,navigation ?:any}) =>{
         <ButtonBase
             height={50}
             my={2}
-            width={0.45*Layout.window.width}
+            width={[0.4*Layout.window.width,0.45*Layout.window.width]}
             onPress={() => props.navigation.navigate("productTypeScreen",{type: item.type})}
         >
-            <Row  alignItems={"center"} >
+            <Row   >
                 <Image
                     roundedLeft={5}
-                    width={0.2*Layout.window.width}
+                    resizeMode={"contain"}
                     height={50}
-                    resizeMode={"stretch"}
+                    width={[50,0.15*Layout.window.width]}
                     source={{
-                        uri:  `${item.image}`,
+                        uri:  "https://wallpaperaccess.com/full/317501.jpg"
                     }}
                     alt="category type"
                 />
@@ -122,7 +119,7 @@ const CardCategory = (props:{item:any,navigation ?:any}) =>{
                      pl={1}
                      bg={"light.200"}
                      roundedRight={5}
-                     width={0.25*Layout.window.width}
+                     width={[79,0.25*Layout.window.width]}
                     justifyContent={"space-between"}
                  >
                      <Heading fontSize={"xs"} my={1} >{item.type}</Heading>
@@ -140,7 +137,7 @@ const CardInfoSale = (props:{item:any})=>{
             <Box borderRadius={10} bg="white" >
                 <Box
                 >
-                    <Row  space={2} justifyContent={"flex-start"} alignItems ={"baseline"}>
+                    <Row  space={2} justifyContent={"flex-start"} alignContent ={"space-between"}>
                         <Image rounded={10} size={["140","100"]}  source={{uri:`${item.img}`}} />
                         <Col width={["50%","60%","65%"]} height={["140","100"]} py={2}   >
                             <Box width={"100%"}>
@@ -165,8 +162,6 @@ const CartInfo = (props:{styled:object, item:any})=>{
                     leftElement:<Checkbox value={item.id} my={2}>
                         {item.product.productName}
                     </Checkbox>,
-                    colElement:"",
-                    rightElement:"",
                 }}
                 styled={{height:8}}
 
@@ -175,7 +170,6 @@ const CartInfo = (props:{styled:object, item:any})=>{
                 default
                 viewOptions={{
                     leftElement:<TextBase>Thành tiền</TextBase>,
-                    colElement:"",
                     rightElement:<TextBase >{item.product.price} đ</TextBase>,
                 }}
                 styled={{height:8}}
@@ -185,7 +179,6 @@ const CartInfo = (props:{styled:object, item:any})=>{
                 default
                 viewOptions={{
                     leftElement:<TextBase>Số lượng</TextBase>,
-                    colElement:"",
                     rightElement:<TextBase textAlign={"flex-end"}>{item.quantity}</TextBase>,
                 }}
                 styled={{height:8}}
@@ -194,8 +187,6 @@ const CartInfo = (props:{styled:object, item:any})=>{
                 default
                 viewOptions={{
                     leftElement:<TextBase color={"light.400"}>Xóa</TextBase>,
-                    colElement:"",
-                    rightElement:"",
                 }}
                 styled={{height:8}}
             />

@@ -11,7 +11,6 @@ const LayoutNotifyScreen = (props:LayoutNotify) => {
     return (
         <ScrollView
             bg={"white"}
-
         >
             <Center>
                 <Center width={"95%"}  >

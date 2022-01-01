@@ -3,8 +3,7 @@ import {FlatList, HStack, ScrollView, Text, VStack} from "native-base";
 import FrameBase from "../../../components/FrameBase";
 import {useNavigation} from "@react-navigation/native";
 
-const AllProductTypeView = () => {
-    const navigation = useNavigation();
+const AllProductTypeView = (props:{navigation?:any}) => {
     const data = [
         {
             type:"Cháo hái sản",
@@ -54,13 +53,13 @@ const AllProductTypeView = () => {
                 mx: "auto",
                 my: "4",
                 minW: "72",
-                flexWrap:"wrap",
+
             }}
             showsHorizontalScrollIndicator={false}
         >
             <FlatList
                 data={data}
-                renderItem = {({item})=><FrameBase productType={item} navigation={navigation}/>}
+                renderItem = {({item})=><FrameBase productType={item} navigation={props.navigation}/>}
                 numColumns ={4}
                 keyExtractor={(item) => item.id}
             />

@@ -16,7 +16,6 @@ const ProductDetailInfoScreen = () => {
                     viewOptions={{
                         leftElement:"icon",
                         colElement:<TextBase>Edit Voucher</TextBase>,
-                        rightElement:"",
                     }}
                 />
                 <FrameBase
@@ -42,7 +41,6 @@ const ProductDetailInfoScreen = () => {
                     default
                     viewOptions={{
                         leftElement: <TextBase>Thành tiền</TextBase>,
-                        colElement: "",
                         rightElement:<TextBase textAlign={"center"}>abc</TextBase>,
                     }}
                 />
@@ -69,7 +67,6 @@ const ProductDetailInfoScreen = () => {
                                     default
                                     viewOptions={{
                                         leftElement: <TextBase>185.000đ / Thùng</TextBase>,
-                                        colElement: "",
                                         rightElement:<TextBase >185.000đ</TextBase>,
                                     }}
                                 />
@@ -81,7 +78,6 @@ const ProductDetailInfoScreen = () => {
                     <FrameBase
                         default
                         viewOptions={{
-                            leftElement: "",
                             colElement: <TextBase>Xoá</TextBase>,
                             rightElement:<>
                                 <Row
@@ -103,7 +99,6 @@ const ProductDetailInfoScreen = () => {
                     default
                     viewOptions={{
                         leftElement:  <TextBase>Ghé thăm shop Thuận Vinh</TextBase>,
-                        colElement: "",
                         rightElement:<TextBase textAlign={"center"}>icon</TextBase>,
                     }}
                 />
@@ -112,14 +107,12 @@ const ProductDetailInfoScreen = () => {
                     viewOptions={{
                         leftElement: <TextBase>icon</TextBase>,
                         colElement: <TextBase textAlign={"center"}>Chi tiết</TextBase>,
-                        rightElement:"",
                     }}
                 />
                 <FrameBase
                     default
                     viewOptions={{
                         leftElement: <TextBase>Giá</TextBase>,
-                        colElement: "",
                         rightElement:<TextBase textAlign={"center"}>185.000đ</TextBase>,
                     }}
                 />
@@ -127,7 +120,6 @@ const ProductDetailInfoScreen = () => {
                     default
                     styled={{height:8, my:3}}
                     viewOptions={{
-                        leftElement:"",
                         colElement:<>
                             <TextBase>Tạm tính (đã có VAT) </TextBase>
                             <TextBase color={"red.500"}>185000 đ</TextBase>

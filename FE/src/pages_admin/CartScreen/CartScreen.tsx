@@ -118,7 +118,6 @@ const CartScreen = () => {
         { key: 'four', title: 'Đã hủy' },
     ]);
 
-    // @ts-ignore
     return (
         <TabView
             navigationState={{ index, routes }}

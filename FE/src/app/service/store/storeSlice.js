@@ -6,7 +6,7 @@ let  initialState = {
 
 
 
-export const storeReducer = createSlice({
+export const storeSlice = createSlice({
     initialState:initialState,
     name:'store',
     reducers: {},
@@ -16,5 +16,3 @@ export const storeReducer = createSlice({
 })
 
 
-export const {actions,reducers } = storeReducer;
-export default reducers;

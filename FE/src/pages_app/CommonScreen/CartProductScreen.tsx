@@ -1,4 +1,4 @@
-import React, {memo, useEffect, useState} from 'react';
+import React, {memo, useContext, useEffect, useState} from 'react';
 import TextBase from '../../components/TextBase';
 import FrameBase from "../../components/FrameBase";
 import {Box, Center, Checkbox, Divider, FlatList, ScrollView, Spacer} from "native-base";
@@ -9,16 +9,16 @@ import { useDispatch } from 'react-redux';
 import {createOrder} from "../../app/service/product/productSlice";
 import {useNavigation} from "@react-navigation/native";
 import {useGetCartListByPartnerQuery} from "../../app/selectors";
+import LoadingScreen , {LoadingContext} from "../../helps/LoadingScreen";
 
-const CartProductScreen = () => {
+const LoadingCartProductScreen = () => {
 
     // @ts-ignore
-    const {data} = useGetCartListByPartnerQuery();
+    const {context}= useContext(LoadingContext);
+    const dataCp = context[0].data.data;
     const navigation = useNavigation();
-    const dataCp = Object.assign([],Object.assign({}, data).data);
 
     const [groupValueCart, setGroupValueCart ] = useState([]);
-    const [isAll, setIsAll] = useState(false);
     const dispatch = useDispatch();
     const order = async ()=>{
         let data = {
@@ -27,6 +27,7 @@ const CartProductScreen = () => {
             "cartId" :groupValueCart,
             "isBill" : 1
         };
+        // @ts-ignore
         await dispatch(createOrder(data));
         await  navigation.goBack();
         await alert("đặt hàng thành công");
@@ -64,8 +65,6 @@ const CartProductScreen = () => {
                     styled={{my:3,height:8}}
                     viewOptions={{
                         leftElement:<TextBase>Thông tin</TextBase>,
-                        colElement:"",
-                        rightElement:"",
                     }}
                 />
                 <FrameBase
@@ -73,7 +72,6 @@ const CartProductScreen = () => {
                     styled={{height:8}}
                     viewOptions={{
                         leftElement:<TextBase>Voucher</TextBase>,
-                        colElement:"",
                         rightElement:<TextBase>10%</TextBase>,
                     }}
                 />
@@ -82,7 +80,6 @@ const CartProductScreen = () => {
                     styled={{height:8}}
                     viewOptions={{
                         leftElement:<TextBase>Tổng tiền</TextBase>,
-                        colElement:"",
                         rightElement:<TextBase>333.000đ</TextBase>,
                     }}
                 />
@@ -92,21 +89,7 @@ const CartProductScreen = () => {
                         <Box>
                             <Box
                             >
-                                {/*<Checkbox value="all"*/}
-                                {/*          onChange={(e)=>{*/}
-                                {/*              console.log(e);*/}
-                                {/*              let arr = [];*/}
-                                {/*              dataCp.forEach(e=> arr.push(e.id));*/}
-                                {/*              if(e){*/}
-                                {/*                  setGroupValueCart(arr);*/}
-                                {/*              }*/}
-                                {/*              else{*/}
-                                {/*                  setGroupValueCart([]);*/}
-                                {/*              }*/}
-                                {/*          }}*/}
-                                {/*          my={2}>*/}
-                                {/*    Tất cả*/}
-                                {/*</Checkbox>*/}
+
                                 <TextBase>Tổng tiền : <TextBase color={"red.500"}>185000 đ</TextBase></TextBase>
                                 <ButtonBase m={3} onPress={()=>order()}  height={10} bg={"blue.400"} >Đặt hàng</ButtonBase>
                             </Box>
@@ -118,5 +101,13 @@ const CartProductScreen = () => {
         </ScrollView>
     );
 };
-
+const CartProductScreen = ()=>{
+    // @ts-ignore
+    const data = useGetCartListByPartnerQuery();
+    return(
+        <LoadingScreen data={[data]}>
+            <LoadingCartProductScreen/>
+        </LoadingScreen>
+    )
+}
 export default CartProductScreen;
