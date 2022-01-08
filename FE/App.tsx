@@ -25,17 +25,22 @@ import TestScreen1 from "./src/TestScreen1";
 export default function App () {
     const new_theme = extendTheme({TextConfig })
     const colorScheme = useColorScheme();
-    LogBox.ignoreAllLogs();
-    checkLogin();
+    LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
+    LogBox.ignoreAllLogs(); // ignore all logs
 
+    checkLogin();
+    useEffect(() => {
+        LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
+        LogBox.ignoreLogs(["Each child in a list should have a unique"])
+    }, [])
     return (
         //
         <Provider store={store}>
             <NativeBaseProvider  theme={new_theme}>
-                <SafeAreaProvider >
-                    <Navigation  colorScheme={colorScheme}/>
-                </SafeAreaProvider>
-                {/*<TestScreen1 />*/}
+                {/*<SafeAreaProvider >*/}
+                {/*    <Navigation  colorScheme={colorScheme}/>*/}
+                {/*</SafeAreaProvider>*/}
+                <TestScreen1 />
             </NativeBaseProvider>
         </Provider>
 

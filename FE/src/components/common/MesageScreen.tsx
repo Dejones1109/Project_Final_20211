@@ -1,5 +1,16 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Avatar, Box, FlatList, IconButton, Input, NativeBaseProvider, Row, ScrollView} from "native-base";
+import {
+    Avatar,
+    Box,
+    FlatList,
+    Heading,
+    IconButton,
+    Input,
+    NativeBaseProvider,
+    Row,
+    ScrollView,
+    StatusBar
+} from "native-base";
 
 import {TouchableOpacity} from "react-native";
 import Database from '../../firebase/database'
@@ -20,7 +31,7 @@ const Message = (props:{item:message, nameUser:any})=>{
     return(
         <Row my={2} space={1}  direction={name === props.nameUser ? "row-reverse" :"row"}  justifyContent={"flex-start"} alignItems={"flex-start"}>
             <Avatar
-                display={name === props.nameUser ? "none" :"block"}
+                display={name === props.nameUser ? "none" :"flex"}
                 bg="amber.500"
                 source={{
                     uri: `${image}`,
@@ -68,7 +79,7 @@ const MessageScreen = (props:{route?:any}) => {
                     mes:inputMessage,
                     time:Database.timeStamp(new Date())
                 }
-            )
+            );
             setInputMessage('');
             await Database.listenLast(
                 `message/${info.partCode}`,
@@ -99,15 +110,16 @@ const MessageScreen = (props:{route?:any}) => {
     return (
         <>
             <>
+                <StatusBar backgroundColor="white" barStyle="light-content"  />
                 <Row h={50} bg='#FFFFFF' space={3} alignItems='center'>
                     <ButtonBase onPress={()=>navigation.goBack()} startIcon={<MainIcon name={'arrow-left'}/>} />
-                    <TextBase >{info.name}</TextBase>
+                    <Heading >{info.name}</Heading>
                 </Row>
             </>
-            <ScrollView  px={2}  mb={12}>
+            <ScrollView  px={2}  mb={65}>
                 <ListMessage data={messages} nameUser={'admin'}/>
             </ScrollView>
-            <Row px={2} justifyContent={"center"}  space={2} position={'absolute'} bottom={2} left={0} right={0}>
+            <Row px={2} justifyContent={"center"} alignItems={'center'}  space={2} position={'absolute'} bottom={2} left={0} right={0}>
                 <Input
                     variant="rounded"
                     minWidth={'80%'}
