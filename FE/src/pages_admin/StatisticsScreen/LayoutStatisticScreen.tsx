@@ -97,10 +97,11 @@ const LayoutStatisticsScreen = () => {
                    }
                    if(item.price !== 0){
                        labels.push(item.productType);
-                       lineData.push(item.price);
+                       lineData.push({price:item.price, name:item.productType});
                    }
                 })
             };
+            console.log("dataaaa", lineData);
         }
         catch (e){};
     }

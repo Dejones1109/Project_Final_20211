@@ -37,10 +37,10 @@ export default function App () {
         //
         <Provider store={store}>
             <NativeBaseProvider  theme={new_theme}>
-                {/*<SafeAreaProvider >*/}
-                {/*    <Navigation  colorScheme={colorScheme}/>*/}
-                {/*</SafeAreaProvider>*/}
-                <TestScreen1 />
+                <SafeAreaProvider >
+                    <Navigation  colorScheme={colorScheme}/>
+                </SafeAreaProvider>
+                {/*<TestScreen1 />*/}
             </NativeBaseProvider>
         </Provider>
 
