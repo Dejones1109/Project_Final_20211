@@ -13,23 +13,25 @@ import ButtonBase from "../../components/ButtonBase";
 import {useDispatch} from "react-redux";
 import {updateOrderStatus} from "../../app/service/order/orderSlice";
 import {Row} from "../../components/AutoLayout";
-import {adminApi} from "../../app/controller";
+import {adminApi, dashboardApi} from "../../app/controller";
 import {useNavigation} from "@react-navigation/native";
-const CommonRoute = (props:{payload:any}) =>{
+import { TabActions } from '@react-navigation/native';
+const CommonRoute = (props:{payload:any , jumpTo?:any}) =>{
     const data= useGetOrderListByStatusForAdminQuery(props.payload);
 
     return(
         <LoadingScreen data={[data]}>
-            <ShowCommonRoute payload={props.payload}/>
+            <ShowCommonRoute payload={props.payload} jumpTo={props.jumpTo} />
         </LoadingScreen>
     )
 }
-const RenderItem = (props:{payload:any, item :any})=>{
+const RenderItem = (props:{payload:any, item :any, jumpTo?:any})=>{
     const item = props.item;
     const st= props.payload.status;
     const [showModal1, setShowModal1] = React.useState(false);
     const [showModal2, setShowModal2] = React.useState(false);
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     const confirm = async (item:any)=>{
 
         let payload = {
@@ -39,8 +41,10 @@ const RenderItem = (props:{payload:any, item :any})=>{
         // @ts-ignore
         dispatch(updateOrderStatus(payload));
         dispatch(adminApi.util.invalidateTags(['adminApi']));
+        dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
         setShowModal1(false);
         setShowModal2(false);
+        props.jumpTo(st === 302 ? 303 : (st ===303 ? 306 : st+1));
     }
     const cancel= async (item:any)=>{
         let payload = {
@@ -49,11 +53,13 @@ const RenderItem = (props:{payload:any, item :any})=>{
         };
         // @ts-ignore
         dispatch(updateOrderStatus(payload));
+        dispatch(adminApi.util.invalidateTags(['adminApi']));
+        dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
         setShowModal1(false);
         setShowModal2(false);
     }
-    const navigation = useNavigation();
     return (
+        // @ts-ignore
         <TouchableOpacity onPress={()=>navigation.navigate('billScreen',{item:item.partner})}>
             <Center borderWidth={1}  px={2}  m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
                 <FrameBase
@@ -137,7 +143,7 @@ const RenderItem = (props:{payload:any, item :any})=>{
         </TouchableOpacity>
     )
 }
-const ShowCommonRoute = (props:{payload:any}) => {
+const ShowCommonRoute = (props:{payload:any , jumpTo?:any}) => {
     const {context}:any = useContext(LoadingContext);
     const data= context[0].data.data;
     return(
@@ -145,57 +151,65 @@ const ShowCommonRoute = (props:{payload:any}) => {
             <FlatList
                 renderItem = {({item})=>{
                     return(
-                        <RenderItem payload={props.payload } item ={item} />
+                        <RenderItem payload={props.payload } item ={item} jumpTo={props.jumpTo} />
                     )
                 }}
                 numColumns ={1}
                 data={data}
                 keyExtractor={(item) => item.id}
             />
-
         </View>
     )
 };
 
-const FirstRoute = () => (
+const FirstRoute = (props:{jumpTo:any}) => (
     <CommonRoute payload={{
         status:301,
-    }} />
+    }} jumpTo={props.jumpTo} />
 );
 
-const SecondRoute = () => (
+const SecondRoute = (props:{jumpTo:any}) => (
     <CommonRoute payload={{
         status:302,
 
-    }} />
+    }} jumpTo={props.jumpTo} />
 );
-const ThirdRoute = () => (
+const ThirdRoute = (props:{jumpTo:any}) => (
     <CommonRoute payload={{
         status:303,
 
-    }} />
+    }} jumpTo={props.jumpTo}  />
 );
-const FourRoute = () => (
+const FourRoute = (props:{jumpTo:any}) => (
     <CommonRoute payload={{
         status:304,
 
-    }} />
+    }} jumpTo={props.jumpTo}  />
 );
 
-const SixRoute = () => (
+const SixRoute = (props:{jumpTo:any}) => (
     <CommonRoute payload={{
         status:306,
-
-    }} />
+    }} jumpTo={props.jumpTo} />
 );
 
-const renderScene = SceneMap({
-    first: FirstRoute,
-    second: SecondRoute,
-    third: ThirdRoute,
-    six:SixRoute,
-    four: FourRoute,
-});
+const renderScene = (props:{ route:any, jumpTo:any }) => {
+    switch (props.route.key) {
+        case 301:
+            return <FirstRoute jumpTo={props.jumpTo} />;
+        case 302:
+            return <SecondRoute jumpTo={props.jumpTo} />;
+        case 303:
+            return <ThirdRoute jumpTo={props.jumpTo} />;
+        case 304:
+            return <FourRoute jumpTo={props.jumpTo} />;
+        case 306:
+            return <SixRoute jumpTo={props.jumpTo} />;
+    }
+};
+
+
+
 
 const renderLabel = (props:{ route:any, focused:any, color:any }) => {
     return (
@@ -212,12 +226,12 @@ const CartScreen = () => {
 
     const [index, setIndex] = React.useState(0);
     const [routes] = React.useState([
-        { key: 'first', title: 'Đang xử lý' },
-        { key: 'second', title: 'Đang giao hàng' },
-        { key: 'third', title: 'Hoàn tất' },
+        { key: 301, title: 'Đang xử lý' },
+        { key: 302, title: 'Đang giao hàng' },
+        { key:303, title: 'Hoàn tất' },
 
-        { key: 'six', title: 'Đã thanh toán' },
-        { key: 'four', title: 'Đã hủy' },
+        { key: 306, title: 'Đã thanh toán' },
+        { key: 304, title: 'Đã hủy' },
     ]);
 
     return (

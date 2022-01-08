@@ -1,20 +1,11 @@
 
 import React, {useEffect} from 'react';
 import { DataTable } from 'react-native-paper';
-import {useGetListToCartToOrderIdForAdminQuery} from "../../../app/selectors";
 import {Checkbox, FlatList, Modal, Pressable} from "native-base";
-import Layout from "../../../constants/Layout";
-import ButtonBase from "../../../components/ButtonBase";
-import {Row} from "../../../components/AutoLayout";
-import TextBase from "../../../components/TextBase";
-import { TouchableOpacity } from 'react-native';
+
 
 const DataFollowRow = (props:{item:any})=>{
-    // const {data} = useGetListToCartToOrderIdForAdminQuery(props.item.id);
-    // const dataCp = Object.assign([],Object.assign({},data).data);
-    // const item = Object.assign({},dataCp[0]);
-    // const {quantity,price,product} = item;
-    // const {productName} = Object.assign({},product);
+
     const item = props.item;
     return(
             <DataTable.Row>

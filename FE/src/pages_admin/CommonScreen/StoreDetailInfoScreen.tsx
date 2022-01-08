@@ -1,6 +1,6 @@
 import React, {createContext, useContext, useState} from 'react';
 import TextBase from "../../components/TextBase";
-import {Avatar, Box, Center, Divider, FlatList, Pressable, ScrollView,Image} from "native-base";
+import {Avatar, Box, Center, Divider, FlatList, Pressable, ScrollView, Image, Select, CheckIcon} from "native-base";
 import {Col, Row} from "../../components/AutoLayout";
 import FrameBase from "../../components/FrameBase";
 import Layout from "../../constants/Layout";
@@ -43,7 +43,7 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
         },
         {
             leftElement: <MainIcon name={"status"} />,
-            colElement:<TextBase>{status(item.status)}</TextBase>,
+            colElement:<TextBase color={item.status === (203 || 204) ? "red.400" : "blue.400"}>{status(item.status)}</TextBase>,
         },
     ]
     const dispatch = useDispatch();
@@ -63,6 +63,7 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
         alert('Thay đổi trạng thái thành công')
         navigation.goBack();
     }
+    let [statusUser, setStatusUser] = React.useState(`${item.status}`)
     return(
         <ScrollView bg={"white"}>
             {
@@ -93,10 +94,7 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
                     </Center>
 
                     <Center width={"100%"} mt={100}>
-                        <Row justifyContent={"space-around"} my={3}>
-                            <ButtonBase bg={"blue.400"} onPress={()=>changeStatus(203)}>Tạm khóa</ButtonBase>
-                            <ButtonBase bg={"red.400"} onPress={()=>changeStatus(204)}>Khóa vĩnh viễn</ButtonBase>
-                        </Row>
+
                         <FlatList
                             data={listData}
                             renderItem={({item})=><FrameBase
@@ -117,6 +115,27 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
                         />
 
                         <ProductDataTableFinish data={dataTable.data}  />
+                        <TextBase mt={2} color={  "blue.400"} width={"95%"} >Thay đổi trạng thái người dùng</TextBase>
+                        <Row justifyContent={"space-around"} my={3}>
+                            <Select
+                                selectedValue={statusUser}
+                                minWidth="200"
+                                accessibilityLabel="Choose Service"
+                                placeholder="Choose Service"
+                                _selectedItem={{
+                                    bg: "teal.600",
+                                    endIcon: <CheckIcon size="5" />,
+                                }}
+                                mt={1}
+                                onValueChange={(itemValue) => setStatusUser(itemValue)}
+                            >
+                                <Select.Item label={status(201)} value="201" />
+                                <Select.Item label={status(202)}  value="202" />
+                                <Select.Item label={status(203)}  value="203" />
+                                <Select.Item label={status(204)}  value="204" />
+                            </Select>
+                            <ButtonBase bg={item.status === (203 || 204) ? "red.400" : "blue.400"} onPress={()=>changeStatus(statusUser)}>Update</ButtonBase>
+                        </Row>
                     </Center>
                 </Center>
             }
@@ -125,9 +144,8 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
 }
 const StoreDetailInfoScreen = (props:{route:any}) => {
     const {item} = props.route.params;
-    // get the number of cart finished by partner
     // @ts-ignore
-    const listCartFinish = useGetListCartToPartnerIdQuery()
+    const listCartFinish = useGetListCartToPartnerIdQuery(item.id)
     // @ts-ignore
     return (
         <LoadingScreen data={[listCartFinish]}>

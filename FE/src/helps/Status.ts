@@ -1,9 +1,9 @@
  function status (status :number ) : string{
     switch (status) {
         case 201:
-            return "Active"
+            return "Hoạt động"
         case 202:
-            return "Inactive"
+            return "Không hoạt động"
         case 203:
             return "Khóa tạm thời"
         case 204:
@@ -20,6 +20,10 @@
             return "Chưa thanh toán"
         case 306:
             return "Đã thanh toán"
+        case 401:
+            return "Sản phẩm được bán"
+        case 402:
+            return "Sản phẩm  khóa"
         default:
             return "Loading";
     }

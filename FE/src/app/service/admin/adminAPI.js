@@ -3,7 +3,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import {AsyncStorage} from "react-native";
 // export const partnerId = localStorage.getItem("partnerId");
-export const partnerId = 6;
+
 export const adminApi = createApi({
     reducerPath: 'adminApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://112.78.1.28:8888/' }),
@@ -34,7 +34,7 @@ export const adminApi = createApi({
             providesTags:['adminApi']
         }),
         getListCartToPartnerId :builder.query({
-            query: () => `admin/${partnerId}?query=partnerId`,
+            query: (partnerId) => `admin/${partnerId}?query=partnerId`,
             providesTags:['adminApi']
         }),
     //     editPost: builder.mutation({

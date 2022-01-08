@@ -7,7 +7,7 @@ import FrameBase from "../../components/FrameBase";
 import ButtonBase from '../../components/ButtonBase';
 import {Linking} from 'react-native'
 import Layout from '../../constants/Layout';
-import {ProductDataTableWaiting} from "../CartScreen/ChildrentComponent";
+import {ProductDataTableFinish, ProductDataTableWaiting} from "../CartScreen/ChildrentComponent";
 import {status} from "../../helps/Status";
 import {
     useGetOrderListByStatusOfUserForAdminQuery,

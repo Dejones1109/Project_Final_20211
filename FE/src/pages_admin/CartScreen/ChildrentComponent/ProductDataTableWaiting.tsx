@@ -9,7 +9,7 @@ import {Row} from "../../../components/AutoLayout";
 import TextBase from "../../../components/TextBase";
 import {useDispatch} from "react-redux";
 import {updateOrderStatus} from "../../../app/service/order/orderSlice";
-import {adminApi, orderApi} from "../../../app/controller";
+import {adminApi, dashboardApi, orderApi} from "../../../app/controller";
 import {useNavigation} from "@react-navigation/native";
 
 const DataFollowRow = (props:{item:any})=>{
@@ -41,6 +41,7 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
             dispatch(updateOrderStatus(payload));
             dispatch(orderApi.util.invalidateTags(['orderApi']));
             dispatch(adminApi.util.invalidateTags(['adminApi']));
+            dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
             alert('Xác nhận thành công');
             setShowModal1(false);
             navigation.goBack();
@@ -57,6 +58,7 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
             dispatch(updateOrderStatus(payload));
             dispatch(orderApi.util.invalidateTags(['orderApi']));
             dispatch(adminApi.util.invalidateTags(['adminApi']));
+            dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
             alert('Hủy đơn thành công');
             setShowModal1(false);
             navigation.goBack();
@@ -106,7 +108,7 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
                         </Modal.Content>
                     </Modal>
                 </>
-                : <TextBase >Không có sản phẩm nào đang đợi</TextBase>
+                : <TextBase >Người dùng chưa mua bao giờ</TextBase>
             }
         </>
 
