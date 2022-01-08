@@ -60,13 +60,14 @@ export type HomeTabAdminParamList = {
 
 export type CartTabAdminParamList = {
     cartScreen: undefined;
-
+    billScreen: undefined;
 }
 
 export type StatisticsTabAdminParamList = {
     statisticsScreen: undefined;
     quantityStatisticsScreen: undefined;
     moneyStatisticsScreen: undefined;
+    storeDetailInfo:undefined;
 }
 
 export type InfoTabAdminParamList = {
@@ -75,4 +76,8 @@ export type InfoTabAdminParamList = {
     storeDetailInfo:undefined;
     productList:undefined;
     productDetailInfo:undefined;
+    message:undefined;
+    listMessageStore:undefined;
+    saleList:undefined;
+    saleDetailInfo:undefined;
 }

@@ -14,6 +14,7 @@ class OrderClient {
             .catch(error => rejectWithValue(error.json()));
         return response.data;
     }
+
 }
 
 export default new OrderClient();

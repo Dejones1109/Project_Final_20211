@@ -1,5 +1,5 @@
 import {createAsyncThunk , createSlice} from "@reduxjs/toolkit";
-import {CartClient} from "./cartClient";
+import CartClient from "./cartClient";
 
 let  initialState = {
     code: 404

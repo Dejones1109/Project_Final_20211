@@ -7,28 +7,50 @@ export const partnerId = 6;
 export const adminApi = createApi({
     reducerPath: 'adminApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://112.78.1.28:8888/' }),
+    tagTypes: ['adminApi'],
     endpoints: (builder) => ({
         getOrderListByStatusForAdmin :builder.query({
-            query: (payload) => `admin?query=status&status=${payload.status}&date=${payload.date}`,
+            query: (payload) => `admin/${payload.status}?query=status`,
+            providesTags:['adminApi']
         }),
         getAllCartWaitingForAdmin: builder.query({
-            query: (payload) =>`admin?query=status&status=${payload.status}&date=${payload.date}`
+            query: (payload) =>`admin?query=status&status=${payload.status}&date=${payload.date}`,
+            providesTags:['adminApi']
         }),
         getTotalPriceAndTotalQuantity: builder.query({
-            query: () =>`admin?query=allTotal`
+            query: () =>`admin?query=allTotal`,
+            providesTags:['adminApi']
         }),
         getPartnerByQuantity: builder.query({
-            query: () =>`admin?query=quantity`
+            query: () =>`admin?query=quantity`,
+            providesTags:['adminApi']
         }),
         getPartnerByTotalPrice: builder.query({
-            query: () =>`admin?query=totalPrice`
+            query: () =>`admin?query=totalPrice`,
+            providesTags:['adminApi']
         }),
         getListToCartToOrderIdForAdmin :builder.query({
             query: (idCart) => `admin/${idCart}?query=orderId`,
+            providesTags:['adminApi']
         }),
         getListCartToPartnerId :builder.query({
             query: () => `admin/${partnerId}?query=partnerId`,
+            providesTags:['adminApi']
         }),
-
+    //     editPost: builder.mutation({
+    //     query: (body) => {
+    //         console.log(body);
+    //         return ({
+    //             url: `admin?query=login`,
+    //             method: 'POST',
+    //             body,
+    //         })
+    //     },
+    //     invalidatesTags:(result) =>
+    //         {
+    //             // console.log("result",result);
+    //             return ['Post']
+    //         },
+    // }),
     }),
 });

@@ -12,6 +12,7 @@ import { AsyncStorage } from 'react-native';
 import {getData} from "../helps/localStorage";
 import base64url from "base64url";
 import {createContext, useContext, useState} from "react";
+import {checkLogin} from "../helps/authenticate";
 
 export const NavigationContext = createContext({});
 
@@ -21,15 +22,12 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     getData("user").then(r =>{
         // @ts-ignore
         setUser(r);
-        console.log("user",r);
     });
 
     getData("admin").then(r=>{
         // @ts-ignore
         setAdmin(r);
-        console.log("admin",r);
     });
-
     const data = {
         auth:{
             user:user,

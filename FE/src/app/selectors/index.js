@@ -1,4 +1,4 @@
-import {adminApi, productApi, storeApi, orderApi, dashboardApi, cartApi} from "../controller/index";
+import {adminApi, productApi, storeApi, orderApi, dashboardApi, cartApi, systemApi} from "../controller/index";
 
 export const  {
     useGetOrderListByStatusForAdminQuery,
@@ -8,6 +8,7 @@ export const  {
     useGetPartnerByTotalPriceQuery,
     useGetListToCartToOrderIdForAdminQuery,
     useGetListCartToPartnerIdQuery,
+    useEditPostMutation
 } = adminApi;
 
 export const { useGetProductByTypeQuery,
@@ -20,7 +21,8 @@ export const { useGetProductByTypeQuery,
 
 export const {
     useGetAllStoreQuery,
-    useGetOrderQuantityByStatusOfPartnerQuery
+    useGetOrderQuantityByStatusOfPartnerQuery,
+    useGetPartnerByCodeQuery
 } = storeApi;
 
 export const {
@@ -28,7 +30,8 @@ export const {
 } = orderApi;
 
 export const {
-    useGetDashboardByProductTypeQuery,
+    useGetDashboardByProductTypeQuery,useGetOrderQuantityByStatusOfAdminQuery
 } = dashboardApi;
 
-export const {useGetCartListByPartnerQuery,useGetOrderListByStatusQuery,} = cartApi;
+export const {useGetCartListByPartnerQuery,useGetOrderListByStatusQuery, useCreateCartMutation} = cartApi;
+export const {useGetListSaleNoUseQuery, useCreateSalesMutation} = systemApi;

@@ -10,6 +10,7 @@ import Layout from "../../constants/Layout";
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
 
 const CommonRoute = (props:{status:number}) =>{
+    console.log(props.status);
     const data = useGetOrderListByStatusQuery(props.status);
     return(
         <LoadingScreen data={[data]}>
@@ -74,7 +75,6 @@ const ShowCommonRoute = (props:{status:number}) => {
 };
 const FirstRoute = () => (
     <CommonRoute status={0} />
-
 );
 const SecondRoute = () => (
     <CommonRoute status={301} />

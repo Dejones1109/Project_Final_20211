@@ -1,14 +1,15 @@
 import {createAsyncThunk , createSlice} from "@reduxjs/toolkit";
-import {ProductClient} from "./productClient";
+import ProductClient from "./productClient";
 let  initialState = {
-    code: 404
+    code: 404,
 }
 
 export const createProduct = createAsyncThunk(
-    'cart/add',
-    async (params ,{rejectWithValue})=>{
+    'product/add',
+    async (params ,{rejectWithValue,})=>{
+        console.log(params);
         const response = await ProductClient.createProduct(params).catch(error =>  rejectWithValue(error.json()));
-        return response.data;
+        return response;
     }
 );
 
@@ -17,7 +18,7 @@ export const createProduct = createAsyncThunk(
 
 export const productSlice = createSlice({
     initialState:initialState,
-    name:'cart',
+    name:'product',
     reducers: {},
     extraReducers: (builder) => {
         builder

@@ -15,9 +15,12 @@ import {
 } from "../../app/selectors";
 import {useDispatch} from "react-redux";
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+import {updateOrderStatus} from "../../app/service/order/orderSlice";
+import {orderApi} from "../../app/controller";
 
 const BillScreen = (props:{route:any})=>{
     const {item} = props.route.params;
+    console.log("item",item);
     const payload = {
         status:301,
         id:item.id
@@ -36,6 +39,7 @@ const ShowBillScreen = (props:{route:any}) => {
     const orderList = context[0].data.data;
     const quantity = context[1].data.data;
     const dispatch = useDispatch();
+
     const dataCpp = [
         {
             leftElement: <Avatar
@@ -125,7 +129,6 @@ const ShowBillScreen = (props:{route:any}) => {
                             }}
                         />
                         <ProductDataTableWaiting  data={orderList} dispatch={dispatch} />
-
                     </Center>
                 </Center>
             </>

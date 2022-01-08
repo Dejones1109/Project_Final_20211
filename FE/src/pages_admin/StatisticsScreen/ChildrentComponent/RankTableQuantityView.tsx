@@ -1,16 +1,28 @@
 import React from 'react';
 import { DataTable } from 'react-native-paper';
-import {useGetListToCartToOrderIdForAdminQuery} from "../../../app/selectors";
+import {useGetListToCartToOrderIdForAdminQuery, useGetPartnerByCodeQuery} from "../../../app/selectors";
 import {FlatList} from "native-base";
+import {TouchableOpacity} from "react-native";
+import {useNavigation} from "@react-navigation/native";
 
 const DataFollowRow = (props:{item:any})=>{
     const item = props.item;
+    const navigation = useNavigation();
+    // @ts-ignore
+    const {data, isSuccess}:any = useGetPartnerByCodeQuery (`P00${item[0]}`);
     return(
-        <DataTable.Row>
-            <DataTable.Cell>{item[1]}</DataTable.Cell>
-            <DataTable.Cell numeric>{item[2]}</DataTable.Cell>
-            <DataTable.Cell numeric>{item[3]}</DataTable.Cell>
-        </DataTable.Row>
+        <>
+            {
+                isSuccess &&
+                <TouchableOpacity onPress={()=>navigation.navigate('storeDetailInfo',{item:data.data})}>
+                    <DataTable.Row>
+                        <DataTable.Cell>{item[1]}</DataTable.Cell>
+                        <DataTable.Cell numeric>{item[2]}</DataTable.Cell>
+                        <DataTable.Cell numeric>{item[3]}</DataTable.Cell>
+                    </DataTable.Row>
+                </TouchableOpacity>
+            }
+        </>
     )
 }
 

@@ -41,10 +41,19 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
             </Col>,
         },
         {
-            leftElement:<Col>
-                <MainIcon name={"settings"} />
+            leftElement:<Col><MainIcon name={"sale"} /></Col> ,
+            colElement:<Col>
+                <TextBase>Danh sách khuyến mãi</TextBase>
             </Col>,
-            colElement: <TextBase>Cài đặt</TextBase>,
+            rightElement:<Col justifyContent={"center"}>
+                <MainIcon name={"arrow-right"} />
+            </Col>,
+        },
+        {
+            leftElement:<Col>
+                <MainIcon name={"contacts"} />
+            </Col>,
+            colElement: <TextBase>Liên hệ</TextBase>,
             rightElement:<Col justifyContent={"center"}>
                 <MainIcon name={"arrow-right"} />
             </Col>,
@@ -111,9 +120,25 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
                         }}
                     />
                 </Pressable>
+                <Divider bg={"light.200"} width={0.95*Layout.window.width} />
+                <Pressable width={"100%"} onPress={()=>props.navigation.navigate("productList")}>
+                    <FrameBase
+                        default
+                        styled={{
+                            height:75,
+                            my:1,
+                            p:3,
+                        }}
+                        viewOptions={{
+                            leftElement:data[3].leftElement,
+                            colElement:data[3].colElement,
+                            rightElement:data[3].rightElement,
+                        }}
+                    />
+                </Pressable>
 
                 <Divider bg={"light.200"} width={Layout.window.width} height={3}/>
-                <Pressable width={"100%"} onPress={()=>props.navigation.navigate("storeList")}>
+                <Pressable width={"100%"} onPress={()=>props.navigation.navigate("listMessageStore")}>
                     <FrameBase
                         default
                         styled={{
@@ -122,9 +147,9 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
                             p:3,
                         }}
                         viewOptions={{
-                            leftElement:data[3].leftElement,
-                            colElement:data[3].colElement,
-                            rightElement:data[3].rightElement,
+                            leftElement:data[4].leftElement,
+                            colElement:data[4].colElement,
+                            rightElement:data[4].rightElement,
                         }}
                     />
                 </Pressable>
@@ -141,8 +166,8 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
                             p:3,
                         }}
                         viewOptions={{
-                            leftElement:data[4].leftElement,
-                            colElement:data[4].colElement,
+                            leftElement:data[5].leftElement,
+                            colElement:data[5].colElement,
                         }}
                     />
                 </Pressable>

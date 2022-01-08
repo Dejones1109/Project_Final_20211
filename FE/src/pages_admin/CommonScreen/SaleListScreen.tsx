@@ -67,7 +67,7 @@ const CardStoreView = (props:{item:any,navigation ?: any})=>{
         </Pressable>
     )
 }
-const  LayoutStoreListScreen = (props:{navigation:any}) =>{
+const  ShowSaleListScreen = (props:{navigation:any}) =>{
     // @ts-ignore
     const {context } = useContext(LoadingContext);
     const data = context[0].data;
@@ -196,14 +196,14 @@ const  LayoutStoreListScreen = (props:{navigation:any}) =>{
         </View>
     );
 }
-const StoreListScreen = (props:{navigation:any}) => {
+const SaleListScreen = (props:{navigation:any}) => {
     // @ts-ignore
     const allStore = useGetAllStoreQuery();
     return(
         <LoadingScreen data={[allStore]}>
-            <LayoutStoreListScreen  navigation={props.navigation}/>
+            <ShowSaleListScreen  navigation={props.navigation}/>
         </LoadingScreen>
     )
 };
 
-export default StoreListScreen;
+export default SaleListScreen;

@@ -7,6 +7,10 @@ import Layout from "../../../constants/Layout";
 import ButtonBase from "../../../components/ButtonBase";
 import {Row} from "../../../components/AutoLayout";
 import TextBase from "../../../components/TextBase";
+import {useDispatch} from "react-redux";
+import {updateOrderStatus} from "../../../app/service/order/orderSlice";
+import {adminApi, orderApi} from "../../../app/controller";
+import {useNavigation} from "@react-navigation/native";
 
 const DataFollowRow = (props:{item:any})=>{
     const {data} = useGetListToCartToOrderIdForAdminQuery(props.item.id);
@@ -14,64 +18,97 @@ const DataFollowRow = (props:{item:any})=>{
     const item = Object.assign({},dataCp[0]);
     const {quantity,price,product} = item;
     const {productName} = Object.assign({},product);
-
     return(
         <DataTable.Row>
             <DataTable.Cell>{productName}</DataTable.Cell>
             <DataTable.Cell numeric>{quantity}</DataTable.Cell>
             <DataTable.Cell numeric>{price}</DataTable.Cell>
-            <DataTable.Cell numeric><Checkbox value={props.item.id +"+" + productName } /></DataTable.Cell>
         </DataTable.Row>
     )
 }
 const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
-    const [groupValue, setGroupValue] = React.useState([]);
-    const [showModal, setShowModal] = React.useState(false);
+    const [showModal1, setShowModal1] = React.useState(false);
+    const [showModal2, setShowModal2] = React.useState(false);
+    const dispatch = useDispatch();
+    const navigation= useNavigation();
+    const confirm = async ()=>{
+        props.data.forEach((item:any)=>{
+            let payload = {
+                id: item.id,
+                status:302
+            };
+            // @ts-ignore
+            dispatch(updateOrderStatus(payload));
+            dispatch(orderApi.util.invalidateTags(['orderApi']));
+            dispatch(adminApi.util.invalidateTags(['adminApi']));
+            alert('Xác nhận thành công');
+            setShowModal1(false);
+            navigation.goBack();
+        })
+    }
 
+    const cancel= async ()=>{
+        props.data.forEach((item:any)=>{
+            let payload = {
+                id: item.id,
+                status:304
+            };
+            // @ts-ignore
+            dispatch(updateOrderStatus(payload));
+            dispatch(orderApi.util.invalidateTags(['orderApi']));
+            dispatch(adminApi.util.invalidateTags(['adminApi']));
+            alert('Hủy đơn thành công');
+            setShowModal1(false);
+            navigation.goBack();
+        })
+    }
     return (
-        <Checkbox.Group
-            colorScheme="green"
-            defaultValue={groupValue}
-            accessibilityLabel="pick an item"
-            onChange={(values) => {
-                setGroupValue(values || [])
-                console.log("abc", values);
-            }}
-            height={500}
-            width={Layout.window.width}
-        >
-            <DataTable>
-                <DataTable.Header>
-                    <DataTable.Title>Sản phẩm</DataTable.Title>
-                    <DataTable.Title numeric>Số lượng</DataTable.Title>
-                    <DataTable.Title numeric>Giá</DataTable.Title>
-                    <DataTable.Title numeric>Xác nhận</DataTable.Title>
-                </DataTable.Header>
+        <>
+            {props.data !== null  ?
+                <>
+                    <DataTable>
+                        <DataTable.Header>
+                            <DataTable.Title>Sản phẩm</DataTable.Title>
+                            <DataTable.Title numeric>Số lượng</DataTable.Title>
+                            <DataTable.Title numeric>Giá</DataTable.Title>
+                            <DataTable.Title numeric>Xác nhận</DataTable.Title>
+                        </DataTable.Header>
 
-                <FlatList
-                    renderItem = {({item})=><DataFollowRow item={item} />}
-                    data={props.data}
-                    keyExtractor={({index}) => index}
-                />
-            </DataTable>
+                        <FlatList
+                            renderItem = {({item})=><DataFollowRow item={item} />}
+                            data={props.data}
+                            keyExtractor={({index}) => index}
+                        />
+                    </DataTable>
 
-            <Row justifyContent={"space-around"} my={3}>
-                <ButtonBase bg={"blue.400"}  onPress={() => setShowModal(true)} >Xác nhận</ButtonBase>
-                <ButtonBase bg={"red.400"}  > Cancel</ButtonBase>
-            </Row>
-            <Modal isOpen={showModal} onClose={() => setShowModal(false)}>
-                <Modal.Content maxWidth="400px">
-                    <Modal.CloseButton />
-                    <Modal.Header>Xác nhận lại</Modal.Header>
-                    <Modal.Body>
-                        {groupValue.map((item,index)=><TextBase key={index}>{item.split("+")[1]}</TextBase>)}
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <ButtonBase bg={"blue.400"}  onPress={()=>{}} >Đồng ý</ButtonBase>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
-        </Checkbox.Group>
+                    <Row justifyContent={"space-around"} my={3}>
+                        <ButtonBase bg={"blue.400"}  onPress={() => setShowModal1(true)} >Xác nhận</ButtonBase>
+                        <ButtonBase bg={"red.400"}  onPress={() => setShowModal2(true)}>Hủy đơn hàng</ButtonBase>
+                    </Row>
+                    <Modal isOpen={showModal1} onClose={() => setShowModal1(false)}>
+                        <Modal.Content maxWidth="400px">
+                            <Modal.CloseButton />
+                            <Modal.Header>Xác nhận lại</Modal.Header>
+
+                            <Modal.Footer>
+                                <ButtonBase bg={"blue.400"}  onPress={()=>confirm()} >Đồng ý</ButtonBase>
+                            </Modal.Footer>
+
+                        </Modal.Content>
+                    </Modal>
+                    <Modal isOpen={showModal2} onClose={() => setShowModal2(false)}>
+                        <Modal.Content maxWidth="400px">
+                            <Modal.CloseButton />
+                            <Modal.Header>Xác nhận lại</Modal.Header>
+                            <Modal.Footer>
+                                <ButtonBase bg={"blue.400"}  onPress={()=>cancel()} >Hủy đơn hàng</ButtonBase>
+                            </Modal.Footer>
+                        </Modal.Content>
+                    </Modal>
+                </>
+                : <TextBase >Không có sản phẩm nào đang đợi</TextBase>
+            }
+        </>
 
     );
 }

@@ -26,7 +26,6 @@ class AuthService {
             .catch(error => rejectWithValue(error.json()))
         return response.data;
     }
-
     // api change password
 
     async change_password(payload ,rejectWithValue   ) {

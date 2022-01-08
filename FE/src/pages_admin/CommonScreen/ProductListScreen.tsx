@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState} from 'react';
 import TextBase from '../../components/TextBase';
 import FrameBase from "../../components/FrameBase";
 import {
@@ -21,9 +21,13 @@ import {useGetAllProductsQuery} from "../../app/selectors";
 import ButtonBase from "../../components/ButtonBase";
 import Layout from '../../constants/Layout';
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+import {useDispatch, useSelector} from "react-redux";
+import {createProduct} from "../../app/service/product/productSlice";
+import {productApi} from "../../app/controller";
 
 const CardProductView = (props:{item:any, navigation: any})=>{
     const item = props.item;
+
     return(
         <Pressable my={1} onPress={()=>props.navigation.navigate("productDetailInfo",{item:item})}>
             <Center>
@@ -65,10 +69,46 @@ const CardProductView = (props:{item:any, navigation: any})=>{
     )
 }
 const  ShowProductListScreen = (props:{navigation?: any})=>{
+    const [productName,setProductName] = useState('');
+    const [image,setImage] = useState('');
+    const [price,setPrice] = useState('');
+    const [type,setType] = useState('');
+    const [remark,setRemark] = useState('');
+    const crePro  = {
+        productName:productName,
+        image :image,
+        price: price,
+        type: type,
+        remark: remark,
+    }
     // @ts-ignore
     const {context} = useContext(LoadingContext);
     const data = context[0].data;
     const { isOpen, onOpen, onClose } = useDisclose();
+    const dispatch = useDispatch();
+    const notification = (payload:any)=>{
+        console.log(payload);
+        if(payload.code === "201" ){
+            alert("Tạo thành công");
+        }
+        else if(payload.code === "200"){
+            alert("Sản phẩm đã tồn tại");
+        }
+        else {
+            alert("Tạo thất bại");
+        };
+    }
+    const createPro = async()=>{
+        // @ts-ignore
+        await dispatch(createProduct(crePro)).then(({payload}) => {notification(payload)});
+        await dispatch(productApi.util.invalidateTags(['productApi']));
+        setProductName('');
+        setType('');
+        setRemark('');
+        setPrice('');
+        setImage('');
+
+    }
     return (
         <>
             <View flex={1} bg={"white"}>
@@ -90,32 +130,43 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
                             <Box w="100%"  px={4}  justifyContent="center">
                                 <Input
                                     my={2}
+                                    value={productName}
                                     InputLeftElement={<MainIcon name={"arrow-right"} />}
                                     placeholder="Tên sản phẩm"
+                                    onChangeText={(text)=>setProductName(text)}
                                 />
                                 <Input
                                     my={2}
+                                    value={image}
                                     InputLeftElement={<MainIcon name={"arrow-right"} />}
                                     placeholder="Địa chỉ hình ảnh"
+                                    onChangeText={(text)=>setImage(text)}
                                 />
                                 <Input
                                     my={2}
+                                    value={price}
                                     InputLeftElement={<MainIcon name={"arrow-right"} />}
                                     placeholder="Giá sản phẩm "
+                                    type ="number"
+                                    onChangeText={(text)=>setPrice(text)}
                                 />
                                 <Input
                                     my={2}
+                                    value={type}
                                     InputLeftElement={<MainIcon name={"arrow-right"} />}
                                     placeholder="Loại sản phẩm"
+                                    onChangeText={(text)=>setType(text)}
                                 />
                                 <Input
                                     my={2}
+                                    value={remark}
                                     InputLeftElement={<MainIcon name={"arrow-right"} />}
                                     placeholder="Mô tả sản phẩm"
+                                    onChangeText={(text)=>setRemark(text)}
                                 />
                                 <Row justifyContent={"space-around"} my={2}>
                                     <ButtonBase bg={"blue.400"} onPress={onClose}>Cancel</ButtonBase>
-                                    <ButtonBase bg={"danger.400"}>Đăng</ButtonBase>
+                                    <ButtonBase bg={"danger.400"} onPress={()=>createPro()}>Đăng</ButtonBase>
                                 </Row>
                             </Box>
                         </Actionsheet.Content>

@@ -1,11 +1,12 @@
 import {createAsyncThunk , createSlice} from "@reduxjs/toolkit";
 import AuthService from "./userAPI"
-import base64url from "base64url";
+import base64 from 'react-native-base64'
 import {storeData} from "../../../helps/localStorage";
 
 
 let  initialState = {
     code: 404,
+    currentUser:null,
 }
 
 export const userLogin = createAsyncThunk(
@@ -14,8 +15,8 @@ export const userLogin = createAsyncThunk(
         const response = await AuthService.login(params,rejectWithValue);
         const {phone, password,partCode} = response.data;
 
-        // const encode = base64url(`${partCode}.${phone}.${password}.${new Date()}`);
-        await storeData(`user`,"user");
+        const encode = base64.encode(`${partCode}.${phone}.${password}.${new Date()}`);
+        await storeData(`user`,String(encode));
 
         return response.data;
     }
@@ -39,22 +40,28 @@ export const userSlice = createSlice({
         builder
             .addCase(userLogin.pending,(state)=>{
                 state.code  = 404;
+                state.currentUser = null;
             })
-            .addCase(userLogin.fulfilled,(state )=>{
+            .addCase(userLogin.fulfilled,(state,action )=>{
                 state.code  = 201;
+                state.currentUser = action.payload;
             })
             .addCase(userLogin.rejected, (state )=>{
                 state.code  = 500;
+                state.currentUser = null;
             });
         builder
             .addCase(register.pending,(state )=>{
                 state.code  = 404;
+                state.currentUser = null;
             })
             .addCase(register.fulfilled,(state )=>{
                 state.code  = 201;
+                state.currentUser = {};
             })
             .addCase(register.rejected, (state )=>{
                 state.code  = 500;
+                state.currentUser = null;
             })
     }
 })

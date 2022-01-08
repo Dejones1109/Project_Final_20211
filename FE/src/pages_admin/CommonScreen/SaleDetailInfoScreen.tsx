@@ -14,7 +14,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {updateStatusPartner} from "../../app/service/store/storeSlice";
 import {storeApi} from "../../app/controller";
 import {useNavigation} from "@react-navigation/native";
-const StoreDetailInfoScreenSection = (props:{item:any})=>{
+const SaleDetailInfoScreenSection = (props:{item:any})=>{
     const [item,setItem]= useState(props.item);
     // @ts-ignore
     const {context} = useContext(LoadingContext);
@@ -123,7 +123,7 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
         </ScrollView>
     )
 }
-const StoreDetailInfoScreen = (props:{route:any}) => {
+const SaleDetailInfoScreen = (props:{route:any}) => {
     const {item} = props.route.params;
     // get the number of cart finished by partner
     // @ts-ignore
@@ -131,9 +131,10 @@ const StoreDetailInfoScreen = (props:{route:any}) => {
     // @ts-ignore
     return (
         <LoadingScreen data={[listCartFinish]}>
-            <StoreDetailInfoScreenSection item={item} />
+            {/*<SaleDetailInfoScreenSection item={item} />*/}
+            <></>
         </LoadingScreen>
     );
 };
 
-export default StoreDetailInfoScreen;
+export default SaleDetailInfoScreen;

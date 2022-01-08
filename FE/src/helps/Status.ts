@@ -6,6 +6,8 @@
             return "Inactive"
         case 203:
             return "Khóa tạm thời"
+        case 204:
+            return "Khóa vĩnh viễn"
         case 301:
             return "Đang chờ xử lý"
         case 302:

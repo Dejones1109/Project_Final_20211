@@ -18,6 +18,10 @@ import {
     ProductListScreen,
     ProductDetailInfoScreen
 } from "../../pages_admin/CommonScreen";
+import ListMessageScreen from "../../pages_admin/CommonScreen/ListMessageScreen";
+import MessageScreen from "../../components/common/MesageScreen";
+import SaleListScreen from "../../pages_admin/CommonScreen/SaleListScreen";
+import SaleDetailInfoScreen from "../../pages_admin/CommonScreen/SaleDetailInfoScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabAdminParamList>();
 
@@ -115,6 +119,13 @@ function CartNavigator(){
                     headerShown: false
                 }}
             />
+            <CartStack.Screen
+                name="billScreen"
+                component={BillScreen}
+                options={{
+                    headerTitle: 'Hoá đơn',
+                }}
+            />
 
         </CartStack.Navigator>
     );
@@ -148,7 +159,7 @@ function InfoNavigator(){
                 name="storeDetailInfo"
                 component={StoreDetailInfoScreen}
                 options={{
-                    headerTitle: 'Danh sách cửa hàng',
+                    headerTitle: 'chi tiết cửa hàng',
                     headerShown:false
                 }}
             />
@@ -164,11 +175,42 @@ function InfoNavigator(){
                 name="productDetailInfo"
                 component={ProductDetailInfoScreen}
                 options={{
-                    headerTitle: 'Danh sách cửa hàng',
+                    headerTitle: 'Danh sách sản phẩm',
                     headerShown:false
                 }}
             />
-
+            <InfoStack.Screen
+                name="saleList"
+                component={SaleListScreen}
+                options={{
+                    headerTitle: 'Danh sách khuyến mãi',
+                    headerShown:false
+                }}
+            />
+            <InfoStack.Screen
+                name="saleDetailInfo"
+                component={SaleDetailInfoScreen}
+                options={{
+                    headerTitle: 'Chi tiết khuyến mãi',
+                    headerShown:false
+                }}
+            />
+            <InfoStack.Screen
+                name="listMessageStore"
+                component={ListMessageScreen}
+                options={{
+                    headerTitle: 'Danh sách người tham gia',
+                    headerShown:true
+                }}
+            />
+            <InfoStack.Screen
+                name="message"
+                component={MessageScreen}
+                options={{
+                    headerTitle: '',
+                    headerShown:false
+                }}
+            />
         </InfoStack.Navigator>
     );
 }
@@ -186,6 +228,14 @@ function StatisticsNavigator(){
                 component={StatisticsScreen}
                 options={{
                     headerTitle: 'Thống kê',
+                    headerShown:false
+                }}
+            />
+            <StatisticsStack.Screen
+                name="storeDetailInfo"
+                component={StoreDetailInfoScreen}
+                options={{
+                    headerTitle: 'chi tiết cửa hàng',
                     headerShown:false
                 }}
             />

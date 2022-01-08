@@ -7,7 +7,8 @@ let  initialState = {
 export const updateOrderStatus = createAsyncThunk(
     'orders/updateStatus',
     async (params ,{rejectWithValue})=>{
-
+        const response = await orderClient.updateOrderStatus(params).catch(error =>  rejectWithValue(error.json()));
+        return response.data;
     }
 );
 export const createOrder = createAsyncThunk(

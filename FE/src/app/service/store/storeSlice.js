@@ -1,13 +1,22 @@
 import {createAsyncThunk , createSlice} from "@reduxjs/toolkit";
-import {StoreClient} from './storeClient';
+import StoreClient from './storeClient';
 let  initialState = {
-    code: 404
+    code: 404,
+    currentPartner :{}
 }
 export const createPartner = createAsyncThunk(
     'store/create',
     async (params,rejectWithValue)=>{
-        const response = await StoreClient.createPartner(payload).catch(e=>appbarElevation(e));
-        return response.data;
+        const response = await StoreClient.createPartner(params).catch(e=>rejectWithValue(e));
+        return response;
+    }
+)
+export const updateStatusPartner = createAsyncThunk(
+    'store/updateStatusPartner',
+    async (params,rejectWithValue)=>{
+        const response = await StoreClient.updateStatusPartner(params).catch(e=>rejectWithValue(e));
+        console.log(response);
+        return response;
     }
 )
 export const storeSlice = createSlice({
@@ -23,6 +32,18 @@ export const storeSlice = createSlice({
                 state.code = 201;
             })
             .addCase(createPartner.rejected, (state )=>{
+                state.status = 500;
+            });
+        builder
+            .addCase(updateStatusPartner.pending,(state)=>{
+                state.code  = 404;
+            })
+            .addCase(updateStatusPartner.fulfilled,(state ,action)=>{
+                state.code = 201;
+                state.currentPartner =action.payload.data;
+                console.log(state.currentPartner);
+            })
+            .addCase(updateStatusPartner.rejected, (state )=>{
                 state.status = 500;
             });
     }

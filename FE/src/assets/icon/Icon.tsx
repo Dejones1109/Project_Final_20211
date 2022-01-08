@@ -16,6 +16,7 @@ import { Icon,} from "native-base";
 const IconCart = <Ionicons name={"cart"} size={35} style={{ marginBottom: -3 }} color={"#A8A29E"} />
 const IconSearch = <Ionicons name={"search"} size={24} style={{ marginBottom: -3, paddingHorizontal:3 }}  color="#A8A29E" />
 const IconArrowRight = <SimpleLineIcons name="arrow-right" size={15} style={{ marginBottom: -3 }} color="black" />
+const IconArrowLeft = <AntDesign name="arrowleft" size={24} style={{ marginBottom: -3 }} color="black" />
 const IconNotify = <Entypo name="notification" size={30} color="#60A5FA" style={{ marginBottom: -3 }} />;
 const IconNews = <FontAwesome name="newspaper-o" size={30} color="#60A5FA" />
 const IconSale = <MaterialCommunityIcons name="sale" size={30} color="#60A5FA" />
@@ -49,6 +50,8 @@ const IconList = <MaterialCommunityIcons name="format-list-numbered" size={30} c
 const IconCalendar = <AntDesign name="calendar" size={30} color="black" />;
 
 const IconLogOut = <MaterialIcons name="logout" size={30} color="#A8A29E"  />;
+
+const IconSend = <Ionicons name="send" size={24} color="#60A5FA"  />
 const MainIcon = (props:{name :string}) => {
     switch (props.name) {
         case "cart":
@@ -57,6 +60,8 @@ const MainIcon = (props:{name :string}) => {
             return IconSearch;
         case "arrow-right":
             return IconArrowRight;
+        case "arrow-left":
+            return IconArrowLeft;
         case "notification":
             return IconNotify;
         case "newspaper-o":
@@ -105,6 +110,8 @@ const MainIcon = (props:{name :string}) => {
             return IconCalendar ;
         case "logout":
             return IconLogOut ;
+        case "send":
+            return IconSend ;
         default:
             return null;
     }

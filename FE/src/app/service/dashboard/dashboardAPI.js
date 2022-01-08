@@ -9,6 +9,8 @@ export const dashboardApi = createApi({
         getDashboardByProductType :builder.query({
             query: (payload) => `dashboard?query=productType&startDate=${payload.start}&endDate=${payload.end}`,
         }),
-
+        getOrderQuantityByStatusOfAdmin :builder.query({
+            query: () => `dashboard?query=quantityOrder`,
+        }),
     }),
 });

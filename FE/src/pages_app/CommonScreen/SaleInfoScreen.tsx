@@ -2,7 +2,7 @@ import React from 'react';
 import {Box, Center, Divider, Heading, Image, Pressable, Text} from "native-base";
 import FrameBase from "../../components/FrameBase";
 import TextBase from "../../components/TextBase";
-import {useNavigation} from "@react-navigation/native";
+
 import { Col } from '../../components/AutoLayout';
 import Layout from '../../constants/Layout';
 import LoadingScreen from "../../helps/LoadingScreen";
