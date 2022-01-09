@@ -42,7 +42,7 @@ export const userSlice = createSlice({
                 state.code  = 404;
             })
             .addCase(userLogin.fulfilled,(state,action )=>{
-                state.code  = 201;
+                state.code  = 200;
                 state.currentUser = action.payload;
             })
             .addCase(userLogin.rejected, (state )=>{
@@ -53,7 +53,7 @@ export const userSlice = createSlice({
                 state.code  = 404;
             })
             .addCase(register.fulfilled,(state )=>{
-                state.code  = 201;
+                state.code  = 200;
                 state.currentUser = {};
             })
             .addCase(register.rejected, (state )=>{

@@ -31,9 +31,11 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     getUser();
     useEffect(()=>{
         NetInfo.addEventListener(networkState => {
-            if(networkState.isConnected){
-                setIsConnected(networkState.isConnected)
-            }
+            setTimeout(()=>{
+                    if(networkState.isConnected){
+                        setIsConnected(networkState.isConnected)
+                    }
+            },2000)
         });
     })
 
