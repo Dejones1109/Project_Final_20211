@@ -21,4 +21,6 @@ public interface PartnerRepository extends CrudRepository<Partner,Integer > {
     Partner isCheckPhone(String phone);
     @Query("select p from Partner p where p.phone=:phone and p.password=:password")
     Partner login(String phone,String password);
+    @Query("select p from Partner p order by p.status asc")
+    List<Partner> getListPartnerAsc();
 }

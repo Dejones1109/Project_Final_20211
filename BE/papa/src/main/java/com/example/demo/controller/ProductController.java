@@ -169,27 +169,40 @@ public class ProductController {
     public ResponseEntity<GwResponse<Products>> save(@RequestBody CreateProductsRequest product) {
         GwResponse<Products> response = new GwResponse<>();
         String newID = DataUtil.getNewId("C", productsService.getMaxLength());
+
         try {
-            Products products = Products.builder()
-                    .productCode(newID)
-                    .productName(product.getProductName())
-                    .price(product.getPrice())
-                    .image(product.getImage())
-                    .type(product.getType())
-                    .remark(product.getRemark())
-                    .status(401)
-                    .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .updatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .view(0)
-                    .build();
-            //  System.out.println(products);
-            productsService.save(products);
-            response.setCode(Status.CODE_CREATED);
-            response.setMessage(Status.STATUS_CREATED);
-            response.setData(products);
-            responseHeader.add("code", Status.CODE_CREATED);
-            responseHeader.add("message", Status.STATUS_CREATED);
-            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+           List<Products> checkProduct = productsService.searchProductByProductName(product.getProductName());
+           if(checkProduct.isEmpty()){
+               Products products = Products.builder()
+                       .productCode(newID)
+                       .productName(product.getProductName())
+                       .price(product.getPrice())
+                       .image(product.getImage())
+                       .type(product.getType())
+                       .remark(product.getRemark())
+                       .status(401)
+                       .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                       .updatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                       .view(0)
+                       .build();
+               //  System.out.println(products);
+               productsService.save(products);
+               response.setCode(Status.CODE_CREATED);
+               response.setMessage(Status.STATUS_CREATED);
+               response.setData(products);
+               responseHeader.add("code", Status.CODE_CREATED);
+               responseHeader.add("message", Status.STATUS_CREATED);
+               responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+           }else {
+               response.setCode(Status.CODE_SUCCESS);
+               response.setMessage(Status.STATUS_PRODUCT_EXITS);
+               System.out.println(checkProduct);
+             //  response.setData(checkProduct);
+               responseHeader.add("code", Status.CODE_SUCCESS);
+               responseHeader.add("message", Status.STATUS_PRODUCT_EXITS);
+               responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+           }
+
             return ResponseEntity.ok().headers(responseHeader).body(response);
 
         } catch (Throwable e) {

@@ -7,8 +7,8 @@ import java.util.Date;
 
 @Slf4j
 public class DateUtil {
-    public static Date fromString(String dateStr) {
-        return fromString(dateStr, "yyyy-mm-dd HH:mm:ss");
+    public static String fromDate(String dateStr) {
+        return fromString(dateStr, "yyyy-mm-dd HH:mm:ss").toString();
     }
 
     public static Date fromString(String dateStr, String pattern) {

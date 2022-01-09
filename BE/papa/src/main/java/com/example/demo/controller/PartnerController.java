@@ -2,11 +2,13 @@ package com.example.demo.controller;
 
 import com.example.demo.constant.Status;
 import com.example.demo.dto.GwResponse;
+import com.example.demo.entity.Bill;
 import com.example.demo.entity.Partner;
 import com.example.demo.request.LoginRequest;
 import com.example.demo.request.partner.CreatePartnerRequest;
 import com.example.demo.request.partner.UpdatePartnerRequest;
 import com.example.demo.response.OrderQuantityByStatus;
+import com.example.demo.services.BillService;
 import com.example.demo.services.PartnerService;
 import com.example.demo.utils.DataUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -29,7 +31,9 @@ import java.util.List;
 public class PartnerController {
     @Autowired
     PartnerService partnerService;
+
     HttpHeaders responseHeader = new HttpHeaders();
+
     @GetMapping
     public ResponseEntity<GwResponse<List<Partner>>> findAll() {
         GwResponse<List<Partner>> response = new GwResponse<>();
@@ -60,6 +64,7 @@ public class PartnerController {
         }
 
     }
+
     @GetMapping(value = "/{code}")
     public ResponseEntity<GwResponse<Partner>> findById(@PathVariable String code) {
         GwResponse<Partner> response = new GwResponse<>();
@@ -90,7 +95,8 @@ public class PartnerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    @GetMapping( value = "/{status}",params = "query=status")
+
+    @GetMapping(value = "/{status}", params = "query=status")
     public ResponseEntity<GwResponse<List<Partner>>> getListPartnerByStatus(@PathVariable Integer status) {
         GwResponse<List<Partner>> response = new GwResponse<>();
         try {
@@ -120,29 +126,42 @@ public class PartnerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
     @PostMapping
     public ResponseEntity<GwResponse<Partner>> save(@RequestBody CreatePartnerRequest request) {
         GwResponse<Partner> response = new GwResponse<>();
         String newCode = DataUtil.getNewId("P", partnerService.getMaxLength());
+
         try {
-            Partner partner = Partner.builder()
-                    .partCode(newCode)
-                    .phone(request.getPhone())
-                    .name(request.getName())
-                    .address(request.getAddress())
-                    .nameStore(request.getNameStore())
-                    .status(201)
-                    .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .updatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
-                    .build();
-            partnerService.save(partner);
-            response.setCode(Status.CODE_CREATED);
-            response.setMessage(Status.STATUS_CREATED);
-            response.setData(partner);
-            responseHeader.add("code", Status.CODE_CREATED);
-            responseHeader.add("message", Status.STATUS_CREATED);
-            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            return ResponseEntity.ok().headers(responseHeader).body(response);
+            Partner partnerCheckPhone = partnerService.isCheckPhone(request.getPhone());
+            if (partnerCheckPhone != null) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_USERNAME_EXITS);
+                response.setData(partnerCheckPhone);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_USERNAME_EXITS);
+                responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                return ResponseEntity.ok().headers(responseHeader).body(response);
+            } else {
+                Partner partner = Partner.builder()
+                        .partCode(newCode)
+                        .phone(request.getPhone())
+                        .name(request.getName())
+                        .address(request.getAddress())
+                        .nameStore(request.getNameStore())
+                        .status(201)
+                        .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                        .updatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                        .build();
+                partnerService.save(partner);
+                response.setCode(Status.CODE_CREATED);
+                response.setMessage(Status.STATUS_CREATED);
+                response.setData(partner);
+                responseHeader.add("code", Status.CODE_CREATED);
+                responseHeader.add("message", Status.STATUS_CREATED);
+                responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+                return ResponseEntity.ok().headers(responseHeader).body(response);
+            }
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -152,12 +171,13 @@ public class PartnerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<GwResponse<List<Partner>>> update(@RequestBody UpdatePartnerRequest request, @PathVariable Integer id) {
         GwResponse<List<Partner>> response = new GwResponse<>();
         List<Partner> partners = new ArrayList<>();
-        Partner partnerCheckPhone =partnerService.isCheckPhone(request.getPhone());
-        if(partnerCheckPhone!=null){
+        Partner partnerCheckPhone = partnerService.isCheckPhone(request.getPhone());
+        if (partnerCheckPhone != null) {
             partners.add(partnerCheckPhone);
             response.setCode(Status.CODE_SUCCESS);
             response.setMessage(Status.STATUS_USERNAME_EXITS);
@@ -198,7 +218,35 @@ public class PartnerController {
         }
 
     }
-    @PutMapping(value = "/{id}",params = "query=status")
+
+    @PutMapping(value = "/{id}", params = "query=password")
+    public ResponseEntity<GwResponse<Partner>> updateByStatus(@RequestParam String password, @PathVariable Integer id) {
+        GwResponse<Partner> response = new GwResponse<>();
+        Partner partnerCurrent = partnerService.findById(id);
+        try {
+            if (partnerCurrent == null) {
+                return ResponseEntity.badRequest().body(null);
+            }
+            partnerCurrent.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            partnerCurrent.setPassword(password);
+            partnerService.save(partnerCurrent);
+            response.setCode(Status.CODE_SUCCESS);
+            response.setMessage(Status.STATUS_SUCCESS);
+            response.setData(partnerCurrent);
+            responseHeader.add("code", Status.CODE_SUCCESS);
+            responseHeader.add("message", Status.STATUS_SUCCESS);
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @PutMapping(value = "/{id}", params = "query=status")
     public ResponseEntity<GwResponse<Partner>> updateByStatus(@RequestParam Integer status, @PathVariable Integer id) {
         GwResponse<Partner> response = new GwResponse<>();
         Partner partnerCurrent = partnerService.findById(id);
@@ -226,7 +274,8 @@ public class PartnerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-//    @PutMapping(value = "/{id}",params = "query=password")
+
+    //    @PutMapping(value = "/{id}",params = "query=password")
 //    public ResponseEntity<GwResponse<Partner>> login(@RequestParam String phone,@RequestParam String password, @PathVariable Integer id) {
 //        GwResponse<Partner> response = new GwResponse<>();
 //        Partner partnerCurrent = partnerService.findById(id);
@@ -254,41 +303,12 @@ public class PartnerController {
 //            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
 //        }
 //    }
-@GetMapping(value = "/{partnerId}",params = "query=quantityOrder")
-public ResponseEntity<GwResponse<OrderQuantityByStatus>> orderQuantityByStatusOfPartner(@PathVariable Integer partnerId) {
-    GwResponse<OrderQuantityByStatus> response = new GwResponse<>();
-    try {
-        OrderQuantityByStatus obj = partnerService.orderQuantityByStatusOfPartner(partnerId);
-        if (obj!=null) {
-            response.setCode(Status.CODE_SUCCESS);
-            response.setMessage(Status.STATUS_SUCCESS);
-            response.setData(obj);
-            responseHeader.add("code", Status.CODE_SUCCESS);
-            responseHeader.add("message", Status.STATUS_SUCCESS);
-        } else {
-            response.setCode(Status.CODE_NOT_FOUND);
-            response.setMessage(Status.STATUS_NOT_FOUND);
-            response.setData(null);
-            responseHeader.add("code", Status.CODE_NOT_FOUND);
-            responseHeader.add("message", Status.STATUS_NOT_FOUND);
-        }
-        responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        return ResponseEntity.ok().headers(responseHeader).body(response);
-
-    } catch (Throwable e) {
-        e.printStackTrace();
-        response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
-        response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
-        response.setData(null);
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
-    }
-}
-    @GetMapping(params = "query=login")
-    public ResponseEntity<GwResponse<Partner>> Login(@RequestBody LoginRequest request) {
-        GwResponse<Partner> response = new GwResponse<>();
+    @GetMapping(value = "/{partnerId}", params = "query=quantityOrder")
+    public ResponseEntity<GwResponse<OrderQuantityByStatus>> orderQuantityByStatusOfPartner(@PathVariable Integer partnerId) {
+        GwResponse<OrderQuantityByStatus> response = new GwResponse<>();
         try {
-            Partner obj = partnerService.login(request.getUsername(),request.getPassword());
-            if (obj!=null) {
+            OrderQuantityByStatus obj = partnerService.orderQuantityByStatusOfPartner(partnerId);
+            if (obj != null) {
                 response.setCode(Status.CODE_SUCCESS);
                 response.setMessage(Status.STATUS_SUCCESS);
                 response.setData(obj);
@@ -302,7 +322,7 @@ public ResponseEntity<GwResponse<OrderQuantityByStatus>> orderQuantityByStatusOf
                 responseHeader.add("message", Status.STATUS_NOT_FOUND);
             }
             responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            return  ResponseEntity.ok().headers(responseHeader).body(response);
+            return ResponseEntity.ok().headers(responseHeader).body(response);
 
         } catch (Throwable e) {
             e.printStackTrace();
@@ -312,4 +332,35 @@ public ResponseEntity<GwResponse<OrderQuantityByStatus>> orderQuantityByStatusOf
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
+    @PostMapping(params = "query=login")
+    public ResponseEntity<GwResponse<Partner>> Login(@RequestBody LoginRequest request) {
+        GwResponse<Partner> response = new GwResponse<>();
+        try {
+            Partner obj = partnerService.login(request.getUsername(), request.getPassword());
+            if (obj != null) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(obj);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            return ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
 }

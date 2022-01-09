@@ -8,6 +8,7 @@ import com.example.demo.entity.Order;
 import com.example.demo.entity.Partner;
 import com.example.demo.request.LoginRequest;
 import com.example.demo.services.AdminService;
+import com.example.demo.services.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -26,6 +28,8 @@ import java.util.List;
 public class AdminController {
     @Autowired
     AdminService adminService;
+    @Autowired
+    OrderService orderService;
     HttpHeaders responseHeader = new HttpHeaders();
 
     @GetMapping(params = "query=allOrder")
@@ -236,7 +240,7 @@ public class AdminController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
-    @GetMapping(params = "query=login")
+    @PostMapping(params = "query=login")
     public ResponseEntity<GwResponse<Admin>> Login(@RequestBody LoginRequest request) {
         GwResponse<Admin> response = new GwResponse<>();
         try {
@@ -256,6 +260,36 @@ public class AdminController {
             }
             responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             return  ResponseEntity.ok().headers(responseHeader).body(response);
+
+        } catch (Throwable e) {
+            e.printStackTrace();
+            response.setCode(Status.CODE_INTERNAL_SERVER_ERROR);
+            response.setMessage(Status.STATUS_INTERNAL_SERVER_ERROR);
+            response.setData(null);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    @GetMapping(value = "/{status}",params = "query=status")
+    public ResponseEntity<GwResponse<List<Order>>> getListOrderByStatus(@PathVariable Integer status) {
+        GwResponse<List<Order>> response = new GwResponse<>();
+        try {
+            List<Order> orderList = orderService.getListOrderByStatus(status);
+            if (!orderList.isEmpty()) {
+                response.setCode(Status.CODE_SUCCESS);
+                response.setMessage(Status.STATUS_SUCCESS);
+                response.setData(orderList);
+                responseHeader.add("code", Status.CODE_SUCCESS);
+                responseHeader.add("message", Status.STATUS_SUCCESS);
+            } else {
+                response.setCode(Status.CODE_NOT_FOUND);
+                response.setMessage(Status.STATUS_NOT_FOUND);
+                response.setData(null);
+                responseHeader.add("code", Status.CODE_NOT_FOUND);
+                responseHeader.add("message", Status.STATUS_NOT_FOUND);
+            }
+            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+            return ResponseEntity.ok().headers(responseHeader).body(response);
 
         } catch (Throwable e) {
             e.printStackTrace();

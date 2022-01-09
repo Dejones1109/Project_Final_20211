@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.entity.Bill;
 import com.example.demo.entity.Partner;
 import com.example.demo.response.OrderQuantityByStatus;
 

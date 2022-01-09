@@ -18,12 +18,9 @@ public class ProductsServiceImp implements ProductsService {
     ProductRepository productRepository;
     @Override
     public List<Products> getAll(){
-        Iterable<Products> products = productRepository.findAll();
-        if(products!=null){
-            List<Products> productsList = IterableUtils.toList(products);
-            return productsList;
-        }
-        return new ArrayList<>();
+        List<Products> products = productRepository.getListProductAsc();
+
+        return products;
     }
 
     @Override
@@ -82,5 +79,10 @@ public class ProductsServiceImp implements ProductsService {
             return products;
         }
         return null;
+    }
+
+    @Override
+    public List<Products> searchProductByProductName(String keyString) {
+        return productRepository.searchProductByProductName(keyString);
     }
 }

@@ -4,10 +4,7 @@ import com.example.demo.constant.Status;
 import com.example.demo.dto.GwResponse;
 import com.example.demo.entity.*;
 import com.example.demo.request.order.CreateOrderRequest;
-import com.example.demo.services.AdminService;
-import com.example.demo.services.CartService;
-import com.example.demo.services.OrderService;
-import com.example.demo.services.PartnerService;
+import com.example.demo.services.*;
 import com.example.demo.utils.DataUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.SerializationUtils;
@@ -36,6 +33,10 @@ public class OrderController {
     CartService cartService;
     @Autowired
     AdminService adminService;
+    @Autowired
+    PartnerToSaleService partnerToSaleService;
+    @Autowired
+    SaleService saleService;
     HttpHeaders responseHeader = new HttpHeaders();
 
     @PostMapping
@@ -52,10 +53,18 @@ public class OrderController {
         }
         Order order = new Order();
         int totalPrice = 0;
+        int totalQuantity =0;
+        int percentSale =0;
+        if(request.getSaleId()!=0){
+            Sale codeSale = saleService.findById(request.getSaleId());
+            percentSale = codeSale.getSaleValue();
+        }
+
         for (int c : request.getCartId()) {
             Cart cart = cartService.findById(c);
             totalPrice += cart.getPrice();
-            cartService.save(cart);
+            totalQuantity+=cart.getQuantity();
+
         }
         try {
             System.out.println();
@@ -63,10 +72,11 @@ public class OrderController {
             order.setAdmin(admin);
             order.setPartner(partner);
             order.setIsBill(request.getIsBill());
+            order.setTotalQuantity(totalQuantity*500);
             order.setStatus(301);
             order.setCreatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             order.setUpdatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            order.setTotalPrice(totalPrice);
+            order.setTotalPrice(totalPrice*(100-percentSale)/100);
             orderService.save(order);
             response.setCode(Status.CODE_CREATED);
             response.setMessage(Status.STATUS_CREATED);
@@ -83,9 +93,12 @@ public class OrderController {
             response.setData(null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         } finally {
-            // List<Cart> listCart = new ArrayList<>();
-            //  String subString[] = request.getCart().split("-");
-
+            PartnerToSale partnerToSale = PartnerToSale.builder()
+                    .sale(saleService.findById(request.getSaleId()))
+                    .order(order)
+                    .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                    .build();
+            partnerToSaleService.save(partnerToSale);
             for (int c : request.getCartId()) {
                 Cart cart = cartService.findById(c);
                 cart.setStatus(102);
