@@ -81,31 +81,31 @@ const ShowBillScreen = (props:{route:any}) => {
     return (
         <ScrollView bg={"white"}>
             <>
-                <Center  width={"100%"} height={50} my={2}  >
-                    <Box width={["100%","100%"]}   overflow={"hidden"}   >
-                        <Pressable   >
-                            <Box
-                            >
-                                <Row  justifyContent={"space-between"} alignContent ={"space-between"}>
-                                    <Col width={"33%"} alignItems={"center"}>
-                                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderWaiting}</TextBase>
-                                        <TextBase fontSize={14} textAlign={"center"} color={"light.400"}>Đơn đang chờ</TextBase>
-                                    </Col>
-                                    <Divider orientation={"vertical"}/>
-                                    <Col width={"33%"} alignItems={"center"} >
-                                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderShip}</TextBase>
-                                        <TextBase  fontSize={14} textAlign={"center"} color={"light.400"}>Đơn vận chuyển</TextBase>
-                                    </Col>
-                                    <Divider  orientation={"vertical"}/>
-                                    <Col width={"33%"} alignItems={"center"}>
-                                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderDone}</TextBase>
-                                        <TextBase  fontSize={14} textAlign={"center"} color={"light.400"} >Đơn hoàn thành</TextBase>
-                                    </Col>
-                                </Row>
-                            </Box>
-                        </Pressable>
-                    </Box>
-                </Center>
+                {/*<Center  width={"100%"} height={50} my={2}  >*/}
+                {/*    <Box width={["100%","100%"]}   overflow={"hidden"}   >*/}
+                {/*        <Pressable   >*/}
+                {/*            <Box*/}
+                {/*            >*/}
+                {/*                <Row  justifyContent={"space-between"} alignContent ={"space-between"}>*/}
+                {/*                    <Col width={"33%"} alignItems={"center"}>*/}
+                {/*                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderWaiting}</TextBase>*/}
+                {/*                        <TextBase fontSize={14} textAlign={"center"} color={"light.400"}>Đơn đang chờ</TextBase>*/}
+                {/*                    </Col>*/}
+                {/*                    <Divider orientation={"vertical"}/>*/}
+                {/*                    <Col width={"33%"} alignItems={"center"} >*/}
+                {/*                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderShip}</TextBase>*/}
+                {/*                        <TextBase  fontSize={14} textAlign={"center"} color={"light.400"}>Đơn vận chuyển</TextBase>*/}
+                {/*                    </Col>*/}
+                {/*                    <Divider  orientation={"vertical"}/>*/}
+                {/*                    <Col width={"33%"} alignItems={"center"}>*/}
+                {/*                        <TextBase fontSize={16} color={"red.500"}>{quantity.orderDone}</TextBase>*/}
+                {/*                        <TextBase  fontSize={14} textAlign={"center"} color={"light.400"} >Đơn hoàn thành</TextBase>*/}
+                {/*                    </Col>*/}
+                {/*                </Row>*/}
+                {/*            </Box>*/}
+                {/*        </Pressable>*/}
+                {/*    </Box>*/}
+                {/*</Center>*/}
                 <Center >
                     <TextBase width={"90%"} textAlign={"center"} fontSize={24} color={"primary.500"}>{item.nameStore}</TextBase>
                     <Center width={"100%"}>

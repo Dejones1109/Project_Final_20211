@@ -5,7 +5,7 @@ import {
     Box,
     extendTheme, IconButton, Input, NativeBaseProvider, ScrollView, Spacer, StatusBar,
 } from "native-base"
-
+import ignoreWarnings from 'react-native-ignore-warnings';
 import useColorScheme from "./src/hooks/useColorScheme";
 import {Provider} from "react-redux";
 import { store } from "./src/app/store";
@@ -25,14 +25,13 @@ import TestScreen1 from "./src/TestScreen1";
 export default function App () {
     const new_theme = extendTheme({TextConfig })
     const colorScheme = useColorScheme();
-    LogBox.ignoreLogs(['Warning:...']); // ignore specific logs
-    LogBox.ignoreAllLogs(); // ignore all logs
-
     checkLogin();
-    useEffect(() => {
-        LogBox.ignoreLogs(["VirtualizedLists should never be nested"])
-        LogBox.ignoreLogs(["Each child in a list should have a unique"])
-    }, [])
+    LogBox.ignoreAllLogs();
+    LogBox.ignoreLogs([
+        'Require cycle:'
+    ]);
+    console.disableYellowBox = true;
+    ignoreWarnings('log', [ 'Linking requires a build-time setting `scheme` in']);
     return (
         //
         <Provider store={store}>

@@ -19,11 +19,9 @@ const baseQuery = fetchBaseQuery({
 export const token_current = createApi({
     reducerPath:'user',
     baseQuery: baseQuery,
-    tagTypes: ['Post'],
     endpoints:(builder)=>({
         getUser: builder.query({
             query: ()=> 'user',
-            transformResponse: (response) => response
         }),
     })
 })

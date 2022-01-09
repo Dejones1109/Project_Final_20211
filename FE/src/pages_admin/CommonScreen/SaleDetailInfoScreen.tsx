@@ -1,37 +1,61 @@
 import React, {createContext, useContext, useState} from 'react';
 import TextBase from "../../components/TextBase";
-import {Avatar, Box, Center, Divider, FlatList, Pressable, ScrollView,Image} from "native-base";
+import {
+    Avatar,
+    Box,
+    Center,
+    Divider,
+    FlatList,
+    Pressable,
+    ScrollView,
+    Image,
+    Button,
+    Icon,
+    Actionsheet, Input, Heading, Select, CheckIcon
+} from "native-base";
 import {Col, Row} from "../../components/AutoLayout";
 import FrameBase from "../../components/FrameBase";
 import Layout from "../../constants/Layout";
 import ButtonBase from "../../components/ButtonBase";
 import MainIcon from "../../assets/icon/Icon";
 import {status} from "../../helps/Status";
-import {ProductDataTableFinish, ProductDataTableWaiting } from '../CartScreen/ChildrentComponent';
-import LoadingScreen, {LoadingContext} from '../../helps/LoadingScreen';
-import {useGetListCartToPartnerIdQuery, useGetPartnerByCodeQuery} from "../../app/selectors";
+import {
+    useUpdateStatusSaleMutation
+} from "../../app/selectors";
 import {useDispatch, useSelector} from "react-redux";
-import {updateStatusPartner} from "../../app/service/store/storeSlice";
-import {storeApi} from "../../app/controller";
 import {useNavigation} from "@react-navigation/native";
-const SaleDetailInfoScreenSection = (props:{item:any})=>{
+const ShowDetailInfoScreenSection = (props:{item:any})=>{
     const [item,setItem]= useState(props.item);
+    const [updateStatusSale] = useUpdateStatusSaleMutation();
     // @ts-ignore
-    const {context} = useContext(LoadingContext);
-    const dataTable = context[0].data;
-    // const {data,isFetching,isSuccess} = useGetPartnerByCodeQuery(item.partCode);
     const listData = [
         {
-            leftElement: <MainIcon name={"user"} />,
-            colElement:<TextBase>{item.name}</TextBase>,
+            leftElement:  <TextBase
+                fontSize="16"
+                color={"#60A5FA"}
+            >
+                Mô tả :
+            </TextBase>,
+            colElement:<TextBase> {item.saleRemark.charAt(0).toUpperCase()+item.saleRemark.slice(1) }</TextBase>,
         },
         {
-            leftElement: <MainIcon name={"phone"} />,
-            colElement:<TextBase>{item.phone}</TextBase>,
+            leftElement: <TextBase
+                fontSize="16"
+                color={"#60A5FA"}
+            >
+                Điều kiện:
+            </TextBase>,
+            colElement:<TextBase>{item.conditions} vnđ</TextBase>,
         },
+
         {
-            leftElement: <MainIcon name={"address"} />,
-            colElement:<TextBase>{item.address}</TextBase>,
+            leftElement:  <TextBase
+                fontSize="16"
+                color={"#60A5FA"}
+            >
+                Mã code :
+            </TextBase>,
+            colElement:<TextBase> {item.saleCode.toUpperCase()}</TextBase>,
         },
         {
             leftElement: <MainIcon name={"start-active"} />,
@@ -43,97 +67,89 @@ const SaleDetailInfoScreenSection = (props:{item:any})=>{
         },
         {
             leftElement: <MainIcon name={"status"} />,
-            colElement:<TextBase>{status(item.status)}</TextBase>,
+            colElement:<TextBase color={item.status === 501 ? "success.500" : "danger.500"}>{status(item.status)}</TextBase>,
         },
     ]
-    const dispatch = useDispatch();
+    let [statusSale, setStatusSale] = React.useState(`${item.status}`)
     // @ts-ignore
     const navigation = useNavigation();
     const changeStatus = (status: number)=>{
-        let payload = {
-            id:item.id,
-            params:{
-                query:'status',
+        if(parseInt(status) !== item.status){
+            let payload = {
+                id:item.id,
                 status:status,
             }
+            updateStatusSale(payload).then(res=>{
+                if(res.data.code === "200"){
+                    alert('Thay đổi trạng thái thành công');
+                }else{
+                    alert('Thay đổi thất bại');
+                }
+            });
+            navigation.goBack();
         }
-        // @ts-ignore
-        dispatch(updateStatusPartner(payload));
-        dispatch(storeApi.util.invalidateTags(['storeApi']));
-        alert('Thay đổi trạng thái thành công')
-        navigation.goBack();
+        else{
+            alert("Vui lòng chọn trạng thái mới")
+        }
     }
     return(
         <ScrollView bg={"white"}>
-            {
-
-                <Center  >
-                    <Center width={"100%"} >
-                        <Image
-                            height={100}
-                            width={"100%"}
-                            resizeMode={"cover"}
-                            source={{
-                                uri: "https://img.freepik.com/free-photo/hand-painted-watercolor-background-with-sky-clouds-shape_24972-1095.jpg?size=626&ext=jpg",
+            <Box w="100%"  p={3} justifyContent="flex-start" height={"100%"} bg={"white"} >
+                <Heading
+                    fontSize="16"
+                    color="red.500"
+                >
+                    {item.saleName.toUpperCase()} - KHUYẾN MÃI {item.saleValue} %
+                </Heading>
+                <Divider my={3} />
+                <Center  width={"100%"}  >
+                    <FlatList
+                        data={listData}
+                        renderItem={({item})=><FrameBase
+                            default
+                            styled={{
+                                height:10,
                             }}
-                            alt="Cover"
-                        />
-                        <Box position={"absolute"}  top={25}>
-                            <Avatar
-                                bg="pink.600"
-                                alignSelf="center"
-                                size={150}
-                                source={{
-                                    uri: "https://pbs.twimg.com/profile_images/1177303899243343872/B0sUJIH0_400x400.jpg",
-                                }}
-                            >
-                                {item.name.slice(0,2)}
-                            </Avatar>
-                        </Box>
-                    </Center>
-
-                    <Center width={"100%"} mt={100}>
-                        <Row justifyContent={"space-around"} my={3}>
-                            <ButtonBase bg={"blue.400"} onPress={()=>changeStatus(203)}>Tạm khóa</ButtonBase>
-                            <ButtonBase bg={"red.400"} onPress={()=>changeStatus(204)}>Khóa vĩnh viễn</ButtonBase>
-                        </Row>
-                        <FlatList
-                            data={listData}
-                            renderItem={({item})=><FrameBase
-                                default
-                                styled={{
-                                    height:10,
-                                }}
-                                viewOptions={{
-                                    leftElement:item.leftElement,
-                                    colElement:item.colElement,
-                                    rightElement:item.rightElement,
-                                }}
-                            />}
-                            keyExtractor={({index})=>index}
-                            contentContainerStyle={{
-                                width:0.95*Layout.window.width,
+                            viewOptions={{
+                                leftElement:item.leftElement,
+                                colElement:item.colElement,
+                                rightElement:item.rightElement,
                             }}
-                        />
+                        />}
+                        keyExtractor={({index})=>index}
+                        contentContainerStyle={{
+                            width:0.95*Layout.window.width,
+                        }}
+                    />
 
-                        <ProductDataTableFinish data={dataTable.data}  />
-                    </Center>
+                    <Row justifyContent={"space-around"} my={3}>
+                        <Select
+                            selectedValue={statusSale}
+                            minWidth="200"
+                            accessibilityLabel="Choose status"
+                            placeholder="Choose Service"
+                            _selectedItem={{
+                                bg: "teal.600",
+                                endIcon: <CheckIcon size="5" />,
+                            }}
+                            mt={1}
+                            onValueChange={(itemValue) => setStatusSale(itemValue)}
+                        >
+                            <Select.Item label={status(501)} value="501" />
+                            <Select.Item label={status(502)}  value="502" />
+                        </Select>
+                        <ButtonBase isDisabled={statusSale === `${item.status}` ? true : false } bg={item.status === 501 ? "success.500" : "danger.500"} onPress={()=>changeStatus(statusSale)}>Update</ButtonBase>
+                    </Row>
                 </Center>
-            }
+            </Box>
         </ScrollView>
     )
 }
 const SaleDetailInfoScreen = (props:{route:any}) => {
     const {item} = props.route.params;
-    // get the number of cart finished by partner
-    // @ts-ignore
-    const listCartFinish = useGetListCartToPartnerIdQuery()
-    // @ts-ignore
+
     return (
-        <LoadingScreen data={[listCartFinish]}>
-            {/*<SaleDetailInfoScreenSection item={item} />*/}
-            <></>
-        </LoadingScreen>
+           <ShowDetailInfoScreenSection item={item} />
     );
 };
 

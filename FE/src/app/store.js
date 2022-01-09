@@ -1,12 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import {userSlice} from "./service/user/userSlice";
-import{token_current} from "./service/user/token";
-import {storeSlice} from "./service/store/storeSlice";
-import {adminApi, storeApi, productApi, orderApi, dashboardApi, cartApi, systemApi} from "./controller/index"
-import {orderSlice} from "./service/order/orderSlice";
-import {adminSlice} from "./service/admin/adminSlice";
-import {productSlice} from "./service/product/productSlice";
-import {cartSlice} from "./service/cart/cartSlice";
+import {adminApi,productApi,storeApi, orderApi ,dashboardApi,cartApi, systemApi,userSlice,orderSlice,adminSlice,productSlice,cartSlice,token_current,storeSlice} from "./controller/index"
+
 
 export const store = configureStore({
     reducer : {
@@ -33,5 +27,6 @@ export const store = configureStore({
             adminApi.middleware,
             orderApi.middleware ,
             dashboardApi.middleware,
+            systemApi.middleware
         ),
 })

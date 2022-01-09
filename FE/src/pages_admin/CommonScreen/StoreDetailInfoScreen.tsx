@@ -50,20 +50,25 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
     // @ts-ignore
     const navigation = useNavigation();
     const changeStatus = (status: number)=>{
-        let payload = {
-            id:item.id,
-            params:{
-                query:'status',
-                status:status,
+        if(parseInt(status) !== item.status){
+            let payload = {
+                id:item.id,
+                params:{
+                    query:'status',
+                    status:status,
+                }
             }
+            // @ts-ignore
+            dispatch(updateStatusPartner(payload));
+            dispatch(storeApi.util.invalidateTags(['storeApi']));
+            alert('Thay đổi trạng thái thành công')
+            navigation.goBack();
         }
-        // @ts-ignore
-        dispatch(updateStatusPartner(payload));
-        dispatch(storeApi.util.invalidateTags(['storeApi']));
-        alert('Thay đổi trạng thái thành công')
-        navigation.goBack();
+        else{
+            alert("Vui lòng chọn trạng thái mới")
+        }
     }
-    let [statusUser, setStatusUser] = React.useState(`${item.status}`)
+    let [statusStore, setStatusStore] = React.useState(`${item.status}`)
     return(
         <ScrollView bg={"white"}>
             {
@@ -118,23 +123,23 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
                         <TextBase mt={2} color={  "blue.400"} width={"95%"} >Thay đổi trạng thái người dùng</TextBase>
                         <Row justifyContent={"space-around"} my={3}>
                             <Select
-                                selectedValue={statusUser}
+                                selectedValue={statusStore}
                                 minWidth="200"
-                                accessibilityLabel="Choose Service"
+                                accessibilityLabel="Choose status"
                                 placeholder="Choose Service"
                                 _selectedItem={{
                                     bg: "teal.600",
                                     endIcon: <CheckIcon size="5" />,
                                 }}
                                 mt={1}
-                                onValueChange={(itemValue) => setStatusUser(itemValue)}
+                                onValueChange={(itemValue) => setStatusStore(itemValue)}
                             >
                                 <Select.Item label={status(201)} value="201" />
                                 <Select.Item label={status(202)}  value="202" />
                                 <Select.Item label={status(203)}  value="203" />
                                 <Select.Item label={status(204)}  value="204" />
                             </Select>
-                            <ButtonBase bg={item.status === (203 || 204) ? "red.400" : "blue.400"} onPress={()=>changeStatus(statusUser)}>Update</ButtonBase>
+                            <ButtonBase isDisabled={statusStore === `${item.status}` ? true : false } bg={item.status === (203 || 204) ? "red.400" : "blue.400"} onPress={()=>changeStatus(statusUser)}>Update</ButtonBase>
                         </Row>
                     </Center>
                 </Center>

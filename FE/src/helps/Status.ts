@@ -24,6 +24,10 @@
             return "Sản phẩm được bán"
         case 402:
             return "Sản phẩm  khóa"
+        case 501:
+            return "Hoạt động"
+        case 502:
+            return "Vô hiệu hóa"
         default:
             return "Loading";
     }

@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react"
+import React, {useContext, useEffect, useState} from "react"
 import {
     Box,
     Text,
@@ -17,10 +17,12 @@ import {adminLogin} from "../../app/service/admin/adminSlice";
 import {userLogin} from "../../app/service/user/userSlice";
 import {getData} from "../../helps/localStorage";
 import {NavigationContext} from "../../navigation/RootMobile";
+import {store} from "../../app/store";
 
 export const LoginForm = (props:{navigation?:any}) => {
     const [user ,setUser] = useState("");
     const [password ,setPassword] = useState("");
+    const [loading,setLoading] = useState(false)
     const payload = {
         username:user,
         password:password,
@@ -30,13 +32,30 @@ export const LoginForm = (props:{navigation?:any}) => {
     const dispatch = useDispatch();
     // const login = useLoginAdminQuery(payload);
     const {auth}:any  = useContext(NavigationContext);
+    useEffect(() =>{
+
+    })
     const login = async ()=>{
         // @ts-ignore
-        await dispatch(userLogin(payload));
-        // @ts-ignore
-        await dispatch(adminLogin(payload));
-        getData("user").then(r =>auth.setUser(r));
-        getData("admin").then(r =>auth.setAdmin(r));
+        if(user && password){
+            setLoading(true );
+            // @ts-ignore
+            await dispatch(userLogin(payload));
+            // @ts-ignore
+            await dispatch(adminLogin(payload));
+            console.log("code",store.getState().admin.code )
+            if(store.getState().admin.code === 200 ||store.getState().auth.code === 200 ){
+                getData("user").then(r =>auth.setUser(r));
+                getData("admin").then(r =>auth.setAdmin(r));
+            }else{
+                alert('Tài khoản hoặc mật khẩu không chính xác');
+                setLoading(false );
+            }
+        }
+        else  {
+            alert("Vùi lòng nhập đầy đủ thông tin");
+            setLoading(true );
+        }
     }
     return (
         <Box safeArea p="2" py="8" w="90%" maxW="290">
@@ -92,7 +111,7 @@ export const LoginForm = (props:{navigation?:any}) => {
                         Forget Password?
                     </Link>
                 </FormControl>
-                <Button mt="2" colorScheme="indigo" onPress={() =>login()} >
+                <Button mt="2" colorScheme="indigo"  isLoading={loading}   isLoadingText = "Submitting" onPress={() =>login()} >
                     Sign in
                 </Button>
 
@@ -102,9 +121,6 @@ export const LoginForm = (props:{navigation?:any}) => {
 }
 
 export default function SignInScreen(props:{navigation:any})  {
-
-
-
     return (
         <Center flex={1} px="3">
             <LoginForm  navigation={props.navigation}/>

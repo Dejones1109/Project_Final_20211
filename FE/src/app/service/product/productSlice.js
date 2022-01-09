@@ -13,7 +13,15 @@ export const createProduct = createAsyncThunk(
     }
 );
 
+export const updateByStatusProduct = createAsyncThunk(
+    'product/updateStatus',
+    async (params ,{rejectWithValue,})=>{
 
+        const response = await ProductClient.updateByStatusProduct(params).catch(error =>  rejectWithValue(error.json()));
+        console.log(response.data);
+        return response;
+    }
+);
 
 
 export const productSlice = createSlice({
@@ -29,6 +37,16 @@ export const productSlice = createSlice({
                 state.code = 201;
             })
             .addCase(createProduct.rejected, (state )=>{
+                state.status = 500;
+            });
+        builder
+            .addCase(updateByStatusProduct.pending,(state)=>{
+                state.code  = 404;
+            })
+            .addCase(updateByStatusProduct.fulfilled,(state )=>{
+                state.code = 201;
+            })
+            .addCase(updateByStatusProduct.rejected, (state )=>{
                 state.status = 500;
             });
     }

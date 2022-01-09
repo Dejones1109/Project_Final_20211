@@ -212,10 +212,11 @@ const renderScene = (props:{ route:any, jumpTo:any }) => {
 
 
 const renderLabel = (props:{ route:any, focused:any, color:any }) => {
+
     return (
         <View>
             <TextBase
-                color={"dark"}
+                color={props.focused ? "#0077e6":"dark"}
             >
                 {props.route.title}
             </TextBase>
@@ -247,6 +248,7 @@ const CartScreen = () => {
                     indicatorStyle={{ backgroundColor: "#0077e6",  }}
                     tabStyle={{ width: 150  }}
                     scrollEnabled={true}
+                    activeColor={"#A8A29E"}
                     style={styles.container}
                     renderLabel={renderLabel}
                 />
@@ -260,7 +262,7 @@ const CartScreen = () => {
 };
 const styles = StyleSheet.create({
     container: {
-        marginTop: StatusBar.currentHeight,
+        paddingTop : StatusBar.currentHeight,
         backgroundColor :"#FFFFFF",
     },
     scene: {

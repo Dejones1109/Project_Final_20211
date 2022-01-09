@@ -7,8 +7,11 @@ export class ProductClient {
             .catch(error => rejectWithValue(error.json()));
         return response.data;
     }
-
-
+    async updateByStatusProduct(payload  , rejectWithValue  )   {
+        const response = await client.put(`${endpoints.product}/${payload.id}?query=status&status=${payload.status}`)
+            .catch(error => rejectWithValue(error.json()));
+        return response.data;
+    }
 }
 
 export default new ProductClient();

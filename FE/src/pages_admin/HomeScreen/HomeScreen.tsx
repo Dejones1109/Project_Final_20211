@@ -88,6 +88,7 @@ const HomeScreen = (props:{navigation?:any})=>{
     const dataCartWaiting = useGetAllCartWaitingForAdminQuery(payload);
     // @ts-ignore
     const getQuantity = useGetOrderQuantityByStatusOfAdminQuery();
+    console.log("dataCartWaiting",dataCartWaiting);
     return (
         <LoadingScreen data={[dataCartWaiting, getQuantity]}>
             <ScrollView bg={"white"}>

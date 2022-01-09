@@ -1,24 +1,24 @@
+import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import * as React from 'react';
-import { ColorSchemeName } from 'react-native';
+import {ColorSchemeName, Platform, } from 'react-native';
 import {AuthTabParamList, RootStackParamList } from '../constants/Routes';
 import SignInScreen from '../pages_app/AuthScreen/SignInScreen';
 import BottomTabUserNavigator from './user/BottomTabUserNavigator';
 import RegisterScreen from "../pages_app/AuthScreen/RegisterScreen";
 import LinkingConfigurationForAdmin from "./admin/LinkingConfigurationForAdmin";
 import BottomTabAdminNavigator from './admin/BottomTabAdminNavigator';
-import { AsyncStorage } from 'react-native';
 import {getData} from "../helps/localStorage";
-import base64url from "base64url";
-import {createContext, useContext, useState} from "react";
-import {checkLogin} from "../helps/authenticate";
-
+import {createContext, useContext, useEffect, useState} from "react";
+import {checkLogin, getUser} from "../helps/authenticate";
+import NetInfo from "@react-native-community/netinfo";
+import SplashScreen from "../components/common/SplashScreen";
 export const NavigationContext = createContext({});
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     const [user,setUser] = useState(null);
     const [admin,setAdmin] = useState(null);
+    const [isConnected,setIsConnected] = useState(false);
     getData("user").then(r =>{
         // @ts-ignore
         setUser(r);
@@ -28,6 +28,15 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
         // @ts-ignore
         setAdmin(r);
     });
+    getUser();
+    useEffect(()=>{
+        NetInfo.addEventListener(networkState => {
+            if(networkState.isConnected){
+                setIsConnected(networkState.isConnected)
+            }
+        });
+    })
+
     const data = {
         auth:{
             user:user,
@@ -38,12 +47,13 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
             setAdmin:(admin:string )=>setAdmin(admin),
         }
     }
+
     return (
         <NavigationContainer
             linking ={LinkingConfigurationForAdmin}
         >
             <NavigationContext.Provider value={data}>
-                <RootNavigator  />
+                {isConnected ? <RootNavigator  /> : <SplashScreen />}
             </NavigationContext.Provider>
         </NavigationContainer>
     );

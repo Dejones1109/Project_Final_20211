@@ -137,14 +137,14 @@ function InfoNavigator(){
         <InfoStack.Navigator
             initialRouteName="infoScreen"
             screenOptions={{
-                headerTitleAlign:"center"
+                headerTitleAlign:"left"
             }}
         >
             <InfoStack.Screen
                 name="infoScreen"
                 component={InfoScreen}
                 options={{
-                    headerTitle:"Thông tin",
+                    headerTitle:"Thông tin khác",
                 }}
             />
             <InfoStack.Screen
@@ -228,7 +228,7 @@ function StatisticsNavigator(){
                 component={StatisticsScreen}
                 options={{
                     headerTitle: 'Thống kê',
-                    headerShown:false
+                    headerShown:true
                 }}
             />
             <StatisticsStack.Screen

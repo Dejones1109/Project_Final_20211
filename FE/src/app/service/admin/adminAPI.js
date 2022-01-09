@@ -37,20 +37,6 @@ export const adminApi = createApi({
             query: (partnerId) => `admin/${partnerId}?query=partnerId`,
             providesTags:['adminApi']
         }),
-    //     editPost: builder.mutation({
-    //     query: (body) => {
-    //         console.log(body);
-    //         return ({
-    //             url: `admin?query=login`,
-    //             method: 'POST',
-    //             body,
-    //         })
-    //     },
-    //     invalidatesTags:(result) =>
-    //         {
-    //             // console.log("result",result);
-    //             return ['Post']
-    //         },
-    // }),
+
     }),
 });

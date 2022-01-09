@@ -29,9 +29,10 @@ export const adminSlice = createSlice({
         builder
             .addCase(adminLogin.pending,(state)=>{
                 state.code  = 404;
+
             })
             .addCase(adminLogin.fulfilled,(state,action )=>{
-                state.code  = 201;
+                state.code  = 200;
                 state.currentUser = action.payload;
             })
             .addCase(adminLogin.rejected, (state )=>{

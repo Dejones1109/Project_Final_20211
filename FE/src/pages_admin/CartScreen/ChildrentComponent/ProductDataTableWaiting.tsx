@@ -108,7 +108,7 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
                         </Modal.Content>
                     </Modal>
                 </>
-                : <TextBase >Người dùng chưa mua bao giờ</TextBase>
+                : <TextBase >Không có đơn hàng nào mới</TextBase>
             }
         </>
 

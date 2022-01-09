@@ -1,16 +1,23 @@
 import React, {useContext} from 'react';
-import {Center, Divider, Pressable, ScrollView} from "native-base";
+import {Box, Center, Divider, Pressable, ScrollView} from "native-base";
 import FrameBase from "../../components/FrameBase";
 import TextBase from "../../components/TextBase";
 import Layout from "../../constants/Layout";
-import {Col} from "../../components/AutoLayout";
+import {Col, Row} from "../../components/AutoLayout";
 import MainIcon from "../../assets/icon/Icon";
 import {LoadingContext} from "../../helps/LoadingScreen";
 import {deleteData} from "../../helps/localStorage";
 import {NavigationContext} from "../../navigation/RootMobile";
+import {useGetTotalPriceAndTotalQuantityQuery} from "../../app/selectors";
+import {FadeLoading} from "react-native-fade-loading";
+import {StyleSheet} from "react-native";
+import {Flow, Wave} from "react-native-animated-spinkit";
 
 const LayoutInfoScreen = (props:{navigation:any}) => {
     const {auth}:any = useContext(NavigationContext);
+    // @ts-ignore
+    const total =  useGetTotalPriceAndTotalQuantityQuery();
+    let {isSuccess} = total;
     const data = [
         {
             leftElement:<Col>
@@ -67,26 +74,30 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
     ]
     // @ts-ignore
     const {context} = useContext(LoadingContext);
-    const total = context[0].data;
+
     return (
         <ScrollView bg={"white"} >
-            <Center borderWidth={1} p={2}   m={2} borderColor={"light.200"} bg={"primary.100"} borderRadius={5}>
+            {isSuccess ?
+                <Center borderWidth={1} p={2}   m={2} borderColor={"light.200"} bg={"primary.100"} borderRadius={5}>
 
-                <FrameBase
-                    default
-                    viewOptions={{
-                        leftElement:<TextBase color={"blue.500"} >Sản lượng</TextBase>,
-                        rightElement: <TextBase color={"red.500"}>{total.data[1]} g</TextBase>,
-                    }}
-                />
-                <FrameBase
-                    default
-                    viewOptions={{
-                        leftElement:<TextBase color={"blue.500"}>Doanh thu</TextBase>,
-                        rightElement: <TextBase color={"red.500"}> {total.data[0]} đ</TextBase>,
-                    }}
-                />
-            </Center>
+
+                    <FrameBase
+                        default
+                        viewOptions={{
+                            leftElement:<TextBase color={"blue.500"} >Sản lượng</TextBase>,
+                            rightElement: <TextBase color={"red.500"}>{total.data.data[1]} g</TextBase>,
+                        }}
+                    />
+                    <FrameBase
+                        default
+                        viewOptions={{
+                            leftElement:<TextBase color={"blue.500"}>Doanh thu</TextBase>,
+                            rightElement: <TextBase color={"red.500"}> {total.data.data[0]} đ</TextBase>,
+                        }}
+                    />
+                </Center> :  <Row justifyContent={"center"} height={50} ><Wave size={20} color="#60A5FA" animating={true} /></Row>
+
+            }
             <Divider bg={"light.200"} width={Layout.window.width} height={3}/>
             <Center>
                 <Pressable width={"100%"} onPress={()=>props.navigation.navigate("storeList")}>
@@ -121,7 +132,7 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
                     />
                 </Pressable>
                 <Divider bg={"light.200"} width={0.95*Layout.window.width} />
-                <Pressable width={"100%"} onPress={()=>props.navigation.navigate("productList")}>
+                <Pressable width={"100%"} onPress={()=>props.navigation.navigate("saleList")}>
                     <FrameBase
                         default
                         styled={{
@@ -175,5 +186,10 @@ const LayoutInfoScreen = (props:{navigation:any}) => {
         </ScrollView>
     );
 };
-
+const styles = StyleSheet.create({
+    fadeLoading: {
+        padding: 50,
+        borderRadius: 4,
+    },
+});
 export default LayoutInfoScreen;

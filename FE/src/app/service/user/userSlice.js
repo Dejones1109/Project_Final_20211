@@ -17,7 +17,7 @@ export const userLogin = createAsyncThunk(
 
         const encode = base64.encode(`${partCode}.${phone}.${password}.${new Date()}`);
         await storeData(`user`,String(encode));
-
+        console.log(response.data);
         return response.data;
     }
 );
@@ -40,7 +40,6 @@ export const userSlice = createSlice({
         builder
             .addCase(userLogin.pending,(state)=>{
                 state.code  = 404;
-                state.currentUser = null;
             })
             .addCase(userLogin.fulfilled,(state,action )=>{
                 state.code  = 201;
@@ -48,12 +47,10 @@ export const userSlice = createSlice({
             })
             .addCase(userLogin.rejected, (state )=>{
                 state.code  = 500;
-                state.currentUser = null;
             });
         builder
             .addCase(register.pending,(state )=>{
                 state.code  = 404;
-                state.currentUser = null;
             })
             .addCase(register.fulfilled,(state )=>{
                 state.code  = 201;
@@ -61,7 +58,6 @@ export const userSlice = createSlice({
             })
             .addCase(register.rejected, (state )=>{
                 state.code  = 500;
-                state.currentUser = null;
             })
     }
 })

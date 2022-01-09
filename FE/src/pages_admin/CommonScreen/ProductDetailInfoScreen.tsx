@@ -1,9 +1,15 @@
-import React from 'react';
+import React, {useState} from 'react';
 import TextBase from "../../components/TextBase";
-import {Avatar, Box, Center, FlatList, Image, ScrollView} from "native-base";
+import {Avatar, Box, Center, CheckIcon, FlatList, Image, ScrollView, Select} from "native-base";
 import {status} from "../../helps/Status";
 import FrameBase from "../../components/FrameBase";
 import Layout from "../../constants/Layout";
+import {Row} from "../../components/AutoLayout";
+import ButtonBase from "../../components/ButtonBase";
+import {useDispatch} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
+import {productApi} from "../../app/controller";
+import {updateByStatusProduct} from "../../app/service/product/productSlice";
 
 const ProductDetailInfoScreen = (props:{route:any}) => {
     const {item} = props.route.params;
@@ -41,6 +47,26 @@ const ProductDetailInfoScreen = (props:{route:any}) => {
             colElement:<TextBase>{item.updatedDate}</TextBase>,
         },
     ]
+    const dispatch = useDispatch();
+    let [statusUser, setStatusUser] = React.useState(`${item.status}`);
+    // @ts-ignore
+    const navigation = useNavigation();
+    const changeStatus = (status: number)=>{
+        if(parseInt(status) !== item.status){
+            let payload = {
+                id:item.id,
+                status:status,
+            }
+            // @ts-ignore
+            dispatch(updateByStatusProduct(payload));
+            dispatch(productApi.util.invalidateTags(['productApi']));
+            alert('Thay đổi trạng thái thành công');
+            navigation.goBack();
+        } else{
+            alert("Vui lòng chọn trạng thái mới")
+        }
+
+    }
     return (
         <ScrollView bg={"white"}>
             <Center >
@@ -76,6 +102,27 @@ const ProductDetailInfoScreen = (props:{route:any}) => {
                             width:0.95*Layout.window.width,
                         }}
                     />
+                    <TextBase mt={2} color={  "blue.400"} width={"95%"} >Thay đổi trạng thái người dùng</TextBase>
+                    <Row justifyContent={"space-around"} my={3}>
+                        <Select
+                            selectedValue={statusUser}
+                            minWidth="200"
+                            accessibilityLabel="Choose Service"
+                            placeholder="Choose Service"
+                            _selectedItem={{
+                                bg: "teal.600",
+                                endIcon: <CheckIcon size="5" />,
+                            }}
+                            mt={1}
+                            onValueChange={(itemValue) => {
+                                setStatusUser(itemValue);
+                            }}
+                        >
+                            <Select.Item label={status(401)} value="401" />
+                            <Select.Item label={status(402)}  value="402" />
+                        </Select>
+                        <ButtonBase isDisabled={statusUser === `${item.status}` ? true : false } bg={item.status === 401 ? "red.400" : "blue.400"} onPress={()=>changeStatus(statusUser)}>Update</ButtonBase>
+                    </Row>
                 </Center>
             </Center>
         </ScrollView>

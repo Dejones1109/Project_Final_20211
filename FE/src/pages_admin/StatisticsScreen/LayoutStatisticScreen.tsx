@@ -45,10 +45,11 @@ const LayoutStatisticsScreen = () => {
     // get data for pie chart
     const statisticsData =  useGetDashboardByProductTypeQuery({start:startDate, end:endDate});
     const chartConfig = {
-        backgroundGradientFrom: "#1E2923",
-        backgroundGradientTo: "#08130D",
+        backgroundGradientFrom: "#f5f5f4",
+        backgroundGradientTo: "#f5f5f4",
         // backgroundGradientToOpacity: 0,
-        color: (opacity = 1) => `rgba(26, 255, 146, ${opacity})`,
+        color: (opacity = 1) => `rgba(52, 255, 146, ${opacity})`,
+        labelColor: (opacity = 1) => `rgba(255, 102, 102, ${opacity})`,
         strokeWidth: 1,
         barPercentage: 0.5,
     };
@@ -68,7 +69,6 @@ const LayoutStatisticsScreen = () => {
                 data: lineData,
                 color: (opacity = 1) => `rgba(134, 65, 244, ${opacity})`, // optional
                 strokeWidth: 2 // optional,
-
             }
         ],
         legend: ["Doanh thu"] // optional
@@ -97,16 +97,18 @@ const LayoutStatisticsScreen = () => {
                    }
                    if(item.price !== 0){
                        labels.push(item.productType);
-                       lineData.push({price:item.price, name:item.productType});
+                       lineData.push(item.price);
+                       // lineData.push({price:item.price, name:item.productType});
                    }
                 })
             };
-            console.log("dataaaa", lineData);
         }
         catch (e){};
     }
     return (
-        <ScrollView bg={"white"}>
+        <ScrollView bg={"white"}
+            showsVerticalScrollIndicator={false}
+        >
             <>
                 <StatusBar backgroundColor="white" barStyle="light-content"  />
                 <Center>
@@ -171,9 +173,10 @@ const LayoutStatisticsScreen = () => {
                         </Row>
                     </Box>
                 </Center>
-                <Center>
-                    <Box position={"absolute"}  top={34} bg={"light.100"} borderRadius={20}>
-                        <TextBase fontSize={16} mt={3}  ml={3}>Tổng {service === "1" ? "sản lượng" : "doanh thu" } : <TextBase>{service === "1" ? `${total.data.data[1]} g` : `${total.data.data[0]} đ` }</TextBase> </TextBase>
+
+                <>
+                    <Box position={"absolute"}  top={34} bg={"light.100"} borderRadius={20} width={"100%"}>
+                        <TextBase fontSize={16} mt={3}  ml={3}>Tổng {service === "1" ? "sản lượng" : "doanh thu" } : <TextBase color={"red.500"}>{service === "1" ? `${total.data.data[1]} g` : `${total.data.data[0]} đ` }</TextBase> </TextBase>
                         {service ==="1" ?
                             <PieChart
                                 data={pieChart}
@@ -190,18 +193,38 @@ const LayoutStatisticsScreen = () => {
                                 absolute
                             />
                         :
-                            <LineChart
-                                data={lineChart}
-                                width={0.95*Layout.window.width}
-                                height={220}
-                                chartConfig={chartConfig}
-
-                        />}
+                            <ScrollView
+                                overflow={"hidden"}
+                                width={'100%'}
+                                height={280}
+                                bg={"light.100"}
+                                scrollEnabled
+                                horizontal={true}
+                                contentOffset={{ x: 10000, y: 0 }}
+                                showsHorizontalScrollIndicator={false}
+                            >
+                                <Box mx={'2.5%'}>
+                                    <LineChart
+                                        data={lineChart}
+                                        width={1000}
+                                        height={220}
+                                        chartConfig={chartConfig}
+                                        xLabelsOffset={1}
+                                        // withHorizontalLines={false}
+                                        // withVerticalLines={false}
+                                        // withHorizontalLabels={false}
+                                        // withInnerLines={false}
+                                        // withOuterLines={false}
+                                    />
+                                </Box>
+                            </ScrollView>
+                           }
 
                     </Box>
-                </Center>
+                </>
             </Box>
-            <View mt={service ==="1" ? 260 :340 }  >
+
+            <View mt={service ==="1" ? 260 :360 }  >
                 <Center borderWidth={1} p={2}   m={2} borderColor={"light.200"} bg={"primary.100"} borderRadius={5} >
                     <FrameBase
                         default
@@ -230,6 +253,7 @@ const LayoutStatisticsScreen = () => {
                     {service ==="1" ?<RankTableQuantityView data={dataTableQuantity.data}/> :<RankTableMoneyView data={dataTableMoney.data}/>}
                 </View>
             </View>
+
 </ScrollView>
 );
 };

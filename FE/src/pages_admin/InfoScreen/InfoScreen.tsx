@@ -13,13 +13,11 @@ const InfoScreen = (props:{navigation:any}) => {
 
     //get quantity and money
     // @ts-ignore
-    const total =  useGetTotalPriceAndTotalQuantityQuery();
-
-
+    // const total =  useGetTotalPriceAndTotalQuantityQuery();
     return (
-        <LoadingScreen data={[total]}>
+        // <LoadingScreen data={[total]}>
             <LayoutInfoScreen navigation={props.navigation}/>
-        </LoadingScreen>
+        // </LoadingScreen>
     );
 };
 

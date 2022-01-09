@@ -19,5 +19,16 @@ export const systemApi = createApi({
             }),
             invalidatesTags:['systemApi'],
         }),
+        getAllSale : builder.query({
+            query: () => "system",
+            providesTags:['systemApi'],
+        }),
+        updateStatusSale :builder.mutation({
+            query: (payload) => ({
+                url: `system/${payload.id}?query=status&status=${payload.status}`,
+                method: 'PUT',
+            }),
+            invalidatesTags:['systemApi'],
+        }),
     }),
 });
