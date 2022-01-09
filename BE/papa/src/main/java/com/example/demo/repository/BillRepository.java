@@ -8,5 +8,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BillRepository  extends CrudRepository<Bill,Integer> {
-   // @Query("select b from Bill b where b.")
+    @Query("select b from Bill b where b.partner.id=:partnerId")
+    Bill getCartByPartnerId(Integer partnerId);
+    @Query("select count(b) from Bill b")
+    Integer getMaxLength();
+
 }

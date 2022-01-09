@@ -1,7 +1,9 @@
 package com.example.demo.services.impl;
 
+import com.example.demo.entity.Bill;
 import com.example.demo.entity.Partner;
 import com.example.demo.entity.Products;
+import com.example.demo.repository.BillRepository;
 import com.example.demo.repository.DashBoardRepository;
 import com.example.demo.repository.PartnerRepository;
 import com.example.demo.response.OrderQuantityByStatus;
@@ -21,15 +23,14 @@ public class PartnerServiceImp implements PartnerService {
     PartnerRepository partnerRepository;
     @Autowired
     DashBoardRepository dashBoardRepository;
+    @Autowired
+    BillRepository billRepository;
 
     @Override
     public List<Partner> findAll() {
-        Iterable<Partner> partners = partnerRepository.findAll();
-        if (partners != null) {
-            List<Partner> partnersList = IterableUtils.toList(partners);
-            return partnersList;
-        }
-        return new ArrayList<>();
+        List<Partner> partners = partnerRepository.getListPartnerAsc();
+
+        return partners;
     }
 
     @Override
@@ -73,7 +74,8 @@ public class PartnerServiceImp implements PartnerService {
 
     @Override
     public Partner isCheckPhone(String phone) {
-        return isCheckPhone(phone);
+
+        return partnerRepository.isCheckPhone(phone);
     }
 
 

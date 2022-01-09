@@ -14,4 +14,5 @@ public interface ProductsService {
     List<Products> listProductsByType(String type);
     List<Products> getProductByView();
     List<Products> searchProductByKey(String keyString);
+    List<Products> searchProductByProductName(String keyString);
 }

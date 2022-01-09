@@ -11,5 +11,6 @@ public class CreateOrderRequest {
     protected Integer partnerId;
     protected Integer[] cartId;
     protected Integer isBill;
+    protected Integer saleId;
 
 }

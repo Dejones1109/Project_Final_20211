@@ -4,6 +4,7 @@ public class Status {
     public static final String CODE_SUCCESS = "200";
     public static final String STATUS_SUCCESS = "Success";
     public static final String STATUS_USERNAME_EXITS = "Phone exits!";
+    public static final String STATUS_PRODUCT_EXITS = "Product exits!";
     public static final String CODE_CREATED = "201";
     public static final String STATUS_CREATED = "Created";
     public static final String CODE_NOT_FOUND = "404";

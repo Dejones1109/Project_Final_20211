@@ -1,5 +1,6 @@
 package com.example.demo.repository.Imp;
 
+import com.example.demo.entity.Sale;
 import com.example.demo.repository.DashBoardRepository;
 import com.example.demo.response.OrderQuantityByStatus;
 import com.example.demo.response.admin.DashboardByProductAndPriceResponse;
@@ -80,9 +81,29 @@ public class DashBoardRepositoryImp implements DashBoardRepository {
             dashboard.setOrderCancel((Long) map.get("cancel"));
             dashboard.setOrderNoPay((Long) map.get("nopay"));
             dashboard.setOrderPayed((Long) map.get("payed"));
-
-
         });
         return dashboard;
+    }
+
+    @Override
+    public List<Sale> getOrderSaleByPartnerUsed(Integer partnerId) {
+        List<Sale> list = new ArrayList<>();
+        SimpleJdbcCall jdbcCall = new SimpleJdbcCall(jdbcTemplate).withProcedureName("listSalePartnerUsed");
+        Map<String, Object> inputParams = new HashMap<>();
+        inputParams.put("pid", partnerId);
+        Map<String, Object> execute = jdbcCall.execute(inputParams);
+        ArrayList<Map> dataMap = (ArrayList<Map>) execute.get("#result-set-1");
+        dataMap.forEach(map -> {
+   Sale sale = new Sale();
+            sale.setId((Integer) map.get("id"));
+            sale.setSaleCode((String) map.get("sale_code"));
+            sale.setSaleName((String) map.get("sale_name"));
+            sale.setSaleValue((Integer) map.get("sale_value"));
+            sale.setSaleRemark((String) map.get("sale_remark"));
+            sale.setStartDate((String) map.get("start_date"));
+            sale.setEndDate((String) map.get("end_date"));
+            list.add(sale);
+        });
+        return list;
     }
 }
