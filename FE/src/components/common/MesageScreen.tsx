@@ -20,6 +20,7 @@ import TextBase from "../TextBase";
 import {Col} from "../AutoLayout";
 import {useNavigation} from "@react-navigation/native";
 import ButtonBase from "../ButtonBase";
+import {store} from "../../app/store";
 type message =  {
     name: string,
     image: string,
@@ -48,20 +49,28 @@ const Message = (props:{item:message, nameUser:any})=>{
 }
 const ListMessage = React.memo((props:{data:any,nameUser:any})=>{
     const yourRef:any = useRef(null);
+    console.log(yourRef.current);
     return (
-        <FlatList
-            ref={yourRef}
-            data={props.data}
-            onContentSizeChange={() => yourRef.current.scrollToEnd() }
-            onLayout={() => yourRef.current.scrollToEnd() }
-            renderItem={({item})=><Message item={item} nameUser={props.nameUser}/>}
-            keyExtractor={(index)=>index}
-        />
+        <>
+            <ButtonBase onClick={() =>yourRef.current.scrollToEnd({ animated: true })}>
+                abc
+            </ButtonBase>
+            <FlatList
+                ref={yourRef}
+                onContentSizeChange={() =>  yourRef.current.scrollToEnd({ animated: true })}
+                data={props.data}
+                scrollEnabled={true}
+                renderItem={({item})=><Message item={item} nameUser={props.nameUser}/>}
+                keyExtractor={(index)=>index}
+            />
+
+        </>
     )
 })
 const MessageScreen = (props:{route?:any}) => {
     let currentUser:any = props.route.params.item;
     let {info, message} = currentUser;
+    console.log(info);
     let getSomeDataWhenRunning:any = [];
     const [messages, setMessages] = useState(Object.values(message));
     const [inputMessage, setInputMessage] = useState('');
@@ -74,7 +83,7 @@ const MessageScreen = (props:{route?:any}) => {
             await Database.push(
                 `message/${info.partCode}`,
                 {
-                    name: "admin",
+                    name: store.getState().auth.code === 200 ? info.name : 'admin',
                     image: 'https://randomuser.me/api/portraits/men/0.jpg',
                     mes:inputMessage,
                     time:Database.timeStamp(new Date())
@@ -93,32 +102,27 @@ const MessageScreen = (props:{route?:any}) => {
             );
         }
     }
-
     // @ts-ignore
-    // useEffect(async () =>{
-    //     await Database.listen(
-    //         `message/${currentUser}`,
-    //         'child_added',
-    //         (snap:any) => {
-    //             // console.log(snap.val());
-    //             getSomeDataWhenRunning.push(snap.val());
-    //             // @ts-ignore
-    //             setMessages([...getSomeDataWhenRunning]);
-    //         }
-    //     );
-    // },[])
+    useEffect(async () =>{
+        if(store.getState().auth.code === 200){
+            try{
+                await Database.listen(
+                    `message/${info.partCode}`,
+                    'child_added',
+                    (snap:any) => {
+                        // console.log(snap.val());
+                        getSomeDataWhenRunning.push(snap.val());
+                        // @ts-ignore
+                        setMessages([...getSomeDataWhenRunning]);
+                    }
+                );
+            }
+            catch(e){}
+        }
+    },[])
     return (
         <>
-            <>
-                <StatusBar backgroundColor="white" barStyle="light-content"  />
-                <Row h={50} bg='#FFFFFF' space={3} alignItems='center'>
-                    <ButtonBase onPress={()=>navigation.goBack()} startIcon={<MainIcon name={'arrow-left'}/>} />
-                    <Heading >{info.name}</Heading>
-                </Row>
-            </>
-            <ScrollView  px={2}  mb={65}>
-                <ListMessage data={messages} nameUser={'admin'}/>
-            </ScrollView>
+            <ListMessage data={messages} nameUser={info.name}/>
             <Row px={2} justifyContent={"center"} alignItems={'center'}  space={2} position={'absolute'} bottom={2} left={0} right={0}>
                 <Input
                     variant="rounded"
@@ -126,6 +130,7 @@ const MessageScreen = (props:{route?:any}) => {
                     placeholder="Round"
                     value={inputMessage}
                     onChangeText={(text)=>setInputMessage(text)}
+                    onSubmitEditing={()=>sendMessage()}
                 />
                 <TouchableOpacity onPress={()=>sendMessage()}>
                     <MainIcon name={"send"} />

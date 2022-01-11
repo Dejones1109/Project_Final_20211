@@ -74,12 +74,13 @@ const ShowDetailInfoScreenSection = (props:{item:any})=>{
     // @ts-ignore
     const navigation = useNavigation();
     const changeStatus = (status: number)=>{
-        if(parseInt(status) !== item.status){
+        if(status !== item.status){
             let payload = {
                 id:item.id,
                 status:status,
             }
             updateStatusSale(payload).then(res=>{
+                // @ts-ignore
                 if(res.data.code === "200"){
                     alert('Thay đổi trạng thái thành công');
                 }else{
@@ -138,7 +139,7 @@ const ShowDetailInfoScreenSection = (props:{item:any})=>{
                             <Select.Item label={status(501)} value="501" />
                             <Select.Item label={status(502)}  value="502" />
                         </Select>
-                        <ButtonBase isDisabled={statusSale === `${item.status}` ? true : false } bg={item.status === 501 ? "success.500" : "danger.500"} onPress={()=>changeStatus(statusSale)}>Update</ButtonBase>
+                        <ButtonBase isDisabled={statusSale === `${item.status}` ? true : false } bg={item.status === 501 ? "success.500" : "danger.500"} onPress={()=>changeStatus(parseInt(statusSale))}>Update</ButtonBase>
                     </Row>
                 </Center>
             </Box>

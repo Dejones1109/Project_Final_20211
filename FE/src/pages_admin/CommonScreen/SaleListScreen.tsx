@@ -26,28 +26,8 @@ import {createPartner} from "../../app/service/store/storeSlice";
 import {storeApi} from "../../app/controller";
 import {TouchableOpacity} from "react-native";
 import {filterSomething, timeStamp} from "../../helps";
+import {SaleCardView} from "../../components/common/SaleCardView";
 
-const SaleCardView = (props:{item:any,navigation ?: any})=>{
-    const item = props.item;
-    return(
-            <TouchableOpacity onPress={()=>props.navigation.navigate('saleDetailInfo',{item:item})}>
-                <Row alignItems={"flex-start"} w={'100%'}  space={3} px={'2.5%'} py={2} bg={'info.100'}>
-                    <Col justifyContent={'flex-start'} py={2}>
-                        <MaterialCommunityIcons name="sale" size={50} color="#60A5FA" />
-                    </Col>
-                    <Col maxWidth={'70%'}>
-                        <TextBase light fontSize={15} color={'red.500'}> {item.saleName.toUpperCase()} - KHUYẾN MÃI {item.saleValue} <MaterialCommunityIcons name="sale" size={15} color="#60A5FA" /></TextBase>
-                        <TextBase color={'light.400'} fontSize={12}>{item.saleRemark.charAt(0).toUpperCase()+item.saleRemark.slice(1) }</TextBase>
-                        <Row>
-                            <MainIcon name={'time'} />
-                            <TextBase color={'light.400'} fontSize={13}>{item.endDate.split(" ")[1]} / {item.endDate.split(" ")[0]}</TextBase>
-                        </Row>
-                    </Col>
-                    <Spacer/>
-                </Row>
-            </TouchableOpacity>
-    )
-}
 const  ShowSaleListScreen = (props:{navigation:any}) =>{
     // @ts-ignore
 
@@ -70,7 +50,6 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
     }
     const [createSale] = useCreateSaleMutation();
     const notification = (payload:any)=>{
-        console.log(payload);
         if(payload.code === "201" ){
             alert("Tạo thành công");
         }
@@ -194,21 +173,18 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
                     }}
                     numColumns={1}
                     renderItem = {({item})=><View>
-                        <SaleCardView item={item} navigation={props.navigation} />
+                        <SaleCardView item={item} navigation={props.navigation} routeName={'saleDetailInfo'} />
                         <Divider />
                     </View> }
-                    data={listShow.length %2 === 0 ?listShow : listShow.slice(0,listShow.length-1)}
+                    data={listShow}
                     keyExtractor={({index}) => index}
+                    ItemSeparatorComponent={() => <Divider bg={"light.300"} />}
                 />
-                {
-                    listShow.length %2 !== 0 &&  <SaleCardView item={listShow[listShow.length-1]} navigation={props.navigation} />
-                }
-
             </ScrollView>
             <View flex={1} zIndex={3}>
                 <Button
                     bg={"blue.400"}
-                    position="fixed"
+                    position="absolute"
                     right={3}
                     bottom={100}
                     size="sm"

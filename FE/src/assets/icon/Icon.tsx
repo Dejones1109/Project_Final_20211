@@ -52,6 +52,9 @@ const IconCalendar = <AntDesign name="calendar" size={30} color="black" />;
 const IconLogOut = <MaterialIcons name="logout" size={30} color="#A8A29E"  />;
 
 const IconSend = <Ionicons name="send" size={24} color="#60A5FA"  />
+const IconDelete = <Feather name="delete" size={24} color="black" />
+
+
 const MainIcon = (props:{name :string}) => {
     switch (props.name) {
         case "cart":
@@ -112,6 +115,8 @@ const MainIcon = (props:{name :string}) => {
             return IconLogOut ;
         case "send":
             return IconSend ;
+        case "delete":
+            return IconDelete ;
         default:
             return null;
     }

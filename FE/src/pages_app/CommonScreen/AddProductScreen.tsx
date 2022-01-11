@@ -9,8 +9,11 @@ import MainIcon from "../../assets/icon/Icon";
 import {useDispatch} from "react-redux";
 import {updateQuantity,createCart} from '../../app/service/cart/cartSlice'
 import { useNavigation } from '@react-navigation/native';
-import { useCheckExistProductOnCartQuery } from '../../app/selectors';
+import { useGetCartListByPartnerQuery} from '../../app/selectors';
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+import {cartApi, productApi} from "../../app/controller";
+import {store} from "../../app/store";
+import {partnerId} from "../../app/service/store/storeAPI";
 
 const note = [
     {
@@ -43,7 +46,7 @@ export const NoteAboutProduct =()=>{
                     <FrameBase
                         default
                         viewOptions={{
-                            leftElement:<TextBase  >{item.key}</TextBase>,
+                            leftElement:<TextBase bold>{item.key}</TextBase>,
                             rightElement:<TextBase color={"light.400"}>{item.value}</TextBase>,
                         }}
                     />
@@ -57,27 +60,51 @@ const LoadingProductScreen = (props:{route:any}) => {
     // @ts-ignore
     const {context} = useContext(LoadingContext);
     const item = props.route.params.data;
-    let dataCp = context[0].data.data;
-    const {quantity,id} = dataCp;
+    const dataCp:any = []
+    try{
+        context[0].data.data.forEach((i:any)=>{
+            if(i.product.id === item.id){
+                dataCp.push(i);
+            }
+        })  ;
+    }catch(e){}
+    const {quantity,id} =  dataCp[0] || {quantity:1,id: 1} ;
     const navigation = useNavigation();
     const dispatch = useDispatch();
     const [quantities,setQuantities] = useState(quantity );
     useEffect(()=>{
         setQuantities(quantity ||1);
     },dataCp)
-
     async function addProduct() {
         let cart = {
             "productId":item.id,
-            "partnerId":localStorage.getItem("partnerId"),
+            "partnerId":partnerId,
             "quantity" : quantities
         };
         let update_quantity = {
             "id" : id,
             "quantity" : quantities
         };
+        console.log(update_quantity);
+        if(quantity === 1){
+            // @ts-ignore
+            await dispatch(createCart(cart));
+            if(store.getState().cart.code === 200){
+                navigation.goBack();
+            }
+            else{
+                alert("Đã có lỗi xả .Vui lòng kiểm tra lại đường truyền")
+            }
+        }else{
+            // @ts-ignore
+            await dispatch(updateQuantity(update_quantity));
+            if(store.getState().cart.code === 200){
+                alert("Đã cập nhật số lượng trên giỏ hàng");
+            }
+        }
         // @ts-ignore
-        await dispatch(updateQuantity(update_quantity));
+        await dispatch(cartApi.util.invalidateTags(['cartApi']));
+        // await dispatch(productApi.util.invalidateTags(['productApi']));
         navigation.goBack();
     }
 
@@ -144,7 +171,11 @@ const LoadingProductScreen = (props:{route:any}) => {
                <Row
                    justifyContent={"space-around"} my={1}
                >
-                   <Button onPress={() =>setQuantities(quantities-1)} >Minu</Button>
+                   <Button onPress={() =>{
+                       if(quantities >=2){
+                           setQuantities(quantities-1)
+                       }
+                   }} >Minu</Button>
                    <Box  borderColor={"light.300"} borderWidth={1} borderRadius={5} px={10}>
                        <TextBase color={"light.500"} >Số lượng <TextBase light color={"red.500"}>{quantities}</TextBase></TextBase>
                    </Box>
@@ -153,14 +184,15 @@ const LoadingProductScreen = (props:{route:any}) => {
                </Row>
                <ButtonBase onPress={()=>{
                    addProduct()}
-               } my={3} bg={"blue.400"} width={"95%"}>Thêm hàng</ButtonBase>
+               } my={3} bg={"blue.400"} width={"95%"} isDisabled={(quantities === quantity && quantity !== 1) ? true : false}>Thêm hàng</ButtonBase>
            </Col>
         </>
     );
 };
 const AddProductScreen = (props:{route:any})=>{
     const item = props.route.params.data;
-    const data = useCheckExistProductOnCartQuery(item.productCode);
+    // @ts-ignore
+    const data =useGetCartListByPartnerQuery();
     return(
         <LoadingScreen data={[data]}>
             <LoadingProductScreen route={props.route} />

@@ -28,6 +28,10 @@ export const productApi = createApi({
             query: (productCode) => `product/${productCode}?partnerId=${partnerId}`,
             providesTags:['productApi']
         }),
+        searchProductByKey: builder.query({
+            query: (search) => `product/${search}?query=search`,
+            providesTags:['productApi']
+        }),
 
     }),
 });

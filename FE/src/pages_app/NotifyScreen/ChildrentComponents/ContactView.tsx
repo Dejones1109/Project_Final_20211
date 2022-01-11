@@ -3,14 +3,18 @@ import MainIcon from "../../../assets/icon/Icon";
 import {Box, Divider, FlatList} from "native-base";
 import Layout from "../../../constants/Layout";
 import { NotifyViewNavigate } from './NotifyElementsView';
+import {useSelector} from "react-redux";
 
 const ContactView = () => {
+    const currentUser = useSelector(state=>state.auth.currentUser);
     const data = [
         {
             iconLeft :<MainIcon name={"contacts"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
             textTop:"Liên hệ tư vấn",
             textBottom:"Trò chuyện đặt hàng ngay",
+            routeName:'message',
+            params: { item : {info:currentUser, message:[]}}
         },
     ]
     return (
@@ -23,7 +27,7 @@ const ContactView = () => {
 
                 renderItem = {({item})=>
                     <>
-                        <NotifyViewNavigate item={item} />
+                        <NotifyViewNavigate item={item}  />
                         <Divider my={1} />
                     </>
                 }

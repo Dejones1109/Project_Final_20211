@@ -13,6 +13,12 @@ export class CartClient {
 
         return response.data;
     }
+    async removeProductOnCart(payload  , rejectWithValue  )   {
+        const response = await client.delete (`${endpoints.cart}/${payload.id}`)
+            .catch(error => rejectWithValue(error.json()));
+
+        return response.data;
+    }
 
 }
 

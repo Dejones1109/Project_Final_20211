@@ -11,10 +11,6 @@ class NotifyScreen extends Component {
     }
 }
 
-function mapStateToProps() {
-    return {};
-}
 
-export default connect(
-    mapStateToProps,
-)(NotifyScreen);
+
+export default NotifyScreen;

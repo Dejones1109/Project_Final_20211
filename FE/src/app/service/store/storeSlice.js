@@ -19,6 +19,15 @@ export const updateStatusPartner = createAsyncThunk(
         return response;
     }
 )
+
+export const createBill = createAsyncThunk(
+    'store/createBill',
+    async (params,rejectWithValue)=>{
+        const response = await StoreClient.createBill(params).catch(e=>rejectWithValue(e));
+        console.log(response);
+        return response;
+    }
+)
 export const storeSlice = createSlice({
     initialState:initialState,
     name:'store',
@@ -44,6 +53,16 @@ export const storeSlice = createSlice({
                 console.log(state.currentPartner);
             })
             .addCase(updateStatusPartner.rejected, (state )=>{
+                state.status = 500;
+            });
+        builder
+            .addCase(createBill.pending,(state)=>{
+                state.code  = 404;
+            })
+            .addCase(createBill.fulfilled,(state ,action)=>{
+                state.code = 201;
+            })
+            .addCase(createBill.rejected, (state )=>{
                 state.status = 500;
             });
     }

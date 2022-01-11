@@ -10,6 +10,7 @@ class OrderClient {
         return response.data;
     }
     async createOrder(payload  , rejectWithValue  )   {
+        console.log(payload);
         const response = await client.post(`${endpoints.order}`,payload)
             .catch(error => rejectWithValue(error.json()));
         return response.data;

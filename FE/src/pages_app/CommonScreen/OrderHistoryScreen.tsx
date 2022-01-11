@@ -1,6 +1,6 @@
 import React, {useContext} from 'react';
 import TextBase from "../../components/TextBase";
-import {StatusBar, StyleSheet, useWindowDimensions} from 'react-native';
+import {StatusBar, StyleSheet, TouchableOpacity, useWindowDimensions} from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import FrameBase from "../../components/FrameBase";
 import {Box, Center, FlatList, View} from 'native-base';
@@ -8,9 +8,9 @@ import {status} from "../../helps/Status";
 import {useGetOrderListByStatusQuery} from "../../app/selectors";
 import Layout from "../../constants/Layout";
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+import {useNavigation} from "@react-navigation/native";
 
 const CommonRoute = (props:{status:number}) =>{
-    console.log(props.status);
     const data = useGetOrderListByStatusQuery(props.status);
     return(
         <LoadingScreen data={[data]}>
@@ -19,7 +19,7 @@ const CommonRoute = (props:{status:number}) =>{
     )
 }
 const ShowCommonRoute = (props:{status:number}) => {
-
+    const navigation = useNavigation();
     const {context }:any = useContext(LoadingContext);
     const data= context[0].data.data;
     return(
@@ -27,7 +27,7 @@ const ShowCommonRoute = (props:{status:number}) => {
             <FlatList
                 renderItem = {({item})=>{
                     return(
-                        <>
+                        <TouchableOpacity onPress={()=>navigation.navigate('payOrderScreen',{order:item, status:props.status})}>
                             <Center borderWidth={1} p={2}   m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
                                 <FrameBase
                                     default
@@ -48,8 +48,8 @@ const ShowCommonRoute = (props:{status:number}) => {
                                 <FrameBase
                                     default
                                     viewOptions={{
-                                        leftElement:<TextBase color={"light.400"}>Sản phẩm</TextBase>,
-                                        rightElement:<TextBase color={"light.400"}>Cháo gà x 1 , Cháo thịt x2</TextBase>,
+                                        leftElement:<TextBase color={"light.400"}>Sản lượng</TextBase>,
+                                        rightElement:<TextBase color={"light.400"}>{item.totalQuantity}</TextBase>,
                                     }}
                                     styled={{height:6}}
                                 />
@@ -57,12 +57,12 @@ const ShowCommonRoute = (props:{status:number}) => {
                                     default
                                     viewOptions={{
                                         leftElement:<TextBase color={"light.400"}>Thành tiền</TextBase>,
-                                        rightElement:<TextBase color={"red.500"}>185.000đ</TextBase>,
+                                        rightElement:<TextBase color={"red.500"}>{item.totalPrice} vnđ</TextBase>,
                                     }}
                                     styled={{height:6}}
                                 />
                             </Center>
-                        </>
+                        </TouchableOpacity>
                     )
                 }}
                 numColumns ={1}

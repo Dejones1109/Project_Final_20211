@@ -10,33 +10,30 @@ import LinkingConfigurationForAdmin from "./admin/LinkingConfigurationForAdmin";
 import BottomTabAdminNavigator from './admin/BottomTabAdminNavigator';
 import {getData} from "../helps/localStorage";
 import {createContext, useContext, useEffect, useState} from "react";
-import {checkLogin, getUser} from "../helps/authenticate";
 import NetInfo from "@react-native-community/netinfo";
 import SplashScreen from "../components/common/SplashScreen";
+import {checkLogin, getStatusLogin, getUser} from "../helps/authenticate";
+import {useDispatch} from "react-redux";
 export const NavigationContext = createContext({});
+
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
     const [user,setUser] = useState(null);
     const [admin,setAdmin] = useState(null);
     const [isConnected,setIsConnected] = useState(false);
-    getData("user").then(r =>{
-        // @ts-ignore
-        setUser(r);
-    });
 
-    getData("admin").then(r=>{
-        // @ts-ignore
-        setAdmin(r);
-    });
-    getUser();
-    useEffect(()=>{
-        NetInfo.addEventListener(networkState => {
+
+    const dispatch = useDispatch();
+    useEffect(async ()=>{
+        let userCheck:any = await getUser();
+        await NetInfo.addEventListener(networkState => {
             setTimeout(()=>{
                     if(networkState.isConnected){
                         setIsConnected(networkState.isConnected)
                     }
             },2000)
         });
+        await checkLogin(userCheck, dispatch,data.auth);
     })
 
     const data = {
@@ -67,11 +64,13 @@ function RootNavigator() {
     const {auth} : any= useContext(NavigationContext);
     const user = auth.user;
     const admin = auth.admin ;
+    const statusLogin = getStatusLogin();
+
     return (
         <Stack.Navigator
             screenOptions={{ headerShown: false,  }}
         >
-            <Stack.Screen name="Root" component={typeof admin === 'string' ? BottomTabAdminNavigator :(typeof user === 'string' ? BottomTabUserNavigator :AuthenticationNavigator) } />
+            <Stack.Screen name="Root" component={(typeof admin === 'string' && statusLogin ===2) ? BottomTabAdminNavigator :((typeof user === 'string' && statusLogin ===1) ? BottomTabUserNavigator :AuthenticationNavigator) } />
         </Stack.Navigator>
     );
 }

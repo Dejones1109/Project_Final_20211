@@ -8,13 +8,13 @@ import {Row} from "../../components/AutoLayout";
 const ProductListView = (props:{data:Array<object>}) => {
     const navigation = useNavigation();
     const data = props.data;
-    console.log(data);
     return (
         <>
             <FlatList
                 contentContainerStyle={{
                     width: Layout.window.width,
                 }}
+                showsVerticalScrollIndicator={false}
                 columnWrapperStyle={{
                     justifyContent:"space-around",
                 }}

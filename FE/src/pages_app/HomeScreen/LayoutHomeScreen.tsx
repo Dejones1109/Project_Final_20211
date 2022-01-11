@@ -33,7 +33,7 @@ const LayoutHomeScreen = (props:LayoutHome) => {
     return (
         <>
             {props.SearchView}
-            <ScrollView zIndex={0} bg={"white"}>
+            <ScrollView zIndex={0} bg={"white"} showsVerticalScrollIndicator={false}>
                 <Col space={5}  >
                     <Box>
 

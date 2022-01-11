@@ -10,7 +10,7 @@ import {
     useGetOrderQuantityByStatusOfAdminQuery
 } from '../../app/selectors';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import {Platform} from "react-native";
+import {Platform, TouchableOpacity} from "react-native";
 import {useDispatch} from "react-redux";
 import ButtonBase from "../../components/ButtonBase";
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
@@ -156,7 +156,7 @@ const ShowNumberOrder = () =>{
     const data = context[1].data.data;
     return (
         <>
-            <Pressable   >
+            <TouchableOpacity>
                 <Box
                 >
                     <Row  justifyContent={"space-between"} alignContent ={"space-between"}>
@@ -176,7 +176,7 @@ const ShowNumberOrder = () =>{
                         </Col>
                     </Row>
                 </Box>
-            </Pressable>
+            </TouchableOpacity>
         </>
     )
 }

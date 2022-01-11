@@ -126,7 +126,6 @@ function CartNavigator(){
                     headerTitle: 'Hoá đơn',
                 }}
             />
-
         </CartStack.Navigator>
     );
 }

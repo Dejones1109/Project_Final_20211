@@ -15,7 +15,8 @@ export const { useGetProductByTypeQuery,
     useGetAllProductsQuery,
     useGetProductByViewQuery,
     useCheckExistProductOnCartQuery,
-    useGetTotalViewProductByTypeQuery
+    useGetTotalViewProductByTypeQuery,
+    useSearchProductByKeyQuery
 } = productApi;
 
 

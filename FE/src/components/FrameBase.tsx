@@ -4,6 +4,13 @@ import TextBase from "./TextBase";
 import ButtonBase from "./ButtonBase";
 import {Col, Row} from './AutoLayout';
 import Layout from "../constants/Layout";
+import {createOrder} from "../app/service/order/orderSlice";
+import {store} from "../app/store";
+import {connect, useDispatch} from "react-redux";
+import {cartApi} from "../app/controller";
+import {removeProductOnCart} from "../app/service/cart/cartSlice";
+import { TouchableOpacity } from 'react-native';
+import {backgroundColor} from "styled-system";
 
 export type CardProps  = {
     default?:any  | JSX.Element,
@@ -15,6 +22,7 @@ export type CardProps  = {
     viewOptions?:any,
     styled?:any,
     navigation ?:any,
+    dispatch?:any
 }
 
 
@@ -152,45 +160,63 @@ const CardInfoSale = (props:{item:any})=>{
         </Box>
     )
 }
-const CartInfo = (props:{styled:object, item:any})=>{
+const CartInfo = (props:{styled:object, item:any,  dispatch?:any, navigation ?:any})=>{
+    const removeOrder =async () =>{
+        // @ts-ignore
+        await props.dispatch(removeProductOnCart({id:item.id}));
+        await props.dispatch(cartApi.util.invalidateTags(['cartApi']));
+    }
     const item= props.item;
     return(
-        <Center width={"100%"}  {...props.styled}  >
-            <FrameBase
-                default
-                viewOptions={{
-                    leftElement:<Checkbox value={item.id} my={2}>
-                        {item.product.productName}
-                    </Checkbox>,
-                }}
-                styled={{height:8}}
+       <Box my={3}>
+           <FrameBase
+               default
+               viewOptions={{
+                   leftElement:<Checkbox value={item.id+" "+ item.price+" "+item.quantity} >
+                       {item.product.productName}
+                   </Checkbox>,
+               }}
+               styled={{height:8, bg:'info.100',pl:1}}
 
-            />
-            <FrameBase
-                default
-                viewOptions={{
-                    leftElement:<TextBase>Thành tiền</TextBase>,
-                    rightElement:<TextBase >{item.product.price} đ</TextBase>,
-                }}
-                styled={{height:8}}
+           />
+           <TouchableOpacity onPress={() => props.navigation.navigate('productDetailInfoScreen',{item:item})}>
+               <Center bg={'info.100'} px={1} width={"100%"}  {...props.styled}  >
+                   <FrameBase
+                       default
+                       viewOptions={{
+                           leftElement:<TextBase >Giá</TextBase>,
+                           rightElement:<TextBase color={'blue.500'} >{item.product.price} đ</TextBase>,
+                       }}
+                       styled={{height:8}}
 
-            />
-            <FrameBase
-                default
-                viewOptions={{
-                    leftElement:<TextBase>Số lượng</TextBase>,
-                    rightElement:<TextBase textAlign={"flex-end"}>{item.quantity}</TextBase>,
-                }}
-                styled={{height:8}}
-            />
-            <FrameBase
-                default
-                viewOptions={{
-                    leftElement:<TextBase color={"light.400"}>Xóa</TextBase>,
-                }}
-                styled={{height:8}}
-            />
-        </Center>
+                   />
+                   <FrameBase
+                       default
+                       viewOptions={{
+                           leftElement:<TextBase >Thành tiền</TextBase>,
+                           rightElement:<TextBase color={'blue.500'} >{item.product.price *item.quantity} đ</TextBase>,
+                       }}
+                       styled={{height:8}}
+
+                   />
+                   <FrameBase
+                       default
+                       viewOptions={{
+                           leftElement:<TextBase>Số lượng</TextBase>,
+                           rightElement:<TextBase color={'blue.500'} textAlign={"flex-end"}>{item.quantity}</TextBase>,
+                       }}
+                       styled={{height:8}}
+                   />
+                   <FrameBase
+                       default
+                       viewOptions={{
+                           leftElement:<TouchableOpacity onPress={() =>removeOrder()}><TextBase color={"light.400"}>Xóa</TextBase></TouchableOpacity>,
+                       }}
+                       styled={{height:8}}
+                   />
+               </Center>
+           </TouchableOpacity>
+       </Box>
     )
 }
 
@@ -204,7 +230,7 @@ class FrameBase extends Component<CardProps> {
         infoSale: <CardInfoSale item={this.props.infoSale}  />,
         product: <CardProduct item={this.props.product} navigation={this.props.navigation}  />,
         productType:<CardProductType item={this.props.productType} navigation={this.props.navigation}  />,
-        cart:<CartInfo styled={this.props.styled} item={this.props.cart}  />,
+        cart:<CartInfo styled={this.props.styled} item={this.props.cart} dispatch={this.props.dispatch} navigation={this.props.navigation}   />,
     }
 
     render() {
@@ -238,6 +264,6 @@ class FrameBase extends Component<CardProps> {
 }
 
 
-export default FrameBase
+export default connect()( FrameBase);
 
 

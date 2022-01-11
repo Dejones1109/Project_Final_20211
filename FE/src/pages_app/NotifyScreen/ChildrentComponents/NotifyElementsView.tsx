@@ -4,13 +4,16 @@ import {Col, Row} from "../../../components/AutoLayout";
 import TextBase from "../../../components/TextBase";
 import MainIcon from "../../../assets/icon/Icon";
 import Layout from "../../../constants/Layout";
+import {TouchableOpacity} from "react-native";
+import {useNavigation} from "@react-navigation/native";
 
-export const NotifyViewNavigate = (props:any)=>{
+export const NotifyViewNavigate = (props:{item:any,})=>{
     const item = props.item;
+    const navigation = useNavigation();
     return(
         <Center width={"95%"} height={50} my={1}>
             <Box width={["100%","100%"]}  overflow={"hidden"}>
-                <Pressable  onPress={() => console.log('You touched me')}  >
+                <TouchableOpacity  onPress={() =>navigation.navigate(item.routeName, item.params)}  >
                     <Box
                     >
                         <Row  space={2}  alignContent ={"space-between"}>
@@ -28,7 +31,7 @@ export const NotifyViewNavigate = (props:any)=>{
                             </Col>
                         </Row>
                     </Box>
-                </Pressable>
+                </TouchableOpacity>
             </Box>
         </Center>
     )

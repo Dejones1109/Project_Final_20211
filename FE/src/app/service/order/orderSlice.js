@@ -12,9 +12,10 @@ export const updateOrderStatus = createAsyncThunk(
     }
 );
 export const createOrder = createAsyncThunk(
-    'cart/order',
+    'orders/order',
     async (params ,{rejectWithValue})=>{
         const response = await orderClient.createOrder(params).catch(error =>  rejectWithValue(error.json()));
+        console.log(response.data);
         return response.data;
     }
 );
@@ -30,7 +31,7 @@ export const orderSlice = createSlice({
                 state.code  = 404;
             })
             .addCase(updateOrderStatus.fulfilled,(state )=>{
-                state.code = 201;
+                state.code = 200;
             })
             .addCase(updateOrderStatus.rejected, (state )=>{
                 state.status = 500;

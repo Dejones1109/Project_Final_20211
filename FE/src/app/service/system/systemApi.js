@@ -1,14 +1,15 @@
 // Define a service using a base URL and expected endpoints
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {AsyncStorage} from "react-native";
-// export const partnerId = localStorage.getItem("partnerId");
+import {getIdUser} from "../../../helps/authenticate";
+export const partnerId = getIdUser();
+
 export const systemApi = createApi({
     reducerPath: 'systemApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://112.78.1.28:8888/' }),
     tagTypes:['systemApi'],
     endpoints: (builder) => ({
         getListSaleNoUse: builder.query({
-            query: () => "partner",
+            query: (condition) => `/system/${partnerId}?query=listSaleNoUse&condition=${condition}`,
             providesTags:['systemApi'],
         }),
         createSale: builder.mutation({

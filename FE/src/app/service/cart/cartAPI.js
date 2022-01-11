@@ -7,19 +7,23 @@ export const partnerId = getIdUser();
 export const cartApi = createApi({
     reducerPath: 'cartApi',
     baseQuery: fetchBaseQuery({ baseUrl: 'http://112.78.1.28:8888/' }),
-    tagTypes: ['Cart'],
+    tagTypes: ['cartApi'],
     endpoints: (builder) => ({
         getCartListByPartner :builder.query({
             query: () => `cart?partnerId=${partnerId}`,
-            providesTags:['Cart'],
+            providesTags:['cartApi'],
         }),
-        createCart : builder.mutation({
-            query: (body)=>  ({
-                url: `/cart`,
-                method: 'POST',
-                body,
-            }),
-            invalidatesTags:['Cart'],
-        })
+        getOrderListByStatus :builder.query({
+            query: (status) => `orders?query=status&partnerId=${partnerId}&status=${status}`,
+            providesTags:['cartApi'],
+        }),
+        // createCart : builder.mutation({
+        //     query: (body)=>  ({
+        //         url: `/cart`,
+        //         method: 'POST',
+        //         body,
+        //     }),
+        //     invalidatesTags:['Cart'],
+        // })
     }),
 });

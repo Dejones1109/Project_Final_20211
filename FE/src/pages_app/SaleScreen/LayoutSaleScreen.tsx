@@ -4,6 +4,7 @@ import {Col, Row } from '../../components/AutoLayout';
 import TextBase from '../../components/TextBase';
 import {AllInfoView, GiftView} from "./ChildrentComponents";
 import {Center, Container, ScrollView} from "native-base";
+import {useNavigation} from "@react-navigation/native";
 
 
 
@@ -15,7 +16,10 @@ export type LayoutHome = {
 function LayoutSaleScreen (props:LayoutHome) {
 
     return (
-        <ScrollView>
+        <ScrollView
+            bg={"white"}
+            showsVerticalScrollIndicator={false}
+        >
             <Center>
                 <Center  width={"95%"}>
                     {props.GiftView}
@@ -27,12 +31,7 @@ function LayoutSaleScreen (props:LayoutHome) {
 }
 LayoutSaleScreen.defaultProps ={
     GiftView :<GiftView />,
-    AllInfoView : <AllInfoView/>
-}
-function mapStateToProps() {
-    return {};
+    AllInfoView : <AllInfoView />
 }
 
-export default connect(
-    mapStateToProps,
-)(LayoutSaleScreen);
+export default LayoutSaleScreen;

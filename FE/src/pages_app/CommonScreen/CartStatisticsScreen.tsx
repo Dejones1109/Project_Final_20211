@@ -45,8 +45,8 @@ const ShowCommonRoute = (props:{status:number}) => {
                                 <FrameBase
                                     default
                                     viewOptions={{
-                                        leftElement:<TextBase color={"light.400"}>Sản phẩm</TextBase>,
-                                        rightElement:<TextBase color={"light.400"}>Cháo gà x 1 , Cháo thịt x2</TextBase>,
+                                        leftElement:<TextBase color={"light.400"}>Sản lượng</TextBase>,
+                                        rightElement:<TextBase color={"light.400"}>{item.totalQuantity}</TextBase>,
                                     }}
                                     styled={{height:6}}
                                 />
@@ -54,7 +54,7 @@ const ShowCommonRoute = (props:{status:number}) => {
                                     default
                                     viewOptions={{
                                         leftElement:<TextBase color={"light.400"}>Thành tiền</TextBase>,
-                                        rightElement:<TextBase color={"red.500"}>185.000đ</TextBase>,
+                                        rightElement:<TextBase color={"red.500"}>{item.totalPrice} vnđ</TextBase>,
                                     }}
                                     styled={{height:6}}
                                 />

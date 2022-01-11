@@ -7,7 +7,7 @@ import {useNavigation} from "@react-navigation/native";
 
 
 
-export const HistoryViewNavigate = (props:{item:{iconLeft?:any, textLeft?:any,textRight?:any,iconRight?:any}}) => {
+export const HistoryViewNavigate = (props:{item:{iconLeft?:any, textLeft?:any,textRight?:any,iconRight?:any,routeName?:any}}) => {
     const item:any  = props.item;
     const navigation = useNavigation();
     return (

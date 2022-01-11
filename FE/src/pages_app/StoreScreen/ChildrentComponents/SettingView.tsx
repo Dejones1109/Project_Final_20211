@@ -17,6 +17,7 @@ const SettingView = () => {
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Cài đặt",
             textRight:"thông tin,bảo mật",
+            routeName:'settingScreen'
         },
         {
             iconLeft:<MainIcon name={"policy"} />,

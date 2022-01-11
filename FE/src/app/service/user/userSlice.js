@@ -17,7 +17,6 @@ export const userLogin = createAsyncThunk(
 
         const encode = base64.encode(`${partCode}.${phone}.${password}.${new Date()}`);
         await storeData(`user`,String(encode));
-        console.log(response.data);
         return response.data;
     }
 );

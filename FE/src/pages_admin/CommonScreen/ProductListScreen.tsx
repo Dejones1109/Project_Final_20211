@@ -239,7 +239,7 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
             <View flex={1} zIndex={3}>
                 <Button
                     bg={"blue.400"}
-                    position="fixed"
+                    position="absolute"
                     right={3}
                     bottom={60}
                     size="sm"

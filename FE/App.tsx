@@ -5,7 +5,6 @@ import {
     Box,
     extendTheme, IconButton, Input, NativeBaseProvider, ScrollView, Spacer, StatusBar,
 } from "native-base"
-import ignoreWarnings from 'react-native-ignore-warnings';
 import useColorScheme from "./src/hooks/useColorScheme";
 import {Provider} from "react-redux";
 import { store } from "./src/app/store";
@@ -31,7 +30,6 @@ export default function App () {
         'Require cycle:'
     ]);
     console.disableYellowBox = true;
-    ignoreWarnings('log', [ 'Linking requires a build-time setting `scheme` in']);
     return (
         //
         <Provider store={store}>

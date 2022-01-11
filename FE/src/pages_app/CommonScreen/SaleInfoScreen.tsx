@@ -1,113 +1,156 @@
-import React from 'react';
-import {Box, Center, Divider, Heading, Image, Pressable, Text} from "native-base";
-import FrameBase from "../../components/FrameBase";
+import React, {createContext, useContext, useState} from 'react';
 import TextBase from "../../components/TextBase";
+import {
+    Avatar,
+    Box,
+    Center,
+    Divider,
+    FlatList,
+    Pressable,
+    ScrollView,
+    Image,
+    Button,
+    Icon,
+    Actionsheet, Input, Heading, Select, CheckIcon
+} from "native-base";
+import {Col, Row} from "../../components/AutoLayout";
+import FrameBase from "../../components/FrameBase";
+import Layout from "../../constants/Layout";
+import ButtonBase from "../../components/ButtonBase";
+import MainIcon from "../../assets/icon/Icon";
+import {status} from "../../helps/Status";
+import {
+    useUpdateStatusSaleMutation
+} from "../../app/selectors";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigation} from "@react-navigation/native";
+const ShowDetailInfoScreenSection = (props:{item:any})=>{
+    const [item,setItem]= useState(props.item);
+    const [updateStatusSale] = useUpdateStatusSaleMutation();
+    // @ts-ignore
+    const listData = [
+        {
+            leftElement:  <TextBase
+                fontSize="16"
+                color={"#60A5FA"}
+            >
+                Mô tả :
+            </TextBase>,
+            colElement:<TextBase> {item.saleRemark.charAt(0).toUpperCase()+item.saleRemark.slice(1) }</TextBase>,
+        },
+        {
+            leftElement: <TextBase
+                fontSize="16"
+                color={"#60A5FA"}
+            >
+                Điều kiện:
+            </TextBase>,
+            colElement:<TextBase>{item.conditions} vnđ</TextBase>,
+        },
 
-import { Col } from '../../components/AutoLayout';
-import Layout from '../../constants/Layout';
-import LoadingScreen from "../../helps/LoadingScreen";
-const InfoSaleScreen = (props:{navigation ?:any})=>{
+        {
+            leftElement:  <TextBase
+                fontSize="16"
+                color={"#60A5FA"}
+            >
+                Mã code :
+            </TextBase>,
+            colElement:<TextBase> {item.saleCode.toUpperCase()}</TextBase>,
+        },
+        {
+            leftElement: <MainIcon name={"start-active"} />,
+            colElement:<TextBase>{item.createdDate}</TextBase>,
+        },
+        {
+            leftElement: <MainIcon name={"active"} />,
+            colElement:<TextBase>{item.updatedDate}</TextBase>,
+        },
+        {
+            leftElement: <MainIcon name={"status"} />,
+            colElement:<TextBase color={item.status === 501 ? "success.500" : "danger.500"}>{status(item.status)}</TextBase>,
+        },
+    ]
+    let [statusSale, setStatusSale] = React.useState(`${item.status}`)
+    // @ts-ignore
+    const navigation = useNavigation();
+    const changeStatus = (status: number)=>{
+        if(parseInt(String(status)) !== item.status){
+            let payload = {
+                id:item.id,
+                status:status,
+            }
+            updateStatusSale(payload).then(res=>{
+                // @ts-ignore
+                if(res.data.code === "200"){
+                    alert('Thay đổi trạng thái thành công');
+                }else{
+                    alert('Thay đổi thất bại');
+                }
+            });
+            navigation.goBack();
+        }
+        else{
+            alert("Vui lòng chọn trạng thái mới")
+        }
+    }
     return(
-        <LoadingScreen data={[]}>
-            <ShowInfoSaleScreen navigation={props.navigation}/>
-        </LoadingScreen>
+        <ScrollView bg={"white"}>
+            <Box w="100%"  p={3} justifyContent="flex-start" height={"100%"} bg={"white"} >
+                <Heading
+                    fontSize="16"
+                    color="red.500"
+                >
+                    {item.saleName.toUpperCase()} - KHUYẾN MÃI {item.saleValue} %
+                </Heading>
+                <Divider my={3} />
+                <Center  width={"100%"}  >
+                    <FlatList
+                        data={listData}
+                        renderItem={({item})=><FrameBase
+                            default
+                            styled={{
+                                height:10,
+                            }}
+                            viewOptions={{
+                                leftElement:item.leftElement,
+                                colElement:item.colElement,
+                                rightElement:item.rightElement,
+                            }}
+                        />}
+                        keyExtractor={({index})=>index}
+                        contentContainerStyle={{
+                            width:0.95*Layout.window.width,
+                        }}
+                    />
+
+                    <Row justifyContent={"space-around"} my={3}>
+                        <Select
+                            selectedValue={statusSale}
+                            minWidth="200"
+                            accessibilityLabel="Choose status"
+                            placeholder="Choose Service"
+                            _selectedItem={{
+                                bg: "teal.600",
+                                endIcon: <CheckIcon size="5" />,
+                            }}
+                            mt={1}
+                            onValueChange={(itemValue) => setStatusSale(itemValue)}
+                        >
+                            <Select.Item label={status(501)} value="501" />
+                            <Select.Item label={status(502)}  value="502" />
+                        </Select>
+                        <ButtonBase isDisabled={statusSale === `${item.status}` ? true : false } bg={item.status === 501 ? "success.500" : "danger.500"} onPress={()=>changeStatus(parseInt(statusSale))}>Update</ButtonBase>
+                    </Row>
+                </Center>
+            </Box>
+        </ScrollView>
     )
 }
-const ShowInfoSaleScreen = (props:{navigation ?:any}) => {
+const InfoSaleScreen = (props:{route:any}) => {
+    const {item} = props.route.params;
+
     return (
-        <Box w="100%"  p={3} justifyContent="flex-start" height={"100%"} bg={"white"} >
-            <Heading
-                fontSize="16"
-                color="gray.500"
-                _dark={{
-                    color: "gray.300",
-                }}
-            >
-                Mua 9 thùng Trà Xanh Không đọ vị chanh chai tặng 1 thùng ....
-            </Heading>
-            <Divider my={3} />
-            <Text
-                fontSize="16"
-                color="gray.500"
-                _dark={{
-                    color: "gray.300",
-                }}
-            >
-                Sản phẩm áp dụng
-            </Text>
-            <Pressable  onPress={()=>props.navigation.navigate("addProductScreen")} >
-                <FrameBase
-                    default
-                    styled={{
-                        height:110,
-                        borderWidth:1,
-                        borderColor:"light.400",
-                        borderRadius:10,
-                        my:3,
-                    }}
-                    viewOptions={{
-                        leftElement: <>
-                            <Image
-                                rounded={10}
-                                size={110}
-                                resizeMode={"contain"}
-                                source={{
-                                    uri: "https://wallpaperaccess.com/full/317501.jpg",
-                                }}
-                                alt="Product"
-                            />
-                        </>,
-                        colElement: <>
-                            <TextBase >Mì khoai tây xốt bò hầm Omachi túi 5 gói x80 g </TextBase>
-                            <TextBase >Thùng 30 gói x80g</TextBase>
-                            <FrameBase
-                                default
-                                viewOptions={{
-                                    leftElement: <TextBase>185.000đ / Thùng</TextBase>,
-                                    rightElement:<TextBase >185.000đ</TextBase>,
-                                }}
-                            />
-                        </>,
-                        rightElement:<>
-                        </>,
-                    }}
-                />
-            </Pressable>
-            <Text
-                fontSize="16"
-            >
-                Mô tả ..........................................
-            </Text>
-           <Center  width={"100%"}  >
-               <FrameBase
-                   default
-                   viewOptions={{
-                       leftElement:"abc",
-                       colElement:"abc",
-                       rightElement:"abcasdsadsadàdsaf",
-                   }}
-                   styled={{height:8}}
-               />
-               <FrameBase
-                   default
-                   viewOptions={{
-                       leftElement:"abc",
-                       colElement:"abc",
-                       rightElement:"abc",
-                   }}
-                   styled={{height:8}}
-               />
-               <FrameBase
-                   default
-                   viewOptions={{
-                       leftElement:"abc",
-                       colElement:"abc",
-                       rightElement:"abc",
-                   }}
-                   styled={{height:8}}
-               />
-           </Center>
-        </Box>
+        <ShowDetailInfoScreenSection item={item} />
     );
 };
 
