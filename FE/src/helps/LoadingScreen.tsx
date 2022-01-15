@@ -3,9 +3,13 @@ import TextBase from "../components/TextBase";
 import {check} from "./check";
 import {useIsFocused, useNavigation ,useFocusEffect } from "@react-navigation/native";
 import {useGetAllStoreQuery} from "../app/selectors";
-import {StyleSheet, View} from "react-native";
+import {StyleSheet} from "react-native";
 import {Fold, Flow} from "react-native-animated-spinkit";
 export const LoadingContext = createContext({});
+import { InteractionManager, ActivityIndicator} from 'react-native';
+import { View } from 'native-base';
+import * as ImagePicker from 'expo-image-picker';
+
 export const WaitingScreen = ()=>{
     return (
         <View style={styles.container}>
@@ -15,16 +19,18 @@ export const WaitingScreen = ()=>{
 }
 const LoadingScreen = (props:{data?:Array<any>,children?: JSX.Element}) => {
 
-    // @ts-ignore
     let checked:number = check(props.data);
+    // @ts-ignore
+
     const data = {context : props.data};
     return (
-        <>
-            {  checked === -1 ?<>
-                <WaitingScreen />
-            </> :(checked !== 1 ?  <WaitingScreen /> : <LoadingContext.Provider value={data}>{props.children}</LoadingContext.Provider>)
-            }
-        </>
+            <>
+                {  checked === -1 ?<>
+
+                </> :(checked !== 1 ?  <WaitingScreen /> : <LoadingContext.Provider value={data}>{props.children}</LoadingContext.Provider>)
+                }
+            </>
+
     );
 };
 const styles = StyleSheet.create({

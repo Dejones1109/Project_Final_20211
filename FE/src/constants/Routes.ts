@@ -50,6 +50,7 @@ export type StoreTabUserParamList = {
     settingScreen:undefined;
     isBillScreen:undefined;
     payOrderScreen:undefined;
+    infoOrderScreen:undefined;
 }
 
 export type SaleTabUserParamList = {
@@ -71,6 +72,7 @@ export type HomeTabAdminParamList = {
 export type CartTabAdminParamList = {
     cartScreen: undefined;
     billScreen: undefined;
+    infoOrderScreen: undefined;
 }
 
 export type StatisticsTabAdminParamList = {

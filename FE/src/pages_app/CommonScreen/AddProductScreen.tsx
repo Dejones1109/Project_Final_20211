@@ -110,7 +110,7 @@ const LoadingProductScreen = (props:{route:any}) => {
 
     return (
         <>
-            <ScrollView mb={60}>
+            <ScrollView mb={110}>
                 <Center  width={"100%"} bg={"white"}>
                     <Image
                         source={{

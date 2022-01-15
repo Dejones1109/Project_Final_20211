@@ -9,7 +9,7 @@ import {
     Circle,
     FlatList,
     Icon,
-    Input,
+    Input, Modal,
     Pressable, Row, ScrollView, Spacer, StatusBar,
     useDisclose,
     View
@@ -20,12 +20,14 @@ import {AntDesign} from "@expo/vector-icons";
 import {useGetAllProductsQuery} from "../../app/selectors";
 import ButtonBase from "../../components/ButtonBase";
 import Layout from '../../constants/Layout';
-import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+import LoadingScreen, {LoadingContext, WaitingScreen} from "../../helps/LoadingScreen";
 import {useDispatch, useSelector} from "react-redux";
 import {createProduct} from "../../app/service/product/productSlice";
 import {productApi} from "../../app/controller";
 import {TouchableOpacity} from "react-native";
-import {filterSomething} from "../../helps";
+import {filterSomething, nonAccentVietnamese} from "../../helps";
+import * as ImagePicker from "expo-image-picker";
+import Storage from "../../firebase/storage";
 
 const CardProductView = (props:{item:any, navigation: any})=>{
     const item = props.item;
@@ -85,10 +87,13 @@ const CardProductView = (props:{item:any, navigation: any})=>{
 }
 const  ShowProductListScreen = (props:{navigation?: any})=>{
     const [productName,setProductName] = useState('');
-    const [image,setImage] = useState('');
     const [price,setPrice] = useState('');
     const [type,setType] = useState('');
     const [remark,setRemark] = useState('');
+    const [image, setImage] = useState('');
+    const [transferred, setTransferred] = useState(0);
+    const [pick, setPick] = useState(null);
+    const [modalVisible, setModalVisible] = React.useState(false)
     const crePro  = {
         productName:productName,
         image :image,
@@ -113,17 +118,39 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
             alert("Tạo thất bại");
         };
     }
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1,
+        });
+        if (!result.cancelled) {
+            setPick(result)
+            setImage(result.uri);
+        };
+    }
     const [listShow, setListShow] = useState(data.data);
     const createPro = async()=>{
         // @ts-ignore
-        await dispatch(createProduct(crePro)).then(({payload}) => {notification(payload)});
-        await dispatch(productApi.util.invalidateTags(['productApi']));
-        setProductName('');
-        setType('');
-        setRemark('');
-        setPrice('');
-        setImage('');
-        onClose;
+        if(Object.values(crePro).includes("")){
+            alert("Vui lòng không được để trống");
+        }else{
+            await setModalVisible(!modalVisible);
+            let keyImage = nonAccentVietnamese(productName);
+            const url =  await Storage.putFile(image,setTransferred,keyImage);
+            await setImage(url);
+            await dispatch(createProduct(crePro)).then(({payload}) => {notification(payload)});
+            await dispatch(productApi.util.invalidateTags(['productApi']));
+            setProductName('');
+            setType('');
+            setRemark('');
+            setPrice('');
+            setImage('');
+            setModalVisible(!modalVisible);
+            onClose;
+        }
     }
     const [search,setSearch]= useState('');
     const searchSomething = ()=>{
@@ -141,7 +168,17 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
             <ScrollView  minHeight={'100%'}  bg={"white"}
                 showsVerticalScrollIndicator={false}
             >
-
+                <Modal
+                    isOpen={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    avoidKeyboard
+                    justifyContent="flex-end"
+                    bottom="4"
+                    size="lg"
+                    closeOnOverlayClick={false}
+                >
+                    <WaitingScreen />
+                </Modal>
                 <Center >
                     <Actionsheet isOpen={isOpen} onClose={onClose} size="full">
                         <Actionsheet.Content>
@@ -153,13 +190,9 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
                                     placeholder="Tên sản phẩm"
                                     onChangeText={(text)=>setProductName(text)}
                                 />
-                                <Input
-                                    isInvalid
-                                    my={2}
-                                    value={image}
-                                    placeholder="Địa chỉ hình ảnh"
-                                    onChangeText={(text)=>setImage(text)}
-                                />
+                                <ButtonBase my={2}  bg={"blue.400"} onPress={pickImage}>
+                                    Pick one image
+                                </ButtonBase>
                                 <Input
                                     isInvalid
                                     my={2}
@@ -236,19 +269,17 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
                     initialNumToRender={10}
                 />
             </ScrollView>
-            <View flex={1} zIndex={3}>
-                <Button
-                    bg={"blue.400"}
-                    position="absolute"
-                    right={3}
-                    bottom={60}
-                    size="sm"
-                    borderRadius={"full"}
-                    onPress={onOpen}
-                >
-                    <Icon color="white" as={<AntDesign name="plus" />} size="sm" />
-                </Button>
-            </View>
+            <Button
+                bg={"blue.400"}
+                position="absolute"
+                right={3}
+                bottom={30}
+                size="sm"
+                borderRadius={"full"}
+                onPress={onOpen}
+            >
+                <Icon color="white" as={<AntDesign name="plus" />} size="sm" />
+            </Button>
         </>
     );
 }

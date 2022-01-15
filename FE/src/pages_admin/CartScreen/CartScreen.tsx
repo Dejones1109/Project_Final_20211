@@ -60,7 +60,7 @@ const RenderItem = (props:{payload:any, item :any, jumpTo?:any})=>{
     }
     return (
         // @ts-ignore
-        <TouchableOpacity onPress={()=>navigation.navigate('billScreen',{item:item.partner})}>
+        <TouchableOpacity onPress={()=>navigation.navigate('infoOrderScreen',{item:{idOrder:item.id, orderCode:item.orderCode}})}>
             <Center borderWidth={1}  px={2}  m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
                 <FrameBase
                     default
@@ -262,7 +262,6 @@ const CartScreen = () => {
 };
 const styles = StyleSheet.create({
     container: {
-        paddingTop : StatusBar.currentHeight,
         backgroundColor :"#FFFFFF",
     },
     scene: {

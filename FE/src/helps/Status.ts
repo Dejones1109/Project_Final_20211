@@ -27,7 +27,7 @@
         case 501:
             return "Hoạt động"
         case 502:
-            return "Vô hiệu hóa"
+            return "Đã hết hạn"
         default:
             return "Loading";
     }

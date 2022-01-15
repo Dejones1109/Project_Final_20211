@@ -181,19 +181,17 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
                     ItemSeparatorComponent={() => <Divider bg={"light.300"} />}
                 />
             </ScrollView>
-            <View flex={1} zIndex={3}>
-                <Button
-                    bg={"blue.400"}
-                    position="absolute"
-                    right={3}
-                    bottom={100}
-                    size="sm"
-                    borderRadius={"full"}
-                    onPress={onOpen}
-                >
-                    <Icon color="white" as={<AntDesign name="plus" />} size="sm" />
-                </Button>
-            </View>
+            <Button
+                bg={"blue.400"}
+                position="absolute"
+                right={3}
+                bottom={10}
+                size="sm"
+                borderRadius={"full"}
+                onPress={onOpen}
+            >
+                <Icon color="white" as={<AntDesign name="plus" />} size="sm" />
+            </Button>
         </>
     );
 }

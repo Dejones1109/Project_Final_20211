@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import {ColorSchemeName, Platform, } from 'react-native';
+import {ColorSchemeName, InteractionManager, Platform,} from 'react-native';
 import {AuthTabParamList, RootStackParamList } from '../constants/Routes';
 import SignInScreen from '../pages_app/AuthScreen/SignInScreen';
 import BottomTabUserNavigator from './user/BottomTabUserNavigator';
@@ -22,7 +22,9 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
     const [admin,setAdmin] = useState(null);
     const [isConnected,setIsConnected] = useState(false);
 
+    InteractionManager.runAfterInteractions(() => {
 
+    });
     const dispatch = useDispatch();
     useEffect(async ()=>{
         let userCheck:any = await getUser();
@@ -34,6 +36,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
             },2000)
         });
         await checkLogin(userCheck, dispatch,data.auth);
+
     })
 
     const data = {
@@ -65,12 +68,23 @@ function RootNavigator() {
     const user = auth.user;
     const admin = auth.admin ;
     const statusLogin = getStatusLogin();
-
+    // useEffect(() =>{
+    //     InteractionManager.runAfterInteractions(() => {
+    //
+    //     });
+    // })
     return (
         <Stack.Navigator
-            screenOptions={{ headerShown: false,  }}
+            screenOptions={{
+                headerShown: false,
+            }}
         >
-            <Stack.Screen name="Root" component={(typeof admin === 'string' && statusLogin ===2) ? BottomTabAdminNavigator :((typeof user === 'string' && statusLogin ===1) ? BottomTabUserNavigator :AuthenticationNavigator) } />
+            <Stack.Screen
+                options={{
+                animationEnabled: false,
+                }}
+               name="Root"
+                component={(typeof admin === 'string' && statusLogin ===2) ? BottomTabAdminNavigator :((typeof user === 'string' && statusLogin ===1) ? BottomTabUserNavigator :AuthenticationNavigator) } />
         </Stack.Navigator>
     );
 }

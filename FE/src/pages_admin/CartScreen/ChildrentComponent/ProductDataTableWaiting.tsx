@@ -11,16 +11,17 @@ import {useDispatch} from "react-redux";
 import {updateOrderStatus} from "../../../app/service/order/orderSlice";
 import {adminApi, dashboardApi, orderApi} from "../../../app/controller";
 import {useNavigation} from "@react-navigation/native";
+import {store} from "../../../app/store";
 
 const DataFollowRow = (props:{item:any})=>{
-    const {data} = useGetListToCartToOrderIdForAdminQuery(props.item.id);
+    const {data} = useGetListToCartToOrderIdForAdminQuery(props.item.id); // return array , object have cartCode
     const dataCp = Object.assign([],Object.assign({},data).data);
     const item = Object.assign({},dataCp[0]);
     const {quantity,price,product} = item;
     const {productName} = Object.assign({},product);
     return(
         <DataTable.Row>
-            <DataTable.Cell>{productName}</DataTable.Cell>
+            <DataTable.Cell>{props.item.orderCode}</DataTable.Cell>
             <DataTable.Cell numeric>{quantity}</DataTable.Cell>
             <DataTable.Cell numeric>{price}</DataTable.Cell>
         </DataTable.Row>
@@ -32,37 +33,50 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
     const dispatch = useDispatch();
     const navigation= useNavigation();
     const confirm = async ()=>{
-        props.data.forEach((item:any)=>{
+        let count:number = 0;
+        for (const item of props.data) {
             let payload = {
                 id: item.id,
                 status:302
             };
             // @ts-ignore
-            dispatch(updateOrderStatus(payload));
-            dispatch(orderApi.util.invalidateTags(['orderApi']));
-            dispatch(adminApi.util.invalidateTags(['adminApi']));
-            dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
-            alert('Xác nhận thành công');
+            await dispatch(updateOrderStatus(payload));
+            if(store.getState().orders.code === 200){
+                count ++;
+            }
+        }
+        await dispatch(orderApi.util.invalidateTags(['orderApi']));
+        await dispatch(adminApi.util.invalidateTags(['adminApi']));
+        await dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
+        if(count !== 0){
+            alert(`Xác nhận ${count}  thành công`);
             setShowModal1(false);
             navigation.goBack();
-        })
+        }
     }
 
     const cancel= async ()=>{
-        props.data.forEach((item:any)=>{
+        let count:number = 0;
+        for (const item of props.data) {
             let payload = {
                 id: item.id,
                 status:304
             };
             // @ts-ignore
-            dispatch(updateOrderStatus(payload));
-            dispatch(orderApi.util.invalidateTags(['orderApi']));
-            dispatch(adminApi.util.invalidateTags(['adminApi']));
-            dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
-            alert('Hủy đơn thành công');
+            await  dispatch(updateOrderStatus(payload));
+            if(store.getState().orders.code === 200){
+                count ++;
+            }
+        }
+        await dispatch(orderApi.util.invalidateTags(['orderApi']));
+        await dispatch(adminApi.util.invalidateTags(['adminApi']));
+        await dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
+
+        if(count !==0){
+            alert(`Hủy ${count} đơn thành công`);
             setShowModal1(false);
             navigation.goBack();
-        })
+        }
     }
     return (
         <>
@@ -70,10 +84,9 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
                 <>
                     <DataTable>
                         <DataTable.Header>
-                            <DataTable.Title>Sản phẩm</DataTable.Title>
+                            <DataTable.Title>Mã order</DataTable.Title>
                             <DataTable.Title numeric>Số lượng</DataTable.Title>
                             <DataTable.Title numeric>Giá</DataTable.Title>
-                            <DataTable.Title numeric>Xác nhận</DataTable.Title>
                         </DataTable.Header>
 
                         <FlatList
@@ -95,7 +108,6 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
                             <Modal.Footer>
                                 <ButtonBase bg={"blue.400"}  onPress={()=>confirm()} >Đồng ý</ButtonBase>
                             </Modal.Footer>
-
                         </Modal.Content>
                     </Modal>
                     <Modal isOpen={showModal2} onClose={() => setShowModal2(false)}>

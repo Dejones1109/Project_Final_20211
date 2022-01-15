@@ -22,7 +22,7 @@ class Database {
     // get data
     async listen (path, type,action){
         try {
-            return await database.ref(path).orderByKey().limitToLast(30).on(type,action);
+            return await database.ref(path).orderByKey().limitToLast(10).on(type,action);
         }
         catch(e){
             alert(e);

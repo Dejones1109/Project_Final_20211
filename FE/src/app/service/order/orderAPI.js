@@ -12,5 +12,9 @@ export const orderApi = createApi({
             query: (payload) => `orders?query=status&partnerId=${payload.id}&status=${payload.status}`,
             providesTags:['orderApi']
         }),
+        getOrderByCode :builder.query({
+            query: (orderCode) => `orders/${orderCode}`,
+            providesTags:['orderApi']
+        }),
     }),
 });

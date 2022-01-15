@@ -52,27 +52,27 @@ const ListMessage = React.memo((props:{data:any,nameUser:any})=>{
     console.log(yourRef.current);
     return (
         <>
-            <ButtonBase onClick={() =>yourRef.current.scrollToEnd({ animated: true })}>
-                abc
-            </ButtonBase>
             <FlatList
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                    marginBottom:40
+                }}
                 ref={yourRef}
                 onContentSizeChange={() =>  yourRef.current.scrollToEnd({ animated: true })}
                 data={props.data}
                 scrollEnabled={true}
                 renderItem={({item})=><Message item={item} nameUser={props.nameUser}/>}
                 keyExtractor={(index)=>index}
+                maxToRenderPerBatch={10}
             />
-
         </>
     )
 })
 const MessageScreen = (props:{route?:any}) => {
     let currentUser:any = props.route.params.item;
     let {info, message} = currentUser;
-    console.log(info);
     let getSomeDataWhenRunning:any = [];
-    const [messages, setMessages] = useState(Object.values(message));
+    const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const navigation = useNavigation();
     async function sendMessage() {
@@ -104,26 +104,21 @@ const MessageScreen = (props:{route?:any}) => {
     }
     // @ts-ignore
     useEffect(async () =>{
-        if(store.getState().auth.code === 200){
-            try{
-                await Database.listen(
-                    `message/${info.partCode}`,
-                    'child_added',
-                    (snap:any) => {
-                        // console.log(snap.val());
-                        getSomeDataWhenRunning.push(snap.val());
-                        // @ts-ignore
-                        setMessages([...getSomeDataWhenRunning]);
-                    }
-                );
+        await Database.listen(
+            `message/${info.partCode}`,
+            'child_added',
+            (snap:any) => {
+                // console.log(snap.val());
+                getSomeDataWhenRunning.push(snap.val());
+                // @ts-ignore
+                setMessages([...getSomeDataWhenRunning]);
             }
-            catch(e){}
-        }
+        )
     },[])
     return (
         <>
-            <ListMessage data={messages} nameUser={info.name}/>
-            <Row px={2} justifyContent={"center"} alignItems={'center'}  space={2} position={'absolute'} bottom={2} left={0} right={0}>
+            <ListMessage data={messages} nameUser={info.name} />
+            <Row bg={"white"} px={2} justifyContent={"center"} alignItems={'center'}  space={2} position={'absolute'} py={2} bottom={0} left={0} right={0}>
                 <Input
                     variant="rounded"
                     minWidth={'80%'}

@@ -27,7 +27,8 @@ const ShowCommonRoute = (props:{status:number}) => {
             <FlatList
                 renderItem = {({item})=>{
                     return(
-                        <TouchableOpacity onPress={()=>navigation.navigate('payOrderScreen',{order:item, status:props.status})}>
+                        // @ts-ignore
+                        <TouchableOpacity onPress={()=>navigation.navigate('infoOrderScreen',{item:{idOrder:item.id, orderCode:item.orderCode}})}>
                             <Center borderWidth={1} p={2}   m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
                                 <FrameBase
                                     default

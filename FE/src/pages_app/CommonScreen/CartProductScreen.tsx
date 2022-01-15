@@ -28,28 +28,6 @@ const LoadingCartProductScreen = (props:{route:any}) => {
     const [saleId, setSaleId]= useState(props.route.params !== undefined ? props.route.params.item.id  : 0);
     const [isBill,setIsBill] = useState(0);
     const dispatch = useDispatch();
-    const order = async (isBill:number)=>{
-        let allOrderId: any[] = [];
-        groupValueCart.forEach((item:any)=>{
-            allOrderId.push(parseInt(item.split(" ")[0]));
-        });
-
-        let data = {
-            "partnerId" : partnerId,
-            "adminId":1,
-            "cartId" :allOrderId,
-            "isBill" : isBill,
-        };
-        // @ts-ignore
-        await dispatch(createOrder(data));
-        await dispatch(orderApi.util.invalidateTags(['orderApi']))
-        if(store.getState().orders.code === 201){
-            await alert("đặt hàng thành công");
-        }
-        await dispatch(cartApi.util.invalidateTags(['cartApi']));
-        // await dispatch(productApi.util.invalidateTags(['productApi']));
-        await  navigation.goBack();
-    }
     const isFocused = useIsFocused();
     useEffect(()=>{
         setSaleValue(props.route.params !== undefined ? props.route.params.sale.saleValue  : 0)
@@ -62,6 +40,7 @@ const LoadingCartProductScreen = (props:{route:any}) => {
         saleValue:saleValue,
         groupValueCart:groupValueCart,
         saleId:saleId,
+
     }
     return (
         <>

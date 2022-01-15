@@ -22,20 +22,35 @@ import ListMessageScreen from "../../pages_admin/CommonScreen/ListMessageScreen"
 import MessageScreen from "../../components/common/MesageScreen";
 import SaleListScreen from "../../pages_admin/CommonScreen/SaleListScreen";
 import SaleDetailInfoScreen from "../../pages_admin/CommonScreen/SaleDetailInfoScreen";
+import InfoOrderScreen from "../../pages_admin/CommonScreen/InfoOrderScreen";
 
 const BottomTab = createBottomTabNavigator<BottomTabAdminParamList>();
 
 export default function BottomTabAdminNavigator() {
 
     const colorScheme = useColorScheme();
+    const getTabBarVisibility = (props:any) => {
+        let {route}= props;
+        const indexRoute = route.state
+            ? route.state.index
+            : 0;
+        if (indexRoute >0 ) {
+            return false;
+        }
+        return true;
+    }
     return (
         <BottomTab.Navigator
             initialRouteName="home"
-            screenOptions={{
-                tabBarActiveTintColor: Colors[colorScheme].tint,
-                tabBarStyle: {height: 50},
-                headerStyle:{height:50},
-            }}>
+            screenOptions={(props:any)=>{
+                return {
+                    tabBarActiveTintColor: Colors[colorScheme].tint,
+                    tabBarStyle: {height: 50},
+                    headerStyle:{height:50},
+                    tabBarVisible:getTabBarVisibility(props),
+                }
+            }}
+            >
             <BottomTab.Screen
                 name ="home"
                 component={HomeNavigator}
@@ -124,6 +139,13 @@ function CartNavigator(){
                 component={BillScreen}
                 options={{
                     headerTitle: 'Hoá đơn',
+                }}
+            />
+            <CartStack.Screen
+                name="infoOrderScreen"
+                component={InfoOrderScreen}
+                options={{
+                    headerTitle: 'Thông tin order',
                 }}
             />
         </CartStack.Navigator>

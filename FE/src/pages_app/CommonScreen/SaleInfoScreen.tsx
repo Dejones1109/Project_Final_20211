@@ -24,6 +24,7 @@ import {
 } from "../../app/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
+import {store} from "../../app/store";
 const ShowDetailInfoScreenSection = (props:{item:any})=>{
     const [item,setItem]= useState(props.item);
     const [updateStatusSale] = useUpdateStatusSaleMutation();
@@ -122,35 +123,35 @@ const ShowDetailInfoScreenSection = (props:{item:any})=>{
                             width:0.95*Layout.window.width,
                         }}
                     />
-
-                    <Row justifyContent={"space-around"} my={3}>
-                        <Select
-                            selectedValue={statusSale}
-                            minWidth="200"
-                            accessibilityLabel="Choose status"
-                            placeholder="Choose Service"
-                            _selectedItem={{
-                                bg: "teal.600",
-                                endIcon: <CheckIcon size="5" />,
-                            }}
-                            mt={1}
-                            onValueChange={(itemValue) => setStatusSale(itemValue)}
-                        >
-                            <Select.Item label={status(501)} value="501" />
-                            <Select.Item label={status(502)}  value="502" />
-                        </Select>
-                        <ButtonBase isDisabled={statusSale === `${item.status}` ? true : false } bg={item.status === 501 ? "success.500" : "danger.500"} onPress={()=>changeStatus(parseInt(statusSale))}>Update</ButtonBase>
-                    </Row>
+                    {store.getState().auth.code === 200 ? null :
+                        <Row justifyContent={"space-around"} my={3}>
+                            <Select
+                                selectedValue={statusSale}
+                                minWidth="200"
+                                accessibilityLabel="Choose status"
+                                placeholder="Choose Service"
+                                _selectedItem={{
+                                    bg: "teal.600",
+                                    endIcon: <CheckIcon size="5" />,
+                                }}
+                                mt={1}
+                                onValueChange={(itemValue) => setStatusSale(itemValue)}
+                            >
+                                <Select.Item label={status(501)} value="501" />
+                                <Select.Item label={status(502)}  value="502" />
+                            </Select>
+                            <ButtonBase isDisabled={statusSale === `${item.status}` ? true : false } bg={item.status === 501 ? "success.500" : "danger.500"} onPress={()=>changeStatus(parseInt(statusSale))}>Update</ButtonBase>
+                        </Row>
+                    }
                 </Center>
             </Box>
         </ScrollView>
     )
 }
 const InfoSaleScreen = (props:{route:any}) => {
-    const {item} = props.route.params;
-
+    const {sale} = props.route.params;
     return (
-        <ShowDetailInfoScreenSection item={item} />
+        <ShowDetailInfoScreenSection item={sale} />
     );
 };
 

@@ -31,11 +31,14 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
             await dispatch(updateQuantity(update_quantity));
         }
         if(isFocused){
-
+            let allOrderId: any[] = [];
+            groupValueCart.forEach((item:any)=>{
+                allOrderId.push(parseInt(item.split(" ")[0]));
+            });
             let data = {
                 "partnerId" : partnerId,
                 "adminId":1,
-                "cartId" :groupValueCart,
+                "cartId" :allOrderId,
                 "isBill" : isBill,
                 "saleId":saleId
             };
@@ -53,7 +56,7 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
             }
             await dispatch(cartApi.util.invalidateTags(['cartApi']));
             // await dispatch(productApi.util.invalidateTags(['productApi']));
-            await  navigation.navigate('cartProductScreen');
+            await  navigation.goBack();
         }
     }
     const [isBill,setIsBill] = useState(props.route.params !== undefined ? (props.route.params.bill ? 1:0)  : 0);

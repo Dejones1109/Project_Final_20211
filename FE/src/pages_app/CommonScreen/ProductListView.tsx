@@ -23,13 +23,7 @@ const ProductListView = (props:{data:Array<object>}) => {
                 renderItem = {({item})=><FrameBase product={item} navigation={navigation} />}
                 keyExtractor={({index}) => index}
             />
-            {
-                data.length % 2 === 0 ?null :
-                    <Row ml={1}  justifyContent="flex-start" >
-                        <FrameBase product={data[length]} navigation={navigation} />
-                    </Row>
 
-            }
         </>
     );
 };

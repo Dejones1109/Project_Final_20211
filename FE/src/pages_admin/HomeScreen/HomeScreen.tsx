@@ -18,9 +18,10 @@ import {useNavigation} from "@react-navigation/native";
 import {getData, storeData} from "../../helps/localStorage";
 
 const CardForCartWaiting = (props:{item:any, navigation ?:any})=>{
-    const {partner} = props.item;
+    const {partner,id} = props.item;
+
     return(
-        <Pressable my={2} onPress={() =>props.navigation.navigate("billScreen", {item: partner})}>
+        <Pressable my={2} onPress={() =>props.navigation.navigate("billScreen", {item: partner, id:id})}>
             <Center>
                 <Center width={"90%"}>
                     <FrameBase
@@ -82,13 +83,12 @@ const HomeScreen = (props:{navigation?:any})=>{
     // @ts-ignore
     const payload = {
         status: 301 ,
-        date:`${date.getUTCFullYear()}-${a}${date.getUTCMonth()+1}-${b}${date.getUTCDate()}` ,
+        date:`${date.getUTCFullYear()}-${a}${date.getUTCMonth()+1}-${b}${date.getUTCDate()-1}` ,
     }
 
     const dataCartWaiting = useGetAllCartWaitingForAdminQuery(payload);
     // @ts-ignore
     const getQuantity = useGetOrderQuantityByStatusOfAdminQuery();
-    console.log("dataCartWaiting",dataCartWaiting);
     return (
         <LoadingScreen data={[dataCartWaiting, getQuantity]}>
             <ScrollView bg={"white"}>

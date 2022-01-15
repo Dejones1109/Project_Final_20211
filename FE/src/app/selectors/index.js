@@ -28,6 +28,7 @@ export const {
 
 export const {
     useGetOrderListByStatusOfUserForAdminQuery,
+    useGetOrderByCodeQuery,
 } = orderApi;
 
 export const {

@@ -14,6 +14,7 @@ function getStatusLogin (){
 }
 function getIdUser (){
     // @ts-ignore
+    console.log("store",store);
     return 1;
 }
 async function checkLogin (userCheck, dispatch, auth){

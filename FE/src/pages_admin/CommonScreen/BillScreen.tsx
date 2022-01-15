@@ -19,8 +19,8 @@ import {updateOrderStatus} from "../../app/service/order/orderSlice";
 import {orderApi} from "../../app/controller";
 
 const BillScreen = (props:{route:any})=>{
-    const {item} = props.route.params;
-    console.log("item",item);
+    const {item,id} = props.route.params;
+
     const payload = {
         status:301,
         id:item.id

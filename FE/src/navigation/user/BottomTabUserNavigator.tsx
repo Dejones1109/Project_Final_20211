@@ -24,6 +24,7 @@ import isBillScreen from "../../pages_app/CommonScreen/isBillScreen";
 import AllInfoToOrderScreen from "../../pages_app/CommonScreen/AlInfoToOrderScreen";
 import SearchScreen from "../../pages_app/CommonScreen/SearchScreen";
 import PayOrderScreen from "../../pages_app/CommonScreen/PayOrderScreen";
+import InfoOrderScreen from "../../pages_app/CommonScreen/InfoOrderScreen";
 
 
 const BottomTab = createBottomTabNavigator<BottomTabUserParamList>();
@@ -42,7 +43,7 @@ export default function BottomTabUserNavigator() {
     const colorScheme = useColorScheme();
     return (
     <BottomTab.Navigator
-      initialRouteName="store"
+      initialRouteName="home"
       screenOptions={(props:any)=>{
           return {
               tabBarActiveTintColor: Colors[colorScheme].tint,
@@ -206,6 +207,13 @@ function StoreNavigator (){
                     headerTitle: "Chi tiết đơn hàng",
                 }}
             />
+            <StoreStack.Screen
+                name ="infoOrderScreen"
+                component={InfoOrderScreen}
+                options={{
+                    headerTitle: "Chi tiết đơn hàng",
+                }}
+            />
         </StoreStack.Navigator>
     )
 }
@@ -247,7 +255,8 @@ function SaleNavigator (){
                 name={"saleInfoScreen"}
                 component={SaleInfoScreen}
                 options={{
-                    headerTitle:"Thông tin sản phẩm ưu đãi"
+                    headerTitle:"Thông tin sản phẩm ưu đãi",
+                    headerShown: false,
                 }}
             />
 

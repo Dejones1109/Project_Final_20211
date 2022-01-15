@@ -61,12 +61,13 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
             // @ts-ignore
             dispatch(updateStatusPartner(payload));
             dispatch(storeApi.util.invalidateTags(['storeApi']));
-            alert('Thay đổi trạng thái thành công')
+            alert('Thay đổi trạng thái thành công');
             navigation.goBack();
         }
         else{
             alert("Vui lòng chọn trạng thái mới")
         }
+
     }
     let [statusStore, setStatusStore] = React.useState(`${item.status}`)
     return(
@@ -139,7 +140,7 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
                                 <Select.Item label={status(203)}  value="203" />
                                 <Select.Item label={status(204)}  value="204" />
                             </Select>
-                            <ButtonBase isDisabled={statusStore === `${item.status}` ? true : false } bg={item.status === (203 || 204) ? "red.400" : "blue.400"} onPress={()=>changeStatus(statusUser)}>Update</ButtonBase>
+                            <ButtonBase isDisabled={statusStore === `${item.status}` ? true : false } bg={item.status === (203 || 204) ? "red.400" : "blue.400"} onPress={()=>changeStatus(statusStore)}>Update</ButtonBase>
                         </Row>
                     </Center>
                 </Center>

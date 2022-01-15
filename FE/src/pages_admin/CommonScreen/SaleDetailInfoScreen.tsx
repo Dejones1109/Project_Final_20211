@@ -147,10 +147,10 @@ const ShowDetailInfoScreenSection = (props:{item:any})=>{
     )
 }
 const SaleDetailInfoScreen = (props:{route:any}) => {
-    const {item} = props.route.params;
+    const {sale} = props.route.params;
 
     return (
-           <ShowDetailInfoScreenSection item={item} />
+           <ShowDetailInfoScreenSection item={sale} />
     );
 };
 
