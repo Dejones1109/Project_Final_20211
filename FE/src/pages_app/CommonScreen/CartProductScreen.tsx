@@ -43,7 +43,7 @@ const LoadingCartProductScreen = (props:{route:any}) => {
         <>
             <ScrollView  bg={"white"}
                          showsVerticalScrollIndicator={false}
-                         mb={dataCp ? 100 : 0}
+
             >
                 <Center>
                     <Center w={"95%"} >
@@ -65,7 +65,8 @@ const LoadingCartProductScreen = (props:{route:any}) => {
                         >
                             <FlatList
                                 contentContainerStyle={{
-                                    width:0.95*Layout.window.width
+                                    width:0.95*Layout.window.width,
+                                    marginTop:dataCp ? 130 : 0,
                                 }}
                                 numColumns={1}
                                 data={dataCp}

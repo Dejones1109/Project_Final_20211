@@ -140,13 +140,7 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
         nameStore:  nameStore,
         address: address,
     }
-    function onOpenSheet() {
-        setPhone(item.phone);
-        setName(item.name);
-        setNameStore(item.nameStore);
-        setAddress(item.address);
-        onOpen();
-    }
+
     return(
         <ScrollView bg={"white"}>
             <Center w={"100%"} >

@@ -19,9 +19,6 @@ import Layout from "../../constants/Layout";
 import ButtonBase from "../../components/ButtonBase";
 import MainIcon from "../../assets/icon/Icon";
 import {status} from "../../helps/Status";
-import {ProductDataTableFinish, ProductDataTableWaiting } from '../CartScreen/ChildrentComponent';
-import LoadingScreen, {LoadingContext} from '../../helps/LoadingScreen';
-import {useGetListCartToPartnerIdQuery, useGetPartnerByCodeQuery} from "../../app/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {createPartner, updatePartner, updateStatusPartner} from "../../app/service/store/storeSlice";
 import {storeApi} from "../../app/controller";
@@ -112,7 +109,13 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
         }
     }
 
-
+    function onOpenSheet() {
+        setPhone(item.phone);
+        setName(item.name);
+        setNameStore(item.nameStore);
+        setAddress(item.address);
+        onOpen();
+    }
 
     return(
         <ScrollView bg={"white"}>
@@ -219,3 +222,7 @@ const ChangeInfoScreen = () => {
 };
 
 export default ChangeInfoScreen;
+function onOpenSheet() {
+    throw new Error('Function not implemented.');
+}
+

@@ -1,7 +1,7 @@
 import { store } from "../app/store";
 import {getData, storeData} from "./localStorage";
 import base64 from 'react-native-base64';
-import Database from '../firebase/Database'
+
 import {userLogin} from "../app/service/user/userSlice";
 import {adminLogin} from "../app/service/admin/adminSlice";
 function getStatusLogin (){
