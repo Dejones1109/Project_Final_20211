@@ -93,12 +93,13 @@ public class OrderController {
             response.setData(null);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         } finally {
+            if(request.getSaleId()!=0){
             PartnerToSale partnerToSale = PartnerToSale.builder()
                     .sale(saleService.findById(request.getSaleId()))
                     .order(order)
                     .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                     .build();
-            partnerToSaleService.save(partnerToSale);
+            partnerToSaleService.save(partnerToSale);}
             for (int c : request.getCartId()) {
                 Cart cart = cartService.findById(c);
                 cart.setStatus(102);
