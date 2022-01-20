@@ -1,7 +1,6 @@
 // Define a service using a base URL and expected endpoints
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-import {getIdUser} from "../../../helps/authenticate";
-export const partnerId = getIdUser();
+
 
 export const systemApi = createApi({
     reducerPath: 'systemApi',
@@ -9,7 +8,7 @@ export const systemApi = createApi({
     tagTypes:['systemApi'],
     endpoints: (builder) => ({
         getListSaleNoUse: builder.query({
-            query: (condition) => `/system/${partnerId}?query=listSaleNoUse&condition=${condition}`,
+            query: (sale) => `/system/${sale.partnerId}?query=listSaleNoUse&condition=${sale.condition}`,
             providesTags:['systemApi'],
         }),
         createSale: builder.mutation({

@@ -12,6 +12,8 @@ import {updateOrderStatus} from "../../../app/service/order/orderSlice";
 import {adminApi, dashboardApi, orderApi} from "../../../app/controller";
 import {useNavigation} from "@react-navigation/native";
 import {store} from "../../../app/store";
+import {showMessage} from "react-native-flash-message";
+import {status} from "../../../helps/Status";
 
 const DataFollowRow = (props:{item:any})=>{
     const {data} = useGetListToCartToOrderIdForAdminQuery(props.item.id); // return array , object have cartCode
@@ -49,7 +51,11 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
         await dispatch(adminApi.util.invalidateTags(['adminApi']));
         await dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
         if(count !== 0){
-            alert(`Xác nhận ${count}  thành công`);
+            showMessage({
+                message: "Xác nhận đơn hàng thành công",
+                description: ``,
+                type: "success",
+            });
             setShowModal1(false);
             navigation.goBack();
         }
@@ -73,7 +79,11 @@ const ProductDataTableWaiting =  (props:{data?:any , dispatch ?: any})=> {
         await dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
 
         if(count !==0){
-            alert(`Hủy ${count} đơn thành công`);
+            showMessage({
+                message: "Hủy đơn hàng thành công",
+                description: ``,
+                type: "success",
+            });
             setShowModal1(false);
             navigation.goBack();
         }

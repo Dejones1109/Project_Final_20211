@@ -115,7 +115,13 @@ function HomeNavigator() {
                     headerTitle: 'Hoá đơn',
                 }}
             />
-
+            <HomeStack.Screen
+                name="infoOrderScreen"
+                component={InfoOrderScreen}
+                options={{
+                    headerTitle: 'Hoá đơn',
+                }}
+            />
         </HomeStack.Navigator>
     );
 }

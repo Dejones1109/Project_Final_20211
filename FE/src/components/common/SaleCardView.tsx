@@ -6,10 +6,14 @@ import TextBase from "../TextBase";
 import MainIcon from "../../assets/icon/Icon";
 import React from "react";
 
-export const SaleCardView = (props:{item:any,navigation ?: any, routeName?:string, disabled?:boolean})=>{
+export const
+
+    SaleCardView = (props:{item:any,navigation ?: any, routeName?:string, disabled?:boolean,data?:any})=>{
     const item = props.item;
     return(
-        <TouchableOpacity disabled={props.disabled} onPress={()=>props.navigation.navigate(props.routeName,{sale:item})}>
+        <TouchableOpacity disabled={props.disabled} onPress={()=>{
+            props.navigation.navigate(props.routeName,{sale:item, item:props.data});
+        }}>
             <Row alignItems={"flex-start"} w={'100%'}  space={3} px={'2.5%'} py={2} bg={'info.100'}>
                 <Col justifyContent={'flex-start'} py={2}>
                     <MaterialCommunityIcons name="sale" size={50} color="#60A5FA" />

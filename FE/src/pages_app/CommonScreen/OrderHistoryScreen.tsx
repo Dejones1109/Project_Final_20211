@@ -9,9 +9,14 @@ import {useGetOrderListByStatusQuery} from "../../app/selectors";
 import Layout from "../../constants/Layout";
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
 import {useNavigation} from "@react-navigation/native";
+import {getIdUser} from "../../helps/authenticate";
 
-const CommonRoute = (props:{status:number}) =>{
-    const data = useGetOrderListByStatusQuery(props.status);
+const CommonRoute = (props:{status:number,jumpTo?:any}) =>{
+    let payload = {
+        status:props.status,
+        partnerId:getIdUser()
+    }
+    const data = useGetOrderListByStatusQuery(payload);
     return(
         <LoadingScreen data={[data]}>
             <ShowCommonRoute status={props.status}/>
@@ -28,7 +33,7 @@ const ShowCommonRoute = (props:{status:number}) => {
                 renderItem = {({item})=>{
                     return(
                         // @ts-ignore
-                        <TouchableOpacity onPress={()=>navigation.navigate('infoOrderScreen',{item:{idOrder:item.id, orderCode:item.orderCode}})}>
+                        <TouchableOpacity onPress={()=>navigation.navigate('payOrderScreen',{item:{idOrder:item.id, orderCode:item.orderCode, status:props.status}})}>
                             <Center borderWidth={1} p={2}   m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
                                 <FrameBase
                                     default
@@ -140,7 +145,7 @@ const OrderHistoryScreen = () => {
             )}
             initialLayout={{
                 width: Layout.window.width,
-                height: 100,
+                height: 0,
             }}
         />
     );

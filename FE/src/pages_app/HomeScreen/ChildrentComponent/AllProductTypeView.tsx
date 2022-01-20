@@ -2,47 +2,62 @@ import React, { useContext } from 'react';
 import {FlatList, HStack, ScrollView, Text, VStack} from "native-base";
 import FrameBase from "../../../components/FrameBase";
 import {useNavigation} from "@react-navigation/native";
-
+// @ts-ignore
+import Chaohaisan from '../../../assets/icon/chaohaisan.png';
+// @ts-ignore
+import Chaochim from '../../../assets/icon/chaochim.png';
+// @ts-ignore
+import Chaocua from '../../../assets/icon/chaocua.png';
+// @ts-ignore
+import Chaoech from '../../../assets/icon/chaoech.png';
+// @ts-ignore
+import Chaoca from '../../../assets/icon/chaoca.png';
+// @ts-ignore
+import Chaothit from '../../../assets/icon/chaothit.png';
+// @ts-ignore
+import Chaotimcan from '../../../assets/icon/chaotimcan.png';
+// @ts-ignore
+import Chaoluon from '../../../assets/icon/chaoluon.png';
 const AllProductTypeView = (props:{navigation?:any}) => {
     const data = [
         {
             type:"Cháo hái sản",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img: Chaohaisan,
             heading:"Cháo hái sản"
         },
         {
             type:"Cháo thịt",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img:Chaothit,
             heading:"Cháo thịt",
         },
         {
             type:"Cháo tim cận",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img:Chaotimcan,
             heading:"Cháo tim cận"
         },
         {
             type:"Cháo cá",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img:Chaoca,
             heading:"Cháo cá"
         },
         {
             type:"Cháo lươn",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img:Chaoluon,
             heading:"Cháo lươn"
         },
         {
             type:"Cháo ếch",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img:Chaoech,
             heading:"Cháo ếch"
         },
         {
             type:"Cháo chim",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img:Chaochim,
             heading:"Cháo chim"
         },
         {
             type:"Cháo cua",
-            img:"https://wallpaperaccess.com/full/317501.jpg",
+            img:Chaocua,
             heading:"Cháo cua"
         },
     ]

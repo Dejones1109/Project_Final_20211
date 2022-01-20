@@ -16,6 +16,8 @@ import {Row} from "../../components/AutoLayout";
 import {adminApi, dashboardApi} from "../../app/controller";
 import {useNavigation} from "@react-navigation/native";
 import { TabActions } from '@react-navigation/native';
+import {showMessage} from "react-native-flash-message";
+import Database from "../../firebase/database";
 const CommonRoute = (props:{payload:any , jumpTo?:any}) =>{
     const data= useGetOrderListByStatusForAdminQuery(props.payload);
 
@@ -39,9 +41,38 @@ const RenderItem = (props:{payload:any, item :any, jumpTo?:any})=>{
             status: st === 302 ? 303 : (st ===303 ? 306 : st+1) ,
         };
         // @ts-ignore
-        dispatch(updateOrderStatus(payload));
+        dispatch(updateOrderStatus(payload)).then(res=>{
+            if(res.payload){
+                showMessage({
+                    message: "Xác nhận",
+                    description: "Thành công",
+                    type: "success",
+                });
+                let infoOrder = status(payload.status);
+
+                Database.push(
+                    `notification/notify/${item.partner.partCode}`,
+                    {
+                        title:'Đơn hàng đang được vận chuyển',
+                        description: `Papadashi thông báo,mã Đơn hàng ${item.orderCode} ${infoOrder} `,
+                        time:Database.timeStamp(new Date()),
+                        dataOrder:{
+                            idOrder:item.id,
+                            orderCode:item.orderCode,
+                            status:payload.status,
+                        },
+                        see:0,
+                    },
+                )
+            }
+        });
         dispatch(adminApi.util.invalidateTags(['adminApi']));
         dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
+        showMessage({
+            message: "Xác nhận",
+            description: "Thành công",
+            type: "success",
+        });
         setShowModal1(false);
         setShowModal2(false);
         props.jumpTo(st === 302 ? 303 : (st ===303 ? 306 : st+1));
@@ -52,15 +83,42 @@ const RenderItem = (props:{payload:any, item :any, jumpTo?:any})=>{
             status:304,
         };
         // @ts-ignore
-        dispatch(updateOrderStatus(payload));
+        dispatch(updateOrderStatus(payload)).then(res=>{
+            if(res.payload){
+                showMessage({
+                    message: "Hủy đơn hàng",
+                    description: "Thành công",
+                    type: "success",
+                });
+                Database.push(
+                    `notification/notify/${item.partner.partCode}`,
+                    {
+                        title:'Đơn hàng đã hủy thành công',
+                        description: `Papadashi rất tiếc đơn hàng ${item.orderCode} vừa bị hủy , chúng tôi sẽ cải thiện nhiều hơn chất lượng sản phẩm trong thời gian tới.`,
+                        time:Database.timeStamp(new Date()),
+                        dataOrder:{
+                            idOrder:item.id,
+                            orderCode:item.orderCode,
+                            status:payload.status,
+                        },
+                        see:0,
+                    },
+                )
+            }
+        });
         dispatch(adminApi.util.invalidateTags(['adminApi']));
         dispatch(dashboardApi.util.invalidateTags(['dashboardApi']));
+        showMessage({
+            message: "Hủy đơn hàng",
+            description: "Thành công",
+            type: "success",
+        });
         setShowModal1(false);
         setShowModal2(false);
     }
     return (
         // @ts-ignore
-        <TouchableOpacity onPress={()=>navigation.navigate('infoOrderScreen',{item:{idOrder:item.id, orderCode:item.orderCode}})}>
+        <TouchableOpacity onPress={()=>navigation.navigate('infoOrderScreen',{item:{idOrder:item.id, orderCode:item.orderCode, status:st}})}>
             <Center borderWidth={1}  px={2}  m={2} borderColor={"light.400"} bg={"white"} borderRadius={5}>
                 <FrameBase
                     default
@@ -133,7 +191,9 @@ const RenderItem = (props:{payload:any, item :any, jumpTo?:any})=>{
                                 <Modal.Content maxWidth="400px">
                                     <Modal.CloseButton />
                                     <Modal.Header>Xác nhận lại</Modal.Header>
-
+                                    <Modal.Footer>
+                                        <ButtonBase bg={"blue.400"}  onPress={()=>cancel(item)} >Đồng ý</ButtonBase>
+                                    </Modal.Footer>
                                 </Modal.Content>
                             </Modal>
                         </>

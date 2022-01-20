@@ -14,6 +14,8 @@ import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
 import {cartApi, productApi} from "../../app/controller";
 import {store} from "../../app/store";
 import {partnerId} from "../../app/service/store/storeAPI";
+import {showMessage} from "react-native-flash-message";
+import {getIdUser} from "../../helps/authenticate";
 
 const note = [
     {
@@ -46,7 +48,7 @@ export const NoteAboutProduct =()=>{
                     <FrameBase
                         default
                         viewOptions={{
-                            leftElement:<TextBase bold>{item.key}</TextBase>,
+                            leftElement:<TextBase light color={'red.400'}>{item.key}</TextBase>,
                             rightElement:<TextBase color={"light.400"}>{item.value}</TextBase>,
                         }}
                     />
@@ -78,28 +80,41 @@ const LoadingProductScreen = (props:{route:any}) => {
     async function addProduct() {
         let cart = {
             "productId":item.id,
-            "partnerId":partnerId,
+            "partnerId":getIdUser(),
             "quantity" : quantities
         };
         let update_quantity = {
             "id" : id,
             "quantity" : quantities
         };
-        console.log(update_quantity);
+
         if(quantity === 1){
             // @ts-ignore
             await dispatch(createCart(cart));
             if(store.getState().cart.code === 200){
+                showMessage({
+                    message: "Thêm vào giỏ hàng thành công",
+                    description: ``,
+                    type: "success",
+                });
                 navigation.goBack();
             }
             else{
-                alert("Đã có lỗi xả .Vui lòng kiểm tra lại đường truyền")
+                showMessage({
+                    message: "Đã có lỗi xả .Vui lòng kiểm tra lại đường truyền",
+                    description: ``,
+                    type: "danger",
+                });
             }
         }else{
             // @ts-ignore
             await dispatch(updateQuantity(update_quantity));
             if(store.getState().cart.code === 200){
-                alert("Đã cập nhật số lượng trên giỏ hàng");
+                showMessage({
+                    message: "Đã cập nhật số lượng trên giỏ hàng",
+                    description: ``,
+                    type: "danger",
+                });
             }
         }
         // @ts-ignore
@@ -110,60 +125,62 @@ const LoadingProductScreen = (props:{route:any}) => {
 
     return (
         <>
-            <ScrollView mb={110}>
-                <Center  width={"100%"} bg={"white"}>
-                    <Image
-                        source={{
-                            uri: `${item.image}`,
-                        }}
-                        height={500}
-                        alt="Alternate Text"
-                        resizeMode={"cover"}
-                        rounded={10}
-                    />
-                    <Box width={"95%"}>
-                        <TextBase bold  fontSize={18} >Tên sản phẩm : {item.productName}</TextBase>
-                        <TextBase color={"yellow.500"} fontSize={16} >Price : {item.price} đ / gói</TextBase>
-                        <TextBase light fontSize={16} >Mô tả chi tiết : </TextBase>
-                        <TextBase light  fontSize={16} ml={2}  >{item.remark}</TextBase>
-                    </Box>
-                    <Divider bg={"light.200"} width ={Layout.window.width} height={1} my={3}/>
-                    <FrameBase
-                        default
-                        viewOptions={{
-                            leftElement:<Avatar
-                                bg="pink.600"
-                                alignSelf="center"
-                                size="30"
-                                source={{
-                                    uri: "https://pbs.twimg.com/profile_images/1177303899243343872/B0sUJIH0_400x400.jpg",
-                                }}
-                            >
-                                GG
-                            </Avatar>,
-                            colElement: <>
-                                <TextBase light color={"light.300"}>Phân phối bởi</TextBase>
-                                <TextBase>Thuận Vinh</TextBase>
-                            </>,
-                            rightElement:<Col>
-                                <MainIcon name={"arrow-right"} />
-                            </Col>,
-                        }}
-                    />
-                    <Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>
-                    <FrameBase
-                        default
-                        viewOptions={{
-                            leftElement:<MainIcon name={"sale"} />,
-                            colElement:<>
-                                <TextBase light color={"light.300"}>Chọn Voucher</TextBase>
-                                <TextBase>Khuyến mãi 10%</TextBase>
-                            </>,
-                        }}
-                    />
-                    <Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>
-                    <NoteAboutProduct />
+            <ScrollView mb={110} bg={"white"} >
+                <Center>
+                    <Center  width={"95%"} >
+                        <Image
+                            source={{
+                                uri: `${item.image}`,
+                            }}
+                            height={500}
+                            alt="Alternate Text"
+                            resizeMode={"cover"}
+                            rounded={10}
+                        />
+                        <Box width={"95%"}>
+                            <TextBase bold  fontSize={18} >Tên sản phẩm : {item.productName}</TextBase>
+                            <TextBase color={"yellow.500"} fontSize={16} >Price : {item.price} đ / gói</TextBase>
+                            <TextBase light fontSize={16} >Mô tả chi tiết : </TextBase>
+                            <TextBase light  fontSize={16} ml={2}  >{item.remark}</TextBase>
+                        </Box>
+                        {/*<Divider bg={"light.200"} width ={Layout.window.width} height={1} my={3}/>*/}
+                        {/*<FrameBase*/}
+                        {/*    default*/}
+                        {/*    viewOptions={{*/}
+                        {/*        leftElement:<Avatar*/}
+                        {/*            bg="pink.600"*/}
+                        {/*            alignSelf="center"*/}
+                        {/*            size="30"*/}
+                        {/*            source={{*/}
+                        {/*                uri: "https://pbs.twimg.com/profile_images/1177303899243343872/B0sUJIH0_400x400.jpg",*/}
+                        {/*            }}*/}
+                        {/*        >*/}
+                        {/*            GG*/}
+                        {/*        </Avatar>,*/}
+                        {/*        colElement: <>*/}
+                        {/*            <TextBase light color={"light.300"}>Phân phối bởi</TextBase>*/}
+                        {/*            <TextBase>Thuận Vinh</TextBase>*/}
+                        {/*        </>,*/}
+                        {/*        rightElement:<Col>*/}
+                        {/*            <MainIcon name={"arrow-right"} />*/}
+                        {/*        </Col>,*/}
+                        {/*    }}*/}
+                        {/*/>*/}
+                        <Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>
+                        {/*<FrameBase*/}
+                        {/*    default*/}
+                        {/*    viewOptions={{*/}
+                        {/*        leftElement:<MainIcon name={"sale"} />,*/}
+                        {/*        colElement:<>*/}
+                        {/*            <TextBase light color={"light.300"}>Chọn Voucher</TextBase>*/}
+                        {/*            <TextBase>Khuyến mãi 10%</TextBase>*/}
+                        {/*        </>,*/}
+                        {/*    }}*/}
+                        {/*/>*/}
+                        {/*<Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>*/}
+                        <NoteAboutProduct />
 
+                    </Center>
                 </Center>
 
             </ScrollView>
@@ -191,8 +208,9 @@ const LoadingProductScreen = (props:{route:any}) => {
 };
 const AddProductScreen = (props:{route:any})=>{
     const item = props.route.params.data;
+    let partnerId = getIdUser();
     // @ts-ignore
-    const data =useGetCartListByPartnerQuery();
+    const data =useGetCartListByPartnerQuery(partnerId);
     return(
         <LoadingScreen data={[data]}>
             <LoadingProductScreen route={props.route} />

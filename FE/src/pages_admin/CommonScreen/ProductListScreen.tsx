@@ -28,6 +28,8 @@ import {TouchableOpacity} from "react-native";
 import {filterSomething, nonAccentVietnamese} from "../../helps";
 import * as ImagePicker from "expo-image-picker";
 import Storage from "../../firebase/storage";
+import {showMessage} from "react-native-flash-message";
+import {status} from "../../helps/Status";
 
 const CardProductView = (props:{item:any, navigation: any})=>{
     const item = props.item;
@@ -109,13 +111,25 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
     const notification = (payload:any)=>{
         console.log(payload);
         if(payload.code === "201" ){
-            alert("Tạo thành công");
+            showMessage({
+                message: "Tạo sản phẩm",
+                description: `${productName} thành công`,
+                type: "success",
+            });
         }
         else if(payload.code === "200"){
-            alert("Sản phẩm đã tồn tại");
+            showMessage({
+                message: "Tạo sản phẩm",
+                description: `${productName} thất bại`,
+                type: "warning",
+            });
         }
         else {
-            alert("Tạo thất bại");
+            showMessage({
+                message: "Tạo sản phẩm",
+                description: `${productName} thất bại`,
+                type: "warning",
+            });
         };
     }
     const pickImage = async () => {
@@ -135,13 +149,24 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
     const createPro = async()=>{
         // @ts-ignore
         if(Object.values(crePro).includes("")){
-            alert("Vui lòng không được để trống");
+            showMessage({
+                message: "Vui lòng không được để trống",
+                description: ``,
+                type: "info",
+            });
         }else{
             await setModalVisible(!modalVisible);
             let keyImage = nonAccentVietnamese(productName);
             const url =  await Storage.putFile(image,setTransferred,keyImage);
-            await setImage(url);
-            await dispatch(createProduct(crePro)).then(({payload}) => {notification(payload)});
+            let data ={
+                productName:productName,
+                image :url,
+                price: price,
+                type: type,
+                remark: remark,
+            }
+            // @ts-ignore
+            await dispatch(createProduct(data)).then(({payload}) => {notification(payload)});
             await dispatch(productApi.util.invalidateTags(['productApi']));
             setProductName('');
             setType('');

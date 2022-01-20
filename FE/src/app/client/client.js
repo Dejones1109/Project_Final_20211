@@ -12,6 +12,7 @@ export const client = axios.create({
         Accept: APPLICATION_JSON,
         [CONTENT_TYPE]: APPLICATION_JSON,
         withCredentials : true,
+
     }
 })
 

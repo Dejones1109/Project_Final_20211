@@ -25,6 +25,7 @@ import {
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
 import {store} from "../../app/store";
+import {showMessage} from "react-native-flash-message";
 const ShowDetailInfoScreenSection = (props:{item:any})=>{
     const [item,setItem]= useState(props.item);
     const [updateStatusSale] = useUpdateStatusSaleMutation();
@@ -83,15 +84,27 @@ const ShowDetailInfoScreenSection = (props:{item:any})=>{
             updateStatusSale(payload).then(res=>{
                 // @ts-ignore
                 if(res.data.code === "200"){
-                    alert('Thay đổi trạng thái thành công');
+                    showMessage({
+                        message: "Thay đổi trạng thái ",
+                        description: "Thành công",
+                        type: "success",
+                    });
                 }else{
-                    alert('Thay đổi thất bại');
+                    showMessage({
+                        message: "Thay đổi trạng thái ",
+                        description: "Thất bại",
+                        type: "warning",
+                    });
                 }
             });
             navigation.goBack();
         }
         else{
-            alert("Vui lòng chọn trạng thái mới")
+            showMessage({
+                message: "Thay đổi trạng thái ",
+                description: "Vui lòng chọn trạng thái mới",
+                type: "info",
+            });
         }
     }
     return(

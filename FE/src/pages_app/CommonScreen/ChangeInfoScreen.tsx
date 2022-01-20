@@ -11,7 +11,7 @@ import {
     Image,
     Select,
     CheckIcon,
-    useDisclose, Actionsheet, Input
+    Actionsheet, Input, useDisclose
 } from "native-base";
 import {Col, Row} from "../../components/AutoLayout";
 import FrameBase from "../../components/FrameBase";
@@ -28,19 +28,17 @@ import {storeApi} from "../../app/controller";
 import {useNavigation} from "@react-navigation/native";
 import {showMessage} from "react-native-flash-message";
 import {getIdUser} from "../../helps/authenticate";
-import {TouchableOpacity} from "react-native";
+import {store} from "../../app/store";
 const StoreDetailInfoScreenSection = (props:{item:any})=>{
     const [item,setItem]= useState(props.item);
     // @ts-ignore
-    const {context} = useContext(LoadingContext);
-    const dataTable = context[0].data;
     const { isOpen, onOpen, onClose } = useDisclose();
     const [phone,setPhone]= useState('');
     const [name,setName]= useState('');
     const [nameStore,setNameStore]= useState('');
     const [address,setAddress]= useState('');
     const [search,setSearch]= useState('');
-    // const {data,isFetching,isSuccess} = useGetPartnerByCodeQuery(item.partCode);
+
     const listData = [
         {
             leftElement: <MainIcon name={"user"} />,
@@ -70,46 +68,26 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
     const dispatch = useDispatch();
     // @ts-ignore
     const navigation = useNavigation();
-    const changeStatus = (st: number)=>{
-        if(parseInt(st) !== item.status){
-            let payload = {
-                id:item.id,
-                params:{
-                    query:'status',
-                    status:st,
-                }
-            }
-            // @ts-ignore
-            dispatch(updateStatusPartner(payload));
-            dispatch(storeApi.util.invalidateTags(['storeApi']));
-            showMessage({
-                message: "Thay đổi trạng thái",
-                description: `Thành công`,
-                type: "success",
-            });
-            navigation.goBack();
-        }
-        else{
-            showMessage({
-                message: "Vui lòng trạng thái mới",
-                description: `Trạng thái ${status(st)} đã tồn tại`,
-                type: "info",
-            });
-        }
-    }
-    let [statusStore, setStatusStore] = React.useState(`${item.status}`)
+    const changePassword = (password:string)=>{
 
+    }
+    const dataUser= {
+        phone:phone,
+        name:name,
+        nameStore:  nameStore,
+        address: address,
+    }
     async function updateUser() {
         if(phone === item.phone){
             alert('Số điện thoại đã tồn tại');
         }else{
             let payload = {
-                partnerId: item.id,
+                partnerId: getIdUser(),
                 data: dataUser
             }
             // @ts-ignore
             dispatch(updatePartner(payload)).then(res=>{
-                if(res.payload.data ){
+                if(res.payload.data){
                     showMessage({
                         message: "Cập nhật người dùng",
                         description: `Thành công`,
@@ -134,19 +112,8 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
         }
     }
 
-    const dataUser= {
-        phone:phone,
-        name:name,
-        nameStore:  nameStore,
-        address: address,
-    }
-    function onOpenSheet() {
-        setPhone(item.phone);
-        setName(item.name);
-        setNameStore(item.nameStore);
-        setAddress(item.address);
-        onOpen();
-    }
+
+
     return(
         <ScrollView bg={"white"}>
             <Center w={"100%"} >
@@ -235,46 +202,20 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
                             width:0.95*Layout.window.width,
                         }}
                     />
-
-                    <ProductDataTableFinish data={dataTable.data}  />
-                    <TextBase mt={2} color={  "blue.400"} width={"95%"} fontSize={'xl'} >Thay đổi trạng thái người dùng</TextBase>
-
-                    <Row justifyContent={"space-around"} my={3}>
-                        <Select
-                            selectedValue={statusStore}
-                            minWidth="200"
-                            accessibilityLabel="Choose status"
-                            placeholder="Choose Service"
-                            _selectedItem={{
-                                bg: "teal.600",
-                                endIcon: <CheckIcon size="5" />,
-                            }}
-                            mt={1}
-                            onValueChange={(itemValue) => setStatusStore(itemValue)}
-                        >
-                            <Select.Item label={status(201)} value="201" />
-                            <Select.Item label={status(202)}  value="202" />
-                            <Select.Item label={status(203)}  value="203" />
-                            <Select.Item label={status(204)}  value="204" />
-                        </Select>
-                        <ButtonBase isDisabled={statusStore === `${item.status}` ? true : false } bg={item.status === (203 || 204) ? "red.400" : "blue.400"} onPress={()=>changeStatus(statusStore)}>Update</ButtonBase>
-                    </Row>
-                    <TextBase mt={2} color={  "blue.400"} width={"95%"} fontSize={'xl'} onPress={()=>onOpenSheet()} >Thay đổi thông tin người dùng</TextBase>
+                    <TextBase w={'95%'} color={'blue.500'} fontSize={'xl'}>Thay đổi mật khẩu</TextBase>
+                    <TextBase w={'95%'} color={'blue.500'} fontSize={'xl'} onPress={()=>onOpenSheet()}>Thay đổi thông tin cá nhân</TextBase>
                 </Center>
             </Center>
         </ScrollView>
     )
 }
-const StoreDetailInfoScreen = (props:{route:any}) => {
-    const {item} = props.route.params;
-    // @ts-ignore
-    const listCartFinish = useGetListCartToPartnerIdQuery(item.id)
-    // @ts-ignore
+const ChangeInfoScreen = () => {
+    let partner= store.getState().auth.currentUser;
     return (
-        <LoadingScreen data={[listCartFinish]}>
-            <StoreDetailInfoScreenSection item={item} />
-        </LoadingScreen>
+        // <LoadingScreen data={[listCartFinish]}>
+            <StoreDetailInfoScreenSection item={partner} />
+        // </LoadingScreen>
     );
 };
 
-export default StoreDetailInfoScreen;
+export default ChangeInfoScreen;

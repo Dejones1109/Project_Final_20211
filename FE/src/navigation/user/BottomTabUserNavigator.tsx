@@ -14,7 +14,13 @@ import AddProductScreen from "../../pages_app/CommonScreen/AddProductScreen";
 import {HomeScreen, NotifyScreen, SaleScreen, StoreScreen} from "../../pages_app";
 import CartProductScreen from "../../pages_app/CommonScreen/CartProductScreen";
 import ProductDetailInfoScreen from "../../pages_app/CommonScreen/ProductDetailInfoScreen";
-import {OrderHistoryScreen, ProductTypeScreen, SaleInfoScreen} from '../../pages_app/CommonScreen';
+import {
+    ChangeInfoScreen,
+    CreateBillScreen,
+    OrderHistoryScreen,
+    ProductTypeScreen,
+    SaleInfoScreen
+} from '../../pages_app/CommonScreen';
 import  {IconHome, IconNotify, IconSale, IconStore} from '../../helps/TabNavigator';
 import CartStatisticsScreen from "../../pages_app/CommonScreen/CartStatisticsScreen";
 import SettingScreen from "../../components/common/SettingScreen";
@@ -25,6 +31,7 @@ import AllInfoToOrderScreen from "../../pages_app/CommonScreen/AlInfoToOrderScre
 import SearchScreen from "../../pages_app/CommonScreen/SearchScreen";
 import PayOrderScreen from "../../pages_app/CommonScreen/PayOrderScreen";
 import InfoOrderScreen from "../../pages_app/CommonScreen/InfoOrderScreen";
+import NotificationScreen from "../../pages_app/CommonScreen/NotificationInfoScreen";
 
 
 const BottomTab = createBottomTabNavigator<BottomTabUserParamList>();
@@ -214,6 +221,20 @@ function StoreNavigator (){
                     headerTitle: "Chi tiết đơn hàng",
                 }}
             />
+            <StoreStack.Screen
+                name ="createBillScreen"
+                component={CreateBillScreen}
+                options={{
+                    headerTitle: "Tạo chi tiết hóa đơn",
+                }}
+            />
+            <StoreStack.Screen
+                name ="changeInfoScreen"
+                component={ChangeInfoScreen}
+                options={{
+                    headerTitle: "Thông tin cá nhân ",
+                }}
+            />
         </StoreStack.Navigator>
     )
 }
@@ -227,17 +248,41 @@ function NotifyNavigator (){
                 name ="notifyScreen"
                 component={NotifyScreen}
                 options={{
-                    headerShow :false
+                    headerTitle: "Thông báo",
                 }}
             />
             <NotifyStack.Screen
                 name={"message"}
                 component={MessageScreen}
                 options={{
-                    headerShow :false
+                    headerShown: false,
+                    headerTitle:"Message"
                 }}
             />
 
+            <NotifyStack.Screen
+                name={"notificationScreen"}
+                component={NotificationScreen}
+                options={{
+                    headerShown: true,
+                    headerTitle:"Thông tin giao dich"
+                }}
+            />
+            <NotifyStack.Screen
+                name={"saleScreen"}
+                component={SaleScreen}
+                options={{
+                    headerShown: true,
+                    headerTitle:"Các khuyến mãi"
+                }}
+            />
+            <StoreStack.Screen
+                name ="payOrderScreen"
+                component={PayOrderScreen}
+                options={{
+                    headerTitle: "Chi tiết đơn hàng",
+                }}
+            />
         </NotifyStack.Navigator>
     )
 }

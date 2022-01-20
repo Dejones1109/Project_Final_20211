@@ -18,12 +18,12 @@ import {useNavigation} from "@react-navigation/native";
 import {getData, storeData} from "../../helps/localStorage";
 
 const CardForCartWaiting = (props:{item:any, navigation ?:any})=>{
-    const {partner,id} = props.item;
-
+    const {partner,id,orderCode,updatedDate} = props.item;
+    console.log(props.item);
     return(
-        <Pressable my={2} onPress={() =>props.navigation.navigate("billScreen", {item: partner, id:id})}>
-            <Center>
-                <Center width={"90%"}>
+        <TouchableOpacity  onPress={()=>props.navigation.navigate('infoOrderScreen',{item:{idOrder:id, orderCode:orderCode}})}>
+            <Center my={2}>
+                <Center  width={"90%"}>
                     <FrameBase
                         default
                         styled={{
@@ -47,17 +47,17 @@ const CardForCartWaiting = (props:{item:any, navigation ?:any})=>{
                             </>,
                             colElement:<Col>
                                 <TextBase color={"red.400"} alignItems={"flex-end"}>{partner.nameStore.slice(0,20)}</TextBase>
-                                <TextBase>{partner.name}</TextBase>
+                                <TextBase>Mã order : {orderCode}</TextBase>
                             </Col>,
                             rightElement:<Col  alignItems={"flex-end"}>
                                 <TextBase color={"blue.400"} fontSize={10} alignItems={"flex-end"}>Xem chi tiết</TextBase>
-                                <TextBase>{partner.updatedDate.split(" ")[1]}</TextBase>
+                                <TextBase>{updatedDate.split(" ")[1]}</TextBase>
                             </Col>,
                         }}
                     />
                 </Center>
             </Center>
-        </Pressable>
+        </TouchableOpacity>
     )
 }
 const HomeScreen = (props:{navigation?:any})=>{
@@ -83,7 +83,7 @@ const HomeScreen = (props:{navigation?:any})=>{
     // @ts-ignore
     const payload = {
         status: 301 ,
-        date:`${date.getUTCFullYear()}-${a}${date.getUTCMonth()+1}-${b}${date.getUTCDate()-1}` ,
+        date:`${date.getUTCFullYear()}-${a}${date.getUTCMonth()+1}-${b}${date.getUTCDate()  }` ,
     }
 
     const dataCartWaiting = useGetAllCartWaitingForAdminQuery(payload);

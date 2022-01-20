@@ -26,6 +26,7 @@ import {createPartner} from "../../app/service/store/storeSlice";
 import {storeApi} from "../../app/controller";
 import {TouchableOpacity} from "react-native";
 import {filterSomething, nonAccentVietnamese} from "../../helps";
+import {showMessage} from "react-native-flash-message";
 
 const CardStoreView = (props:{item:any,navigation ?: any})=>{
     const item = props.item;
@@ -111,15 +112,26 @@ const  LayoutStoreListScreen = (props:{navigation:any}) =>{
     const [searching, setSearching] = useState(false);
     const notification = (payload:any)=>{
 
-        console.log(payload);
         if(payload.code === "201" ){
-            alert("Tạo thành công");
+            showMessage({
+                message: "Khởi tạo người dùng",
+                description: `Thành công`,
+                type: "success",
+            });
         }
         else if(payload.code === "200"){
-            alert("Tài khoản đã tồn tại");
+            showMessage({
+                message: "Người dùng đã tồn tại",
+                description: ``,
+                type: "warning",
+            });
         }
         else {
-            alert("Tạo thất bại");
+            showMessage({
+                message: "Có lỗi xảy ra",
+                description: `Khơi tạo thất bại`,
+                type: "danger",
+            });
         };
     }
     const createUser = async() => {
@@ -178,8 +190,8 @@ const  LayoutStoreListScreen = (props:{navigation:any}) =>{
                                     onChangeText={(text)=>setAddress(text)}
                                 />
                                 <Row justifyContent={"space-around"} my={2}>
-                                    <ButtonBase bg={"blue.400"} onPress={onClose}>Cancel</ButtonBase>
-                                    <ButtonBase bg={"danger.400"} onPress={()=>createUser()}>Đăng</ButtonBase>
+                                    <ButtonBase bg={"blue.400"}  onPress={onClose}>Cancel</ButtonBase>
+                                    <ButtonBase bg={"danger.400"} isDisabled={Object.values(dataUser).includes('')} onPress={()=>createUser()}>Đăng</ButtonBase>
                                 </Row>
                             </Box>
                         </Actionsheet.Content>

@@ -9,7 +9,6 @@ import {deleteData} from "../../../helps/localStorage";
 import {NavigationContext} from "../../../navigation/RootMobile";
 
 
-
 const SettingView = () => {
     const data = [
         {
@@ -17,7 +16,7 @@ const SettingView = () => {
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Cài đặt",
             textRight:"thông tin,bảo mật",
-            routeName:'settingScreen'
+            routeName:'changeInfoScreen'
         },
         {
             iconLeft:<MainIcon name={"policy"} />,
@@ -29,13 +28,21 @@ const SettingView = () => {
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Gửi phản hồi",
         },
+        {
+            iconLeft:<MainIcon name={"bill"} />,
+            iconRight:<MainIcon name={"arrow-right"} />,
+            textLeft:"Thông tin xuất hóa đơn",
+            routeName:'createBillScreen',
 
+        },
     ]
     const {auth}:any = useContext(NavigationContext);
     return (
         <>
             <Divider bg={"light.200"} width={Layout.window.width} height={3} my={3} />
             <HistoryViewNavigate item={data[0]} />
+            <Divider my={1} />
+            <HistoryViewNavigate item={data[3]} />
             <Divider my={1} />
             <HistoryViewNavigate item={data[1]} />
             <Divider my={1} />

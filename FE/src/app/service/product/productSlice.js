@@ -13,6 +13,15 @@ export const createProduct = createAsyncThunk(
     }
 );
 
+export const updateProduct = createAsyncThunk(
+    'product/add',
+    async (params ,{rejectWithValue,})=>{
+        console.log(params);
+        const response = await ProductClient.updateProduct(params).catch(error =>  rejectWithValue(error.json()));
+        return response;
+    }
+);
+
 export const updateByStatusProduct = createAsyncThunk(
     'product/updateStatus',
     async (params ,{rejectWithValue,})=>{

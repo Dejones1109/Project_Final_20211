@@ -25,11 +25,18 @@ class Database {
             return await database.ref(path).orderByKey().limitToLast(10).on(type,action);
         }
         catch(e){
-            alert(e);
+            console.log(e);
             return 0;
         }
-
-
+    }
+    listenPro (path,child,eq, type,action){
+        try {
+            return  database.ref(path).orderByChild(child).equalTo(eq).limitToLast(10).on(type,action);
+        }
+        catch(e){
+            console.log(e);
+            return 0;
+        }
     }
     // listen 1 value at last
     async listenLast (path, type,action){
@@ -37,7 +44,7 @@ class Database {
             return await database.ref(path).orderByKey().limitToLast(1).on(type,action);
         }
         catch(e){
-            alert(e);
+            console.log(e);
             return 0;
         }
 
@@ -54,7 +61,7 @@ class Database {
             );
         }
         catch(e){
-            alert(e);
+            console.log(e);
             return 0;
         }
     }
@@ -65,7 +72,7 @@ class Database {
             );
         }
         catch(e){
-            alert('error');
+            console.log('error');
             return 0;
         }
 
@@ -76,7 +83,7 @@ class Database {
             await database.ref(path).update(data);
         }
         catch(e){
-            alert(e);
+            console.log(e);
             return 0;
         }
     }

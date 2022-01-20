@@ -24,6 +24,7 @@ import {
 } from "../../app/selectors";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigation} from "@react-navigation/native";
+import {showMessage} from "react-native-flash-message";
 const ShowDetailInfoScreenSection = (props:{item:any})=>{
     const [item,setItem]= useState(props.item);
     const [updateStatusSale] = useUpdateStatusSaleMutation();
@@ -73,24 +74,36 @@ const ShowDetailInfoScreenSection = (props:{item:any})=>{
     let [statusSale, setStatusSale] = React.useState(`${item.status}`)
     // @ts-ignore
     const navigation = useNavigation();
-    const changeStatus = (status: number)=>{
-        if(status !== item.status){
+    const changeStatus = (st: number)=>{
+        if(st !== item.status){
             let payload = {
                 id:item.id,
-                status:status,
+                status:st,
             }
             updateStatusSale(payload).then(res=>{
                 // @ts-ignore
                 if(res.data.code === "200"){
-                    alert('Thay đổi trạng thái thành công');
+                    showMessage({
+                        message: "Thay đổi trạng thái",
+                        description: `Thành công`,
+                        type: "success",
+                    });
                 }else{
-                    alert('Thay đổi thất bại');
+                    showMessage({
+                        message: "Thay đổi trạng thái",
+                        description: `Thất bại`,
+                        type: "warning",
+                    });
                 }
             });
             navigation.goBack();
         }
         else{
-            alert("Vui lòng chọn trạng thái mới")
+            showMessage({
+                message: "Vui lòng chọn trạng thái mới",
+                description: `Trạng thái ${status(st)} đã tồn tại`,
+                type: "info",
+            });
         }
     }
     return(

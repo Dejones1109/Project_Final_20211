@@ -5,4 +5,10 @@ import ProductDetailInfoScreen from "./ProductDetailInfoScreen";
 import ProductListView from "./ProductListView";
 import ProductTypeScreen from "./ProductTypeScreen";
 import SaleInfoScreen from "./SaleInfoScreen";
-export {AddProductScreen,CartProductScreen,OrderHistoryScreen,ProductTypeScreen,ProductDetailInfoScreen,ProductListView, SaleInfoScreen}
+import CreateBillScreen from "./CreateBillScreen";
+import ChangeInfoScreen from "./ChangeInfoScreen";
+
+export {AddProductScreen,CartProductScreen,OrderHistoryScreen,ProductTypeScreen,ProductDetailInfoScreen,ProductListView, SaleInfoScreen,CreateBillScreen,ChangeInfoScreen
+
+
+}

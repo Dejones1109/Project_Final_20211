@@ -8,8 +8,13 @@ import {status} from "../../helps/Status";
 import {useGetOrderListByStatusQuery} from "../../app/selectors";
 import Layout from "../../constants/Layout";
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
+import {getIdUser} from "../../helps/authenticate";
 const CommonRoute = (props:{status:number}) =>{
-    const data = useGetOrderListByStatusQuery(props.status);
+    let payload = {
+        status:props.status,
+        partnerId:getIdUser()
+    }
+    const data = useGetOrderListByStatusQuery(payload);
     return(
         <LoadingScreen data={[data]}>
             <ShowCommonRoute status={props.status}/>
@@ -72,7 +77,7 @@ const ShowCommonRoute = (props:{status:number}) => {
 };
 
 const FirstRoute = () => (
-    <CommonRoute status={305} />
+    <CommonRoute status={303} />
 );
 const SecondRoute = () => (
     <CommonRoute status={306} />
@@ -125,7 +130,7 @@ const CartStatisticsScreen = () => {
             )}
             initialLayout={{
                 width: Layout.window.width,
-                height: 100,
+                height: 0,
             }}
         />
     );

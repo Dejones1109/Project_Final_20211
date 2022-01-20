@@ -2,6 +2,7 @@ import {createAsyncThunk , createSlice} from "@reduxjs/toolkit";
 import AuthService from "./userAPI"
 import base64 from 'react-native-base64'
 import {storeData} from "../../../helps/localStorage";
+import {store} from "../../store";
 
 
 let  initialState = {
@@ -13,10 +14,11 @@ export const userLogin = createAsyncThunk(
     'auth/login',
     async (params ,{rejectWithValue})=>{
         const response = await AuthService.login(params,rejectWithValue);
-        const {phone, password,partCode} = response.data;
+        const {phone, password,partCode,id} = response.data;
 
         const encode = base64.encode(`${partCode}.${phone}.${password}.${new Date()}`);
         await storeData(`user`,String(encode));
+        await storeData(`id`,String(id));
         return response.data;
     }
 );

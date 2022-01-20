@@ -24,7 +24,7 @@ class Storage{
         const extension = filename.split('.').pop();
         const name = filename.split('.').slice(0, -1).join('.');
         filename = name + Date.now() + '.' + extension;
-        const uploadTask = storage.ref(`Product/P-${keyImage}-${filename}`).put(blob);
+        const uploadTask = storage.ref(`Product/P-${keyImage}-${filename}-${Math.random(100,10000)}`).put(blob);
         uploadTask.on('state_changed', (taskSnapshot) => {
             console.log(
                 `${taskSnapshot.bytesTransferred} transferred out of ${taskSnapshot.totalBytes}`,
@@ -36,7 +36,7 @@ class Storage{
         });
         try {
             await uploadTask;
-            const image_url = uploadTask.snapshot.ref.getDownloadURL();
+            const image_url =  await uploadTask.snapshot.ref.getDownloadURL();
             return image_url;
         } catch (e) {
             console.log(e);

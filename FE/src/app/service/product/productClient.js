@@ -12,6 +12,11 @@ export class ProductClient {
             .catch(error => rejectWithValue(error.json()));
         return response.data;
     }
+    async updateProduct(payload  , rejectWithValue  )   {
+        const response = await client.put(`${endpoints.product}/${payload.idProduct}`, payload.data)
+            .catch(error => rejectWithValue(error.json()));
+        return response.data;
+    }
 }
 
 export default new ProductClient();

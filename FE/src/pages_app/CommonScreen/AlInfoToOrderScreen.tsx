@@ -15,12 +15,15 @@ import ButtonBase from "../../components/ButtonBase";
 import Layout from "../../constants/Layout";
 import {createBill} from "../../app/service/store/storeSlice";
 import {updateQuantity} from "../../app/service/cart/cartSlice";
+import {showMessage} from "react-native-flash-message";
+import Database from "../../firebase/database";
+import { getIdUser } from '../../helps/authenticate';
 
 const AllInfoToOrderScreen = (props:{route:any}) => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
     let {totalQuantity,totalMoney,saleValue,groupValueCart,saleId}:any= props.route.params.item;
-    console.log(props.route.params);
+    let auth:any =store.getState().auth.currentUser;
     const order = async ()=>{
         if( props.route.params.item.hasOwnProperty('new_quantity')){
             let update_quantity = {
@@ -32,11 +35,15 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
         }
         if(isFocused){
             let allOrderId: any[] = [];
-            groupValueCart.forEach((item:any)=>{
-                allOrderId.push(parseInt(item.split(" ")[0]));
-            });
+            if(typeof groupValueCart[0] === 'string'){
+                groupValueCart.forEach((item:any)=>{
+                    allOrderId.push(parseInt(item.split(" ")[0]));
+                });
+            }else{
+                allOrderId =groupValueCart;
+            }
             let data = {
-                "partnerId" : partnerId,
+                "partnerId" : getIdUser(),
                 "adminId":1,
                 "cartId" :allOrderId,
                 "isBill" : isBill,
@@ -44,22 +51,50 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
             };
 
             // @ts-ignore
-            await dispatch(createOrder(data));
+            let orderCode ="";
+            let idOrder= null;
+            await dispatch(createOrder(data)).then(res=>{
+                console.log(res);
+                orderCode = res.payload.orderCode;
+                idOrder  = res.payload.id;
+            });
             await dispatch(orderApi.util.invalidateTags(['orderApi']))
             if(store.getState().orders.code === 201){
-                await alert("đặt hàng thành công");
+                showMessage({
+                    message: "Đặt hàng thành công",
+                    description: ``,
+                    type: "success",
+                });
+                await Database.push(
+                    `notification/notify/${auth.partCode}`,
+                    {
+                        title:'Đặt một đơn hàng thành công"',
+                        description: `Bạn vừa đặt Đơn hàng giá trị ${totalMoney} vnđ có mã là ${orderCode} từ Papashop. Papashop sẽ sớm liên hệ lại với anh  chị!!!`,
+                        time:Database.timeStamp(new Date()),
+                        dataOrder:{
+                            idOrder:idOrder,
+                            orderCode:orderCode,
+                            status:301,
+                        },
+                        see:0,
+                    },
+                )
             }
 
             if(isBill ===1 && props.route.params.bill ){
                 // @ts-ignore
-                await dispatch(createBill(props.route.params.bill));
+                let payload = {
+                    partnerId:getIdUser(),
+                    data:props.route.params?.bill
+                }
+                await dispatch(createBill(payload));
             }
             await dispatch(cartApi.util.invalidateTags(['cartApi']));
             // await dispatch(productApi.util.invalidateTags(['productApi']));
-            await  navigation.goBack();
+            await  navigation.navigate('cartProductScreen');
         }
     }
-    const [isBill,setIsBill] = useState(props.route.params !== undefined ? (props.route.params.bill ? 1:0)  : 0);
+    const [isBill,setIsBill] = useState(props.route.params !== undefined ? (props.route.params?.bill ? 1:0)  : 0);
     const styled={height:12 ,w:0.95 *Layout.window.width}
     const isFocused = useIsFocused();
     useEffect(()=>{
@@ -105,7 +140,10 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
                         default
                         viewOptions={{
                             leftElement:<TextBase  bold>Tổng tiền <TextBase color={"light.500"}>(Đã bao gôm cả VAT)</TextBase></TextBase>,
-                            rightElement: <TextBase bold color={"red.500"}>{totalMoney} vnđ</TextBase>,
+                            rightElement: <Col>
+                                {saleValue>0 && <TextBase bold  strikeThrough >{totalMoney} vnđ</TextBase>}
+                                <TextBase bold color={"red.500"}  >{totalMoney-saleValue/100*totalMoney} vnđ</TextBase>
+                            </Col>,
                         }}
                     />
                 </Box>
@@ -127,18 +165,17 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
                 </Box>
 
             </Center>
-            <Divider height={2} color={"light.100"}/>
-            <Divider my={1}/>
-            <TouchableOpacity onPress={()=>navigation.navigate('isBillScreen')}>
-                <Center  width={"100%"} py={1} {...styled} >
+            <Divider height={2} mb={3} color={"light.100"}/>
+            <TouchableOpacity onPress={()=>navigation.navigate('isBillScreen',{item:props.route.params.item})}>
+                <Center  width={"100%"}  height={12} >
                     <Box width={"95%"}  overflow={"hidden"}>
                         <Box>
                             <Box
                             >
                                 <Row  space={2} alignContent ={"space-between"}>
                                     <Col alignContent={"center"}>
-                                        <TextBase fontSize={16} light >Nhận hóa đơn VAT</TextBase>
-                                        <TextBase color={'blue.500'} fontSize={12}>{isBill ===0 ?"Vui lòng bổ sung thông tin để được hỗ trợ" : "Đã chọn xác nhận"}</TextBase>
+                                        <TextBase fontSize={'xl'} my={1} light >Nhận hóa đơn VAT</TextBase>
+                                        <TextBase color={'blue.500'} >{isBill ===0 ?"Bấm vào để xác nhận thông tin" : "Đã chọn xác nhận"}</TextBase>
                                     </Col>
                                     <Col alignContent={"center"} >
                                     </Col>
@@ -150,7 +187,7 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
                     </Box>
                 </Center>
             </TouchableOpacity>
-            <Divider my={1} />
+            <Divider mt={3} height={2} color={"light.100"}/>
             <ButtonBase m={3} onPress={()=>order()} isDisabled={totalMoney !== 0 ? false : true}  height={10} bg={"blue.400"} >Đặt hàng</ButtonBase>
         </ScrollView>
     );

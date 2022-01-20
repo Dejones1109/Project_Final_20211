@@ -36,7 +36,7 @@ const InfoOrderScreen = (props:{route?:any}) => {
                             default
                             viewOptions={{
                                 leftElement:<TextBase bold fontSize={16}>Mã đơn hàng</TextBase>,
-                                colElement: <TextBase bold fontSize={16}>{data.data.data.dataCode}</TextBase>,
+                                colElement: <TextBase bold fontSize={16}>{data.data.data.orderCode}</TextBase>,
                             }}
                         />
                         <FrameBase

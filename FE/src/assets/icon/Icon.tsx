@@ -2,7 +2,7 @@ import * as React from "react";
 import {
     AntDesign,
     Entypo, Feather,
-    FontAwesome,
+    FontAwesome, FontAwesome5,
     Fontisto, Foundation,
     Ionicons,
     MaterialCommunityIcons,
@@ -52,9 +52,10 @@ const IconCalendar = <AntDesign name="calendar" size={30} color="black" />;
 const IconLogOut = <MaterialIcons name="logout" size={30} color="#A8A29E"  />;
 
 const IconSend = <Ionicons name="send" size={24} color="#60A5FA"  />
-const IconDelete = <Feather name="delete" size={24} color="black" />
+const IconDelete = <Feather name="delete"  size={30} color="#A8A29E" />
 
-
+const IconBill = <FontAwesome5 name="money-bill-alt"  size={24} color="#A8A29E" />
+const IconEmail = <MaterialCommunityIcons name="email" size={30} color="#60A5FA"  />
 const MainIcon = (props:{name :string}) => {
     switch (props.name) {
         case "cart":
@@ -117,6 +118,10 @@ const MainIcon = (props:{name :string}) => {
             return IconSend ;
         case "delete":
             return IconDelete ;
+        case "bill":
+            return IconBill ;
+        case "email":
+            return IconEmail ;
         default:
             return null;
     }

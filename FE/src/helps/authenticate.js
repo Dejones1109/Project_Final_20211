@@ -1,6 +1,7 @@
 import { store } from "../app/store";
-import {getData} from "./localStorage";
+import {getData, storeData} from "./localStorage";
 import base64 from 'react-native-base64';
+import Database from '../firebase/Database'
 import {userLogin} from "../app/service/user/userSlice";
 import {adminLogin} from "../app/service/admin/adminSlice";
 function getStatusLogin (){
@@ -10,13 +11,12 @@ function getStatusLogin (){
     if(store.getState().admin.currentUser !== null){
         return 2;
     }
+}
+const getIdUser = ()=> {
+    let id = store?.getState().auth.currentUser.id;
+    return id;
+}
 
-}
-function getIdUser (){
-    // @ts-ignore
-    console.log("store",store);
-    return 1;
-}
 async function checkLogin (userCheck, dispatch, auth){
     let token = await getData( "user");
     if(token === null){
@@ -31,6 +31,7 @@ async function checkLogin (userCheck, dispatch, auth){
     if(store.getState().admin.code === 200 ||store.getState().auth.code === 200 ){
         getData("user").then(r =>auth.setUser(r));
         getData("admin").then(r =>auth.setAdmin(r));
+
     }
 }
 async function getUser (){

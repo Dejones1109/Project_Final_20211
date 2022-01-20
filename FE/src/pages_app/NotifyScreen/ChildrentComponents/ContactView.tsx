@@ -14,7 +14,7 @@ const ContactView = () => {
             textTop:"Liên hệ tư vấn",
             textBottom:"Trò chuyện đặt hàng ngay",
             routeName:'message',
-            params: { item : {info:currentUser, message:[]}}
+            data: { item : {info:currentUser, message:[]}}
         },
     ]
     return (

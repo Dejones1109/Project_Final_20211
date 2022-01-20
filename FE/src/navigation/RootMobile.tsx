@@ -26,6 +26,7 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 
     });
     const dispatch = useDispatch();
+
     useEffect(async ()=>{
         let userCheck:any = await getUser();
         await NetInfo.addEventListener(networkState => {

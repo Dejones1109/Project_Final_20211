@@ -25,7 +25,7 @@ export const productApi = createApi({
             providesTags:['productApi']
         }),
         checkExistProductOnCart :builder.query({
-            query: (productCode) => `product/${productCode}?partnerId=${partnerId}`,
+            query: (productCode,partnerId) => `product/${productCode}?partnerId=${partnerId}`,
             providesTags:['productApi']
         }),
         searchProductByKey: builder.query({

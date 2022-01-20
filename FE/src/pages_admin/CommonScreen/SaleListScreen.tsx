@@ -27,6 +27,7 @@ import {storeApi} from "../../app/controller";
 import {TouchableOpacity} from "react-native";
 import {filterSomething, timeStamp} from "../../helps";
 import {SaleCardView} from "../../components/common/SaleCardView";
+import {showMessage} from "react-native-flash-message";
 
 const  ShowSaleListScreen = (props:{navigation:any}) =>{
     // @ts-ignore
@@ -51,10 +52,18 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
     const [createSale] = useCreateSaleMutation();
     const notification = (payload:any)=>{
         if(payload.code === "201" ){
-            alert("Tạo thành công");
+            showMessage({
+                message: "Tạo khuyến mãi",
+                description: "Thành công",
+                type: "success",
+            });
         }
         else {
-            alert("Tạo thất bại");
+            showMessage({
+                message: "Tạo khuyến mãi",
+                description: "Thất bại",
+                type: "warning",
+            });
         };
     }
     const pushSale = async() => {

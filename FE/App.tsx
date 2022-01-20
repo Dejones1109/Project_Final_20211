@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, {useEffect} from "react"
+import React, {useEffect, useRef} from "react"
 import {
     Avatar,
     Box,
@@ -21,6 +21,7 @@ import TextBase from "./src/components/TextBase";
 import TestScreen from "./src/TestScreen";
 import {checkLogin} from "./src/helps/authenticate";
 import TestScreen1 from "./src/TestScreen1";
+import Notification from "./src/components/Notifycation";
 export default function App () {
     const new_theme = extendTheme({TextConfig })
     const colorScheme = useColorScheme();
@@ -31,18 +32,17 @@ export default function App () {
     ]);
     console.disableYellowBox = true;
     enableScreens(false)
+    const ref = useRef(null);
     return (
-        //
-
             <NativeBaseProvider  theme={new_theme}>
+                <Notification ref={ref}/>
                 <Provider store={store}>
                     <SafeAreaProvider >
                         <Navigation  colorScheme={colorScheme}/>
                     </SafeAreaProvider>
-                    {/*<TestScreen1 />*/}
                 </Provider>
-            </NativeBaseProvider>
 
+            </NativeBaseProvider>
 
     )
 }

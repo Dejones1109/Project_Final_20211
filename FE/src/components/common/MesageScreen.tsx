@@ -8,7 +8,7 @@ import {
     Input,
     NativeBaseProvider,
     Row,
-    ScrollView,
+    ScrollView, Spacer,
     StatusBar
 } from "native-base";
 
@@ -21,6 +21,7 @@ import {Col} from "../AutoLayout";
 import {useNavigation} from "@react-navigation/native";
 import ButtonBase from "../ButtonBase";
 import {store} from "../../app/store";
+import {WaitingScreen} from "../../helps/LoadingScreen";
 type message =  {
     name: string,
     image: string,
@@ -49,18 +50,20 @@ const Message = (props:{item:message, nameUser:any})=>{
 }
 const ListMessage = React.memo((props:{data:any,nameUser:any})=>{
     const yourRef:any = useRef(null);
-    console.log(yourRef.current);
+    console.log(yourRef);
     return (
         <>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
-                    marginBottom:40
+                    marginBottom:50,
+                    marginHorizontal:10,
                 }}
                 ref={yourRef}
-                onContentSizeChange={() =>  yourRef.current.scrollToEnd({ animated: true })}
+                onContentSizeChange={() =>  yourRef.current._listRef._scrollRef.scrollToEnd({ animated:true})}
                 data={props.data}
                 scrollEnabled={true}
+                onLayout={()=>yourRef.current.scrollToEnd({ animated: true })}
                 renderItem={({item})=><Message item={item} nameUser={props.nameUser}/>}
                 keyExtractor={(index)=>index}
                 maxToRenderPerBatch={10}
@@ -69,21 +72,27 @@ const ListMessage = React.memo((props:{data:any,nameUser:any})=>{
     )
 })
 const MessageScreen = (props:{route?:any}) => {
-    let currentUser:any = props.route.params.item;
+    let currentUser:any = props.route.params.item.hasOwnProperty('item') ?props.route.params.item.item :props.route.params.item;
     let {info, message} = currentUser;
+
     let getSomeDataWhenRunning:any = [];
+    const [loading,setLoading] = useState(false);
+
     const [messages, setMessages] = useState([]);
     const [inputMessage, setInputMessage] = useState('');
     const navigation = useNavigation();
+    const auth = useSelector((state:any)=>state.auth)
+    let sender = auth.code === 200 ? info.name : 'admin';
     async function sendMessage() {
         if (inputMessage === '') {
             return setInputMessage('');
         }
         else{
+            console.log(sender);
             await Database.push(
                 `message/${info.partCode}`,
                 {
-                    name: store.getState().auth.code === 200 ? info.name : 'admin',
+                    name: sender,
                     image: 'https://randomuser.me/api/portraits/men/0.jpg',
                     mes:inputMessage,
                     time:Database.timeStamp(new Date())
@@ -104,6 +113,8 @@ const MessageScreen = (props:{route?:any}) => {
     }
     // @ts-ignore
     useEffect(async () =>{
+        setLoading(!loading);
+
         await Database.listen(
             `message/${info.partCode}`,
             'child_added',
@@ -114,10 +125,20 @@ const MessageScreen = (props:{route?:any}) => {
                 setMessages([...getSomeDataWhenRunning]);
             }
         )
+        setLoading(!loading);
+
     },[])
     return (
         <>
-            <ListMessage data={messages} nameUser={info.name} />
+            <Row bg={"white"} px={2} zIndex={2} justifyContent={"center"} alignItems={'center'}  space={2} position={'absolute'} py={2} top={0} left={0} right={0}>
+                <TouchableOpacity onPress={()=>navigation.goBack()}>
+                    <MainIcon name={"arrow-left"} />
+                </TouchableOpacity>
+                <TextBase>{sender !=='admin' ? 'Tư vấn viên':info.name}</TextBase>
+                <Spacer/>
+
+            </Row>
+            {loading ? <ListMessage data={messages} nameUser={sender} /> :<WaitingScreen/>}
             <Row bg={"white"} px={2} justifyContent={"center"} alignItems={'center'}  space={2} position={'absolute'} py={2} bottom={0} left={0} right={0}>
                 <Input
                     variant="rounded"

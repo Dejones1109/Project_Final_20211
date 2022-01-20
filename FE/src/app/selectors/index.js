@@ -23,7 +23,8 @@ export const { useGetProductByTypeQuery,
 export const {
     useGetAllStoreQuery,
     useGetOrderQuantityByStatusOfPartnerQuery,
-    useGetPartnerByCodeQuery
+    useGetPartnerByCodeQuery,
+    useGetBillPartnerQuery
 } = storeApi;
 
 export const {

@@ -18,6 +18,7 @@ import {userLogin} from "../../app/service/user/userSlice";
 import {getData} from "../../helps/localStorage";
 import {NavigationContext} from "../../navigation/RootMobile";
 import {store} from "../../app/store";
+import {showMessage} from "react-native-flash-message";
 
 export const LoginForm = (props:{navigation?:any}) => {
     const [user ,setUser] = useState("");
@@ -47,6 +48,11 @@ export const LoginForm = (props:{navigation?:any}) => {
             if(store.getState().admin.code === 200 ||store.getState().auth.code === 200 ){
                 getData("user").then(r =>auth.setUser(r));
                 getData("admin").then(r =>auth.setAdmin(r));
+                showMessage({
+                    message: "Chào mừng đến với PAPADASHI",
+                    description: ``,
+                    type: "success",
+                });
             }else{
                 alert('Tài khoản hoặc mật khẩu không chính xác');
                 setLoading(false );

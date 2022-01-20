@@ -7,7 +7,7 @@ import {Avatar, Box, Pressable, Spacer} from "native-base";
 
 const GiftView = () => {
     return (
-        <Box width={"100%"} my={2}>
+        <Box width={"100%"} >
             {/*<Pressable borderRadius={10}  onPress={() => console.log('You touched me')} bg="white">*/}
             {/*    <Box*/}
             {/*        my={1}*/}

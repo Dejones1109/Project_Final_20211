@@ -40,23 +40,24 @@ const ShowProductDetailInfoScreen = (props:{route:any}) => {
     }, [isFocused])
     const allInfo = quantities ===data.quantity ?{
         totalQuantity:quantities,
-        totalMoney:quantities * data.product.price - quantities*data.product.price* saleValue,
+        totalMoney:quantities * data.product.price,
         saleValue:saleValue,
         groupValueCart:[data.id],
         saleId:saleId,
     } : {
         totalQuantity:quantities,
-        totalMoney:quantities * data.product.price - quantities*data.product.price* saleValue,
+        totalMoney:quantities * data.product.price ,
         saleValue:saleValue,
         groupValueCart:[data.id],
         saleId:saleId,
         new_quantity:quantities,
     }
+
     return (
         <ScrollView bg={"white"}>
             <Center>
                 <Center w={"95%"}>
-                    <TouchableOpacity onPress={()=>navigation.navigate('selectSaleScreen', {data:totalMoney})}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('selectSaleScreen', {item:totalMoney,routeName: 'productDetailInfoScreen', data:data})}>
                         <Center  width={"100%"}  {...styled} >
                             <Box width={"100%"}  overflow={"hidden"}>
                                 <Box>
@@ -143,18 +144,18 @@ const ShowProductDetailInfoScreen = (props:{route:any}) => {
                     <Divider color={"light.200"} width={Layout.window.width} height={3} my={2}/>
                     <NoteAboutProduct />
                     <Divider color={"light.200"} width={Layout.window.width} height={3} my={2}/>
-                    <Divider color={"light.200"}/>
+                    <Divider mb={3} color={"light.200"}/>
                     <FrameBase
                         default
                         styled={{py:1 }}
                         viewOptions={{
                             leftElement: <MainIcon name={'delete'} /> ,
-                            rightElement: <TouchableOpacity onPress={()=>{}}><TextBase bold >Xóa khỏi giỏ hàng</TextBase></TouchableOpacity>
+                            rightElement: <TouchableOpacity onPress={()=>removeOrder()}><TextBase bold fontSize={'xl'}>Xóa khỏi giỏ hàng</TextBase></TouchableOpacity>
                             ,
                         }}
                     />
-                    <Divider color={"light.200"}/>
-                    <Center  width={"100%"}  {...styled} >
+                    <Divider my={3} color={"light.200"}/>
+                    <Center  width={"100%"}   >
                         <Box width={"100%"}  overflow={"hidden"}>
                             <Box>
                                 <Box
@@ -163,8 +164,8 @@ const ShowProductDetailInfoScreen = (props:{route:any}) => {
                                         <Col alignContent={"center"}>
                                         </Col>
                                         <Col alignContent={"center"} >
-                                            <TextBase bold>Tạm tính (đã có VAT) </TextBase>
-                                            <TextBase color={"red.500"}>{quantities*data.product.price - quantities*data.product.price* saleValue} vnđ</TextBase>
+                                            <TextBase bold fontSize={16}>Tạm tính (đã có VAT) </TextBase>
+                                            <TextBase color={"red.500"} fontSize={'xl'}>{quantities*data.product.price - quantities*data.product.price* saleValue/100} vnđ</TextBase>
                                         </Col>
                                         <Spacer />
                                         <ButtonBase isDisabled={totalMoney !== 0 ? false : true} onPress={()=>navigation.navigate('authOrder', {item:allInfo})} alignSelf={"center"} height={10} bg={"blue.400"}>Xác nhận đơn</ButtonBase>

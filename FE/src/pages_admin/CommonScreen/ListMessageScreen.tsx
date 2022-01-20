@@ -19,7 +19,7 @@ import {AntDesign} from "@expo/vector-icons";
 import {useGetAllStoreQuery} from "../../app/selectors";
 import ButtonBase from "../../components/ButtonBase";
 import Layout from "../../constants/Layout";
-import LoadingScreen from "../../helps/LoadingScreen";
+import LoadingScreen, {WaitingScreen} from "../../helps/LoadingScreen";
 import {LoadingContext} from "../../helps/LoadingScreen";
 import {useDispatch, useSelector} from "react-redux";
 import {createPartner} from "../../app/service/store/storeSlice";
@@ -71,39 +71,44 @@ const  ShowListMessageScreen = (props:{navigation:any}) =>{
     // @ts-ignore
     const {context } = useContext(LoadingContext);
     const data = context[0].data;
-
+    const [loading,setLoading] = useState(false);
 
     const [list,setList] = useState([]);
     useEffect(async () =>{
         await Database.listen(
             `message`,
             'value',
-            (snap:any) => {
+            async (snap:any) => {
                 // console.log(snap.val());
+                setLoading(!loading);
                 let message = Object.values(snap.val())
                 const key :any= Object.keys(snap.val());
-                let list:any = []
-                data.data.forEach((i:any)=>{
+                let list:any = [];
+                await data.data.forEach((i:any)=>{
                     if(key.includes(i.partCode)){
                         list.push({info:i,message:message[key.indexOf(i.partCode)]});
-                        setList(list);
                     }
                 });
+                setList(list);
+                await setLoading(!loading);
+
             }
         );
     },[])
     return (
-        <View flex={1} bg={"white"}>
-            <FlatList
-                contentContainerStyle={{
-                    width:Layout.window.width,
-                    justifyContent: 'center'
-                }}
-                numColumns={1}
-                renderItem = {({item})=><CardStoreView item={item} navigation={props.navigation} />}
-                data={list}
-                keyExtractor={({index}) => index}
-            />
+        <View flex={1} bg={loading ?"white" :'light.100'}>
+            {loading ?
+                <FlatList
+                    contentContainerStyle={{
+                        width:Layout.window.width,
+                        justifyContent: 'center'
+                    }}
+                    numColumns={1}
+                    renderItem = {({item})=><CardStoreView item={item} navigation={props.navigation} />}
+                    data={list}
+                    keyExtractor={({index}) => index}
+                />:<WaitingScreen/>
+            }
         </View>
     );
 }

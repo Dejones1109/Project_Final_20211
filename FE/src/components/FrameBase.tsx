@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Box, Center, Checkbox, Heading, Image, Spacer} from 'native-base';
+import {Box, Button, Center, Checkbox, Heading, Image, Spacer} from 'native-base';
 import TextBase from "./TextBase";
 import ButtonBase from "./ButtonBase";
 import {Col, Row} from './AutoLayout';
@@ -54,22 +54,27 @@ const CardDefault = (props:{viewOptions?:{leftElement ?:any, colElement?:any, ri
 const CardProductType = (props:{item:any, navigation ?:any}) =>{
     const item = props.item;
     return(
-        <ButtonBase onPress={() => props.navigation.navigate("productTypeScreen",{type: item.type})}>
+        <TouchableOpacity onPress={() => props.navigation.navigate("productTypeScreen",{type: item.type})}>
             <Col
-                width={[70,90,100 ]}
-                justifyContent={"flex-start"}
+                width={[70,80,90 ]}
+                justifyContent={"center"}
+                alignContent={"center"}
+                mx={2}
             >
-                <Image
-                    rounded={20}
-                    source={{
-                        uri: `${item.img}`,
-                    }}
-                    alt="thư mục sản phẩm"
-                    size={[70,90,100]}
-                />
-                <TextBase textAlign={"center"} >{item.heading}</TextBase>
+                <Center width={70} height={70} borderRadius={20} bg={'info.400'}  >
+                    <Image
+                        source={{
+                            uri: `${item.img}`,
+                        }}
+                        alt="thư mục sản phẩm"
+                        size={[50,60,70]}
+                    />
+                </Center>
+                <Box height={20} width={79}>
+                    <TextBase mt={5} textAlign={"center"} >{item.heading}</TextBase>
+                </Box>
             </Col>
-        </ButtonBase>
+        </TouchableOpacity>
     )
 }
 
@@ -203,7 +208,7 @@ const CartInfo = (props:{styled:object, item:any,  dispatch?:any, navigation ?:a
                        default
                        viewOptions={{
                            leftElement:<TextBase>Số lượng</TextBase>,
-                           rightElement:<TextBase color={'blue.500'} textAlign={"flex-end"}>{item.quantity}</TextBase>,
+                           rightElement:<TextBase color={'blue.500'} textAlign={"right"}>{item.quantity}</TextBase>,
                        }}
                        styled={{height:8}}
                    />

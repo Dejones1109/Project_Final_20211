@@ -5,7 +5,8 @@ import TextBase from "../../../components/TextBase";
 import MainIcon from "../../../assets/icon/Icon";
 import {useNavigation} from "@react-navigation/native";
 
-
+import { TabActions } from '@react-navigation/native';
+import {TouchableOpacity} from "react-native";
 
 export const HistoryViewNavigate = (props:{item:{iconLeft?:any, textLeft?:any,textRight?:any,iconRight?:any,routeName?:any}}) => {
     const item:any  = props.item;
@@ -37,6 +38,7 @@ export const HistoryViewNavigate = (props:{item:{iconLeft?:any, textLeft?:any,te
 };
 
 const HistoryView = () => {
+    const navigation = useNavigation();
     const data = [
         {
             iconLeft:<MainIcon name={"time"} />,
@@ -52,6 +54,8 @@ const HistoryView = () => {
             routeName:"cartStatisticsScreen",
         },
     ]
+    const jumpToAction = TabActions.jumpTo("homeScreen");
+
     return(
         <>
             <HistoryViewNavigate item={data[0]}  />
@@ -63,10 +67,10 @@ const HistoryView = () => {
                         <Box
                         >
                             <Row  justifyContent={"space-between"} alignContent={"space-between"}>
-                                <Col width={"33%"} alignItems={"center"}>
-                                    <MainIcon name={"ampproject"} />
-                                    <TextBase fontSize={12}>Đang xử lý</TextBase>
-                                </Col>
+                                    <Col width={"33%"} alignItems={"center"}>
+                                        <MainIcon name={"ampproject"} />
+                                        <TextBase fontSize={12}>Đang xử lý</TextBase>
+                                    </Col>
                                 <Divider orientation={"vertical"}/>
                                 <Col width={"33%"} alignItems={"center"} >
                                     <MainIcon name={"md-car-sport"} />
