@@ -5,7 +5,6 @@ import FrameBase from "../../components/FrameBase";
 import Layout from "../../constants/Layout";
 import ButtonBase from "../../components/ButtonBase";
 import {Col, Row } from '../../components/AutoLayout';
-import MainIcon from "../../assets/icon/Icon";
 import {useDispatch} from "react-redux";
 import {updateQuantity,createCart} from '../../app/service/cart/cartSlice'
 import { useNavigation } from '@react-navigation/native';
@@ -13,7 +12,6 @@ import { useGetCartListByPartnerQuery} from '../../app/selectors';
 import LoadingScreen, {LoadingContext} from "../../helps/LoadingScreen";
 import {cartApi, productApi} from "../../app/controller";
 import {store} from "../../app/store";
-import {partnerId} from "../../app/service/store/storeAPI";
 import {showMessage} from "react-native-flash-message";
 import {getIdUser} from "../../helps/authenticate";
 
@@ -129,13 +127,13 @@ const LoadingProductScreen = (props:{route:any}) => {
                 <Center>
                     <Center  width={"95%"} >
                         <Image
+                            height={500}
+                            width={Layout.window.width}
+                            resizeMode={"cover"}
                             source={{
                                 uri: `${item.image}`,
                             }}
-                            height={500}
-                            alt="Alternate Text"
-                            resizeMode={"cover"}
-                            rounded={10}
+                            alt="Image product"
                         />
                         <Box width={"95%"}>
                             <TextBase bold  fontSize={18} >Tên sản phẩm : {item.productName}</TextBase>

@@ -37,7 +37,6 @@ const LoadingCartProductScreen = (props:{route:any}) => {
         saleValue:saleValue,
         groupValueCart:groupValueCart,
         saleId:saleId,
-
     }
     return (
         <>
