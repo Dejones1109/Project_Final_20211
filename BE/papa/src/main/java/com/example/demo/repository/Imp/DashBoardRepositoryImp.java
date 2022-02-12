@@ -94,7 +94,7 @@ public class DashBoardRepositoryImp implements DashBoardRepository {
         Map<String, Object> execute = jdbcCall.execute(inputParams);
         ArrayList<Map> dataMap = (ArrayList<Map>) execute.get("#result-set-1");
         dataMap.forEach(map -> {
-   Sale sale = new Sale();
+        Sale sale = new Sale();
             sale.setId((Integer) map.get("id"));
             sale.setSaleCode((String) map.get("sale_code"));
             sale.setSaleName((String) map.get("sale_name"));

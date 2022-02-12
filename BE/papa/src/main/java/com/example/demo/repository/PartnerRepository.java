@@ -19,7 +19,7 @@ public interface PartnerRepository extends CrudRepository<Partner,Integer > {
     Integer getMaxLength();
     @Query("select p from Partner p where p.phone=:phone")
     Partner isCheckPhone(String phone);
-    @Query("select p from Partner p where p.phone=:phone and p.password=:password")
+    @Query("select p from Partner p where p.phone=:phone and p.password=:password and p.status=201")
     Partner login(String phone,String password);
     @Query("select p from Partner p order by p.status asc")
     List<Partner> getListPartnerAsc();
