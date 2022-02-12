@@ -35,7 +35,7 @@ public class DashBoardRepositoryImp implements DashBoardRepository {
                     .productName((String)map.get("product_name"))
                     .type((String) map.get("type"))
                     .price((Integer) map.get("price"))
-                    .percent(Double.parseDouble(map.get("percent").toString()))
+                    .percent((double) Math.floor(Double.parseDouble(map.get("percent").toString()) *1000.0) /1000.0)
                     .build();
             resultList.add(dashboard);
         });
