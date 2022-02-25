@@ -149,6 +149,7 @@ public class PartnerController {
                         .name(request.getName())
                         .address(request.getAddress())
                         .nameStore(request.getNameStore())
+                        .password("123456")
                         .status(201)
                         .createdDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                         .updatedDate(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
@@ -176,16 +177,16 @@ public class PartnerController {
     public ResponseEntity<GwResponse<List<Partner>>> update(@RequestBody UpdatePartnerRequest request, @PathVariable Integer id) {
         GwResponse<List<Partner>> response = new GwResponse<>();
         List<Partner> partners = new ArrayList<>();
-        Partner partnerCheckPhone = partnerService.isCheckPhone(request.getPhone());
-        if (partnerCheckPhone != null) {
-            partners.add(partnerCheckPhone);
-            response.setCode(Status.CODE_SUCCESS);
-            response.setMessage(Status.STATUS_USERNAME_EXITS);
-            responseHeader.add("code", Status.CODE_SUCCESS);
-            responseHeader.add("message", Status.STATUS_USERNAME_EXITS);
-            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-            return ResponseEntity.ok().headers(responseHeader).body(response);
-        }
+//        Partner partnerCheckPhone = partnerService.isCheckPhone(request.getPhone());
+//        if (partnerCheckPhone != null) {
+//            partners.add(partnerCheckPhone);
+//            response.setCode(Status.CODE_SUCCESS);
+//            response.setMessage(Status.STATUS_USERNAME_EXITS);
+//            responseHeader.add("code", Status.CODE_SUCCESS);
+//            responseHeader.add("message", Status.STATUS_USERNAME_EXITS);
+//            responseHeader.add("responseTime", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+//            return ResponseEntity.ok().headers(responseHeader).body(response);
+//        }
         Partner partnerCurrent = partnerService.findById(id);
         try {
             //TODPO Validate fields
@@ -193,7 +194,7 @@ public class PartnerController {
                 return ResponseEntity.badRequest().body(null);
             }
             Partner partnerClone = SerializationUtils.clone(partnerCurrent);
-            partnerCurrent.setPhone(request.getPhone());
+//            partnerCurrent.setPhone(request.getPhone());
             partnerCurrent.setName(request.getName());
             partnerCurrent.setNameStore(request.getNameStore());
             partnerCurrent.setAddress(request.getAddress());
