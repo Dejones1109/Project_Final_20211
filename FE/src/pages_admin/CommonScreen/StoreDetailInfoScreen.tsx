@@ -135,12 +135,19 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
     }
 
     const dataUser= {
-        phone:phone,
+        // phone:phone,
         name:name,
         nameStore:  nameStore,
         address: address,
     }
+    function onOpenSheet() {
+        // setPhone(item.phone);
+        setName(item.name);
+        setNameStore(item.nameStore);
+        setAddress(item.address);
 
+        onOpen();
+    }
     return(
         <ScrollView bg={"white"}>
             <Center w={"100%"} >
@@ -154,14 +161,14 @@ const StoreDetailInfoScreenSection = (props:{item:any})=>{
                                 placeholder="Tên của partner"
                                 onChangeText={(text)=>setName(text)}
                             />
-                            <Input
-                                isInvalid
-                                my={2}
-                                value={phone}
-                                keyboardType={'numeric'}
-                                placeholder="số điện thoại"
-                                onChangeText={(text)=>setPhone(text)}
-                            />
+                            {/*<Input*/}
+                            {/*    isInvalid*/}
+                            {/*    my={2}*/}
+                            {/*    value={phone}*/}
+                            {/*    keyboardType={'numeric'}*/}
+                            {/*    placeholder="số điện thoại"*/}
+                            {/*    onChangeText={(text)=>setPhone(text)}*/}
+                            {/*/>*/}
                             <Input
                                 isInvalid
                                 my={2}

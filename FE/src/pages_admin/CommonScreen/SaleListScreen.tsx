@@ -24,10 +24,11 @@ import {LoadingContext} from "../../helps/LoadingScreen";
 import {useDispatch, useSelector} from "react-redux";
 import {createPartner} from "../../app/service/store/storeSlice";
 import {storeApi} from "../../app/controller";
-import {TouchableOpacity} from "react-native";
+import {Platform, TouchableOpacity} from "react-native";
 import {filterSomething, timeStamp} from "../../helps";
 import {SaleCardView} from "../../components/common/SaleCardView";
 import {showMessage} from "react-native-flash-message";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 const  ShowSaleListScreen = (props:{navigation:any}) =>{
     // @ts-ignore
@@ -40,14 +41,46 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
     const [saleValue,setSaleValue]= useState('');
     const [conditions,setConditions]= useState('');
     const [saleRemark,setSaleRemark]= useState('');
+    const [date1, setDate1] = useState(new Date());
+    const [date2, setDate2] = useState(new Date());
+    const [show1, setShow1] = useState(false);
+    const [show2, setShow2] = useState(false);
+
+    const onChange1 = (event:any, selectedDate :any) => {
+
+        const currentDate = selectedDate || date1;
+        setShow1(Platform.OS === 'ios');
+        setDate1(currentDate);
+    };
+    const onChange2 = (event:any, selectedDate :any) => {
+
+        const currentDate = selectedDate || date2;
+        setShow2(Platform.OS === 'ios');
+        setDate2(currentDate);
+    };
+    const showMode1 = (currentMode:any) => {
+        setShow1(true);
+    };
+    const showMode2 = (currentMode:any) => {
+        setShow2(true);
+    };
+    const show1Datepicker = () => {
+        showMode1('date');
+    };
+    const show2Datepicker = () => {
+        showMode2('date');
+    };
+    let startDate =`${date1.getUTCFullYear()}-${date1.getUTCMonth()+1}-${date1.getUTCDate()}`;
+    // let startDate =`2021-12-13`;
+    let endDate = `${date2.getUTCFullYear()}-${date2.getUTCMonth()+1}-${date2.getUTCDate()}`;
     const dataSale= {
         "saleCode":saleCode,
         "saleName":saleName,
         "saleValue":saleValue,
         "conditions":conditions,
         "saleRemark":saleRemark,
-        "startDate":timeStamp(new Date()),
-        "endDate":timeStamp(new Date())
+        "startDate":timeStamp(date1),
+        "endDate":timeStamp(date2)
     }
     const [createSale] = useCreateSaleMutation();
     const notification = (payload:any)=>{
@@ -130,6 +163,39 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
                                     placeholder="Nội dung"
                                     onChangeText={(text)=>setSaleRemark(text)}
                                 />
+
+                                <View>
+                                    {show1 && (
+                                        <DateTimePicker
+                                            testID="dateTimePicker"
+                                            value={date1}
+                                            mode={"date"}
+                                            timeZoneOffsetInMinutes={60}
+                                            is24Hour={true}
+                                            display="default"
+                                            maximumDate={new Date()}
+                                            onChange={onChange1}
+                                        />
+                                    )}
+                                </View>
+                                <View>
+                                    {show2 && (
+                                        <DateTimePicker
+                                            testID="dateTimePicker"
+                                            value={date2}
+                                            mode={"date"}
+                                            timeZoneOffsetInMinutes={60}
+                                            is24Hour={true}
+                                            maximumDate={new Date()}
+                                            display="default"
+                                            onChange={onChange2}
+                                        />
+                                    )}
+                                </View>
+                                <Row justifyContent={"space-around"} my={2} >
+                                    <Pressable bg={'blue.400'} onPress={show1Datepicker} ><TextBase  mx={2}>{startDate}</TextBase></Pressable>
+                                    <Pressable bg={'blue.400'}  onPress={show2Datepicker} ><TextBase mx={2}>{endDate}</TextBase></Pressable>
+                                </Row>
                                 <Row justifyContent={"space-around"} my={2}>
                                     <ButtonBase bg={"blue.400"} onPress={onClose}>Cancel</ButtonBase>
                                     <ButtonBase bg={"danger.400"} onPress={()=>pushSale()}>Đăng</ButtonBase>

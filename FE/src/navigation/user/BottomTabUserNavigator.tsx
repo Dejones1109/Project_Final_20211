@@ -18,6 +18,7 @@ import {
     ChangeInfoScreen,
     CreateBillScreen,
     OrderHistoryScreen,
+    PrivateScreen,
     ProductTypeScreen,
     SaleInfoScreen
 } from '../../pages_app/CommonScreen';
@@ -233,6 +234,13 @@ function StoreNavigator (){
                 component={ChangeInfoScreen}
                 options={{
                     headerTitle: "Thông tin cá nhân ",
+                }}
+            />
+            <StoreStack.Screen
+                name ="privateScreen"
+                component={PrivateScreen}
+                options={{
+                    headerTitle: "Điều khoản và chính sách ",
                 }}
             />
         </StoreStack.Navigator>

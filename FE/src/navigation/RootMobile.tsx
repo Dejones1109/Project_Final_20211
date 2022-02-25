@@ -84,8 +84,8 @@ function RootNavigator() {
                 options={{
                 animationEnabled: false,
                 }}
-               name="Root"
-                component={(typeof admin === 'string' && statusLogin ===2) ? BottomTabAdminNavigator :((typeof user === 'string' && statusLogin ===1) ? BottomTabUserNavigator :AuthenticationNavigator) } />
+                name="Root"
+                component={(typeof admin === 'string') ? BottomTabAdminNavigator :((typeof user === 'string' ) ? BottomTabUserNavigator :AuthenticationNavigator) } />
         </Stack.Navigator>
     );
 }

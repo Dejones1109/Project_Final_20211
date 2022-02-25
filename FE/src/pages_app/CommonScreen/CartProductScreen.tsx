@@ -46,6 +46,61 @@ const LoadingCartProductScreen = (props:{route:any}) => {
             >
                 <Center>
                     <Center w={"95%"} >
+                        <Col mt={500}>
+                            {dataCp &&
+                            <>
+                                <FrameBase
+                                    default
+                                    styled={{my:3,height:8}}
+                                    viewOptions={{
+                                        leftElement:<TextBase bold color={'red.500'}>Thông tin</TextBase>,
+                                    }}
+                                />
+                                <Divider  />
+                                <TouchableOpacity onPress={()=>navigation.navigate('selectSaleScreen', {item:totalMoney, routeName:'cartProductScreen'})}>
+                                    <Center  width={"100%"}  {...styled} >
+                                        <Box width={"100%"}  overflow={"hidden"}>
+                                            <Box>
+                                                <Box
+                                                >
+                                                    <Row  space={2} alignContent ={"space-between"}>
+                                                        <Col alignContent={"center"}>
+                                                            <TextBase color={'blue.500'}>Voucher</TextBase>
+                                                        </Col>
+                                                        <Col alignContent={"center"} >
+                                                            <TextBase color={'light.300'}>{ saleValue > 0 ? saleValue+"%" :"Chọn áp dụng"}</TextBase>
+                                                        </Col>
+                                                        <Spacer />
+                                                        <MainIcon name={'arrow-right'}/>
+                                                    </Row>
+                                                </Box>
+                                            </Box>
+                                        </Box>
+                                    </Center>
+                                </TouchableOpacity>
+                                <Divider />
+                                <Center  width={"100%"}  {...styled} >
+                                    <Box width={"100%"}  overflow={"hidden"}>
+                                        <Box>
+                                            <Box
+                                            >
+                                                <Row  space={2} alignContent ={"space-between"}>
+                                                    <Col alignContent={"center"}>
+                                                        <TextBase color={'blue.500'}>Được giảm</TextBase>
+                                                    </Col>
+                                                    <Col alignContent={"center"} >
+                                                    </Col>
+                                                    <Spacer />
+                                                    <TextBase color={"red.500"}>{saleValue * totalMoney} vnđ</TextBase>
+                                                </Row>
+                                            </Box>
+                                        </Box>
+                                    </Box>
+                                </Center>
+                            </>
+                            }
+
+                        </Col>
                         <Checkbox.Group
                             colorScheme="green"
                             defaultValue={groupValueCart}
@@ -65,7 +120,7 @@ const LoadingCartProductScreen = (props:{route:any}) => {
                             <FlatList
                                 contentContainerStyle={{
                                     width:0.95*Layout.window.width,
-                                    marginTop:dataCp ? 130 : 0,
+
                                 }}
                                 numColumns={1}
                                 data={dataCp}
@@ -78,58 +133,6 @@ const LoadingCartProductScreen = (props:{route:any}) => {
                             />
                         </Checkbox.Group>
                         {dataCp ? <Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/> : <Center mt={"90%"}><ButtonBase m={3} onPress={()=>navigation.goBack()}  height={10} bg={"blue.400"} >Mua hàng</ButtonBase></Center> }
-                        {dataCp &&
-                        <>
-                            <FrameBase
-                                default
-                                styled={{my:3,height:8}}
-                                viewOptions={{
-                                    leftElement:<TextBase bold color={'red.500'}>Thông tin</TextBase>,
-                                }}
-                            />
-                            <Divider />
-                            <TouchableOpacity onPress={()=>navigation.navigate('selectSaleScreen', {item:totalMoney, routeName:'cartProductScreen'})}>
-                                <Center  width={"100%"}  {...styled} >
-                                    <Box width={"100%"}  overflow={"hidden"}>
-                                        <Box>
-                                            <Box
-                                            >
-                                                <Row  space={2} alignContent ={"space-between"}>
-                                                    <Col alignContent={"center"}>
-                                                        <TextBase color={'blue.500'}>Voucher</TextBase>
-                                                    </Col>
-                                                    <Col alignContent={"center"} >
-                                                        <TextBase color={'light.300'}>{ saleValue > 0 ? saleValue+"%" :"Chọn áp dụng"}</TextBase>
-                                                    </Col>
-                                                    <Spacer />
-                                                    <MainIcon name={'arrow-right'}/>
-                                                </Row>
-                                            </Box>
-                                        </Box>
-                                    </Box>
-                                </Center>
-                            </TouchableOpacity>
-                            <Divider />
-                            <Center  width={"100%"}  {...styled} >
-                                <Box width={"100%"}  overflow={"hidden"}>
-                                    <Box>
-                                        <Box
-                                        >
-                                            <Row  space={2} alignContent ={"space-between"}>
-                                                <Col alignContent={"center"}>
-                                                    <TextBase color={'blue.500'}>Được giảm</TextBase>
-                                                </Col>
-                                                <Col alignContent={"center"} >
-                                                </Col>
-                                                <Spacer />
-                                                <TextBase color={"red.500"}>{saleValue * totalMoney} vnđ</TextBase>
-                                            </Row>
-                                        </Box>
-                                    </Box>
-                                </Box>
-                            </Center>
-                        </>
-                        }
 
                         {/*<Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>*/}
                     </Center>

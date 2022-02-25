@@ -22,18 +22,18 @@ const SettingView = () => {
             iconLeft:<MainIcon name={"policy"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Điều khoản và chính sách",
+            routeName:'privateScreen'
         },
-        {
-            iconLeft:<MainIcon name={"feedback"} />,
-            iconRight:<MainIcon name={"arrow-right"} />,
-            textLeft:"Gửi phản hồi",
-        },
+        // {
+        //     iconLeft:<MainIcon name={"feedback"} />,
+        //     iconRight:<MainIcon name={"arrow-right"} />,
+        //     textLeft:"Gửi phản hồi",
+        // },
         {
             iconLeft:<MainIcon name={"bill"} />,
             iconRight:<MainIcon name={"arrow-right"} />,
             textLeft:"Thông tin xuất hóa đơn",
             routeName:'createBillScreen',
-
         },
     ]
     const {auth}:any = useContext(NavigationContext);
@@ -42,12 +42,12 @@ const SettingView = () => {
             <Divider bg={"light.200"} width={Layout.window.width} height={3} my={3} />
             <HistoryViewNavigate item={data[0]} />
             <Divider my={1} />
-            <HistoryViewNavigate item={data[3]} />
+            <HistoryViewNavigate item={data[2]} />
             <Divider my={1} />
             <HistoryViewNavigate item={data[1]} />
             <Divider my={1} />
-            <HistoryViewNavigate item={data[2]} />
-            <Divider my={1} />
+            {/*<HistoryViewNavigate item={data[2]} />*/}
+            {/*<Divider my={1} />*/}
             <Center  width={"95%"} height={50}>
                 <Box width={["100%","100%"]}   overflow={"hidden"}>
                     <Pressable  onPress={async ()=>{

@@ -53,6 +53,7 @@ export type StoreTabUserParamList = {
     infoOrderScreen:undefined;
     createBillScreen:undefined;
     changeInfoScreen:undefined;
+    privateScreen:undefined;
 }
 
 export type SaleTabUserParamList = {
@@ -67,6 +68,7 @@ export type NotifyTabUserParamList = {
     saleInfoScreen:undefined;
     notificationScreen:undefined;
     payOrderScreen:undefined;
+
 }
 // For Admin
 

@@ -32,7 +32,7 @@ const CreateBillScreen = (props:{route?:any}) => {
         vat:  vat,
         email:email,
         address:address,
-        company:item.companyName||companyName
+        company:companyName
     }
     const listData = [
         {
@@ -76,7 +76,8 @@ const CreateBillScreen = (props:{route?:any}) => {
                     message:'Cập nhật thông tin xuất hóa đơn thành công',
                     description: '',
                     type:'success'
-                })
+                });
+                navigation.goBack();
             }
         });
         setUpdate(!update);
@@ -93,11 +94,12 @@ const CreateBillScreen = (props:{route?:any}) => {
                     message:'Cập nhật thông tin xuất hóa đơn thành công',
                     description: '',
                     type:'success'
-                })
+                });
+                navigation.goBack();
             }
         });
+        refetch();
     }
-
 
 
     return (

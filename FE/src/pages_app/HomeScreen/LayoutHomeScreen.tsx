@@ -34,9 +34,8 @@ const LayoutHomeScreen = (props:LayoutHome) => {
         <>
             {props.SearchView}
             <ScrollView zIndex={0} bg={"white"} showsVerticalScrollIndicator={false}>
-                <Col space={5}  >
+                <Col space={3}  >
                     <Box>
-
                         {props.BannerView}
                         {props.AllProductTypeView}
                     </Box>

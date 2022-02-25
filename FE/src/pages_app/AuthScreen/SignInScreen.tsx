@@ -40,22 +40,38 @@ export const LoginForm = (props:{navigation?:any}) => {
         // @ts-ignore
         if(user && password){
             setLoading(true );
-            // @ts-ignore
-            await dispatch(userLogin(payload));
-            // @ts-ignore
-            await dispatch(adminLogin(payload));
-            console.log("code",store.getState().admin.code )
-            if(store.getState().admin.code === 200 ||store.getState().auth.code === 200 ){
-                getData("user").then(r =>auth.setUser(r));
-                getData("admin").then(r =>auth.setAdmin(r));
-                showMessage({
-                    message: "Chào mừng đến với PAPADASHI",
-                    description: ``,
-                    type: "success",
-                });
-            }else{
-                alert('Tài khoản hoặc mật khẩu không chính xác');
-                setLoading(false );
+            if(password.includes('admin')){
+                // @ts-ignore
+                await dispatch(adminLogin(payload));
+                if(store.getState().admin.code === 200){
+                    getData("admin").then(r =>auth.setAdmin(r));
+                    showMessage({
+                        message: "Xin chào admin",
+                        description: ``,
+                        type: "success",
+                    });
+                }else{
+                    alert('Tài khoản hoặc mật khẩu không chính xác');
+                    setLoading(false );
+                }
+
+            }
+            else{
+                // @ts-ignore
+                await dispatch(userLogin(payload));
+                if(store.getState().auth.code === 200){
+
+                    getData("user").then(r =>auth.setUser(r));
+                    showMessage({
+                        message: "Chào mừng đến với PAPADASHI",
+                        description: ``,
+                        type: "success",
+                    });
+                }
+                else{
+                    alert('Tài khoản hoặc mật khẩu không chính xác');
+                    setLoading(false );
+                }
             }
         }
         else  {

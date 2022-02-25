@@ -40,7 +40,8 @@ const LayoutStatisticsScreen = () => {
     const show2Datepicker = () => {
         showMode2('date');
     };
-    let startDate =`2021-12-13`;
+    let startDate =`${date1.getUTCFullYear()}-${date1.getUTCMonth()+1}-${date1.getUTCDate()}`;
+    // let startDate =`2021-12-13`;
     let endDate = `${date2.getUTCFullYear()}-${date2.getUTCMonth()+1}-${date2.getUTCDate()}`;
     // get data for pie chart
     const statisticsData =  useGetDashboardByProductTypeQuery({start:startDate, end:endDate});
@@ -85,21 +86,17 @@ const LayoutStatisticsScreen = () => {
         try{
             if(data){
                 data.forEach((item: any) => {
-                   if(item.percent !== 0){
-                       pieChart.push({
-                           name: item.productType,
-                           percent: item.percent,
-                           price: item.price,
-                           color: item.color,
-                           legendFontColor: item.legendFontColor,
-                           legendFontSize: 13,
-                       });
-                   }
-                   if(item.price !== 0){
-                       labels.push(item.productType);
-                       lineData.push(item.price);
-                       // lineData.push({price:item.price, name:item.productType});
-                   }
+                    pieChart.push({
+                        name: item.productType,
+                        percent: item.percent,
+                        price: item.price,
+                        color: item.color,
+                        legendFontColor: item.legendFontColor,
+                        legendFontSize: 13,
+                    })
+                    labels.push(item.productType);
+                    lineData.push(item.price);
+                    // lineData.push({price:item.price, name:item.productType});
                 })
             };
         }
@@ -230,7 +227,7 @@ const LayoutStatisticsScreen = () => {
                         default
                         viewOptions={{
                             leftElement:<TextBase color={"blue.500"}>Cao nhất</TextBase>,
-                            rightElement: <TextBase color={"red.500"}>{ pieChart ? pieChart[0].name : null}</TextBase>,
+                            rightElement: <TextBase color={"red.500"}>{ pieChart[0] ? pieChart[0].name : null}</TextBase>,
                         }}
                     />
 

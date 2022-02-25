@@ -1,8 +1,9 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {FlatList} from 'react-native';
 import {
     Avatar,
     Box,
-    FlatList,
+
     Heading,
     IconButton,
     Input,
@@ -50,14 +51,13 @@ const Message = (props:{item:message, nameUser:any})=>{
 }
 const ListMessage = React.memo((props:{data:any,nameUser:any})=>{
     const yourRef:any = useRef(null);
-    console.log(yourRef);
+
     return (
         <>
             <FlatList
                 showsVerticalScrollIndicator={false}
                 contentContainerStyle={{
-                    marginBottom:50,
-                    marginHorizontal:10,
+                    paddingVertical:42
                 }}
                 ref={yourRef}
                 onContentSizeChange={() =>  yourRef.current._listRef._scrollRef.scrollToEnd({ animated:true})}
@@ -88,7 +88,6 @@ const MessageScreen = (props:{route?:any}) => {
             return setInputMessage('');
         }
         else{
-            console.log(sender);
             await Database.push(
                 `message/${info.partCode}`,
                 {
@@ -139,11 +138,11 @@ const MessageScreen = (props:{route?:any}) => {
 
             </Row>
             {loading ? <ListMessage data={messages} nameUser={sender} /> :<WaitingScreen/>}
-            <Row bg={"white"} px={2} justifyContent={"center"} alignItems={'center'}  space={2} position={'absolute'} py={2} bottom={0} left={0} right={0}>
+            <Row bg={"white"} px={2} justifyContent={"center"} alignItems={'center'} height={50} space={2} position={'absolute'} py={2} bottom={0} left={0} right={0}>
                 <Input
                     variant="rounded"
                     minWidth={'80%'}
-                    placeholder="Round"
+                    placeholder="Nhập tin nhắn"
                     value={inputMessage}
                     onChangeText={(text)=>setInputMessage(text)}
                     onSubmitEditing={()=>sendMessage()}

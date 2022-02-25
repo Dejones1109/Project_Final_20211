@@ -8,7 +8,7 @@ const HotProductView = (props:{navigation?:any, data?:any}) => {
             horizontal
             _contentContainerStyle={{
                 mx: "auto",
-                mb: "4",
+                mb: "1",
                 minW: "72",
             }}
             showsHorizontalScrollIndicator={false}

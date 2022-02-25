@@ -27,6 +27,7 @@ function timeStamp (date:any){
     var strTime = hours + ':' + minutes + ':'+seconds;
     return strTime +'-'+date.getFullYear() +'-'+(date.getMonth()+ 1)+'-'+ date.getDate();
 }
+
 function filterSomething (data:Array<any>, search:string, key:string | Array<string>) {
     // key of object to find
     let some :any = [];
