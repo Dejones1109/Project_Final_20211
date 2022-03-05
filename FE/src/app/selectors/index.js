@@ -37,4 +37,4 @@ export const {
 } = dashboardApi;
 
 export const {useGetCartListByPartnerQuery,useGetOrderListByStatusQuery, useCreateCartMutation} = cartApi;
-export const {useGetListSaleNoUseQuery, useCreateSaleMutation, useGetAllSaleQuery, useUpdateStatusSaleMutation} = systemApi;
+export const {useGetListSaleNoUseQuery, useCreateSaleMutation, useGetAllSaleQuery, useUpdateStatusSaleMutation, useGetListQuestionQuery, useGetListQuestionByIdQuery} = systemApi;

@@ -14,11 +14,15 @@ export const userLogin = createAsyncThunk(
     'auth/login',
     async (params ,{rejectWithValue})=>{
         const response = await AuthService.login(params,rejectWithValue);
-        const {phone, password,partCode,id} = response.data;
+        if(response.data){
+            const {phone, password,partCode,id} = response.data;
 
-        const encode = base64.encode(`${partCode}.${phone}.${password}.${new Date()}`);
-        await storeData(`user`,String(encode));
-        await storeData(`id`,String(id));
+            const encode = base64.encode(`${partCode}.${phone}.${password}.${new Date()}`);
+            await storeData(`user`,String(encode));
+            await storeData(`id`,String(id));
+        }
+
+
         return response.data;
     }
 );

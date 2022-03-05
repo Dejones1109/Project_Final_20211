@@ -50,6 +50,8 @@ export const LoginForm = (props:{navigation?:any}) => {
                         description: ``,
                         type: "success",
                     });
+                    setLoading(false );
+
                 }else{
                     alert('Tài khoản hoặc mật khẩu không chính xác');
                     setLoading(false );
@@ -59,17 +61,26 @@ export const LoginForm = (props:{navigation?:any}) => {
             else{
                 // @ts-ignore
                 await dispatch(userLogin(payload));
-                if(store.getState().auth.code === 200){
+                if(store.getState().auth.code !== 404 && store.getState().auth.code === 200){
 
-                    getData("user").then(r =>auth.setUser(r));
-                    showMessage({
-                        message: "Chào mừng đến với PAPADASHI",
-                        description: ``,
-                        type: "success",
+                    getData("user").then(r =>{
+                        if(r){
+                            showMessage({
+                                message: "Chào mừng đến với PAPADASHI",
+                                description: ``,
+                                type: "success",
+                            });
+                            auth.setUser(r);
+                        }
+                        else{
+                            alert('Tài khoản đã bị khóa vui lòng liên hệ lại với quản trị viên');
+                        }
                     });
+                    setLoading(false );
+
                 }
                 else{
-                    alert('Tài khoản hoặc mật khẩu không chính xác');
+                    // alert('Tài khoản hoặc mật khẩu không chính xác');
                     setLoading(false );
                 }
             }

@@ -11,6 +11,14 @@ export const systemApi = createApi({
             query: (sale) => `/system/${sale.partnerId}?query=listSaleNoUse&condition=${sale.condition}`,
             providesTags:['systemApi'],
         }),
+        getListQuestion: builder.query({
+            query: () => `/system?query=listQuestion`,
+            providesTags:['systemApi'],
+        }),
+        getListQuestionById: builder.query({
+            query: (id) => `/system?query=question&id_question=${id}`,
+            providesTags:['systemApi'],
+        }),
         createSale: builder.mutation({
             query: (body) => ({
                 url: `system?query=sale`,
@@ -30,5 +38,6 @@ export const systemApi = createApi({
             }),
             invalidatesTags:['systemApi'],
         }),
+
     }),
 });

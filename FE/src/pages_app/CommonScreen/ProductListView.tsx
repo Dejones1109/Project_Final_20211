@@ -8,7 +8,6 @@ import {Row} from "../../components/AutoLayout";
 const ProductListView = (props:{data:Array<object>}) => {
     const navigation = useNavigation();
     const data = props.data;
-    console.log(data);
     let dataCp = data[0];
     return (
         <>
