@@ -33,7 +33,6 @@ export const updatePassword = createAsyncThunk(
     'store/updatePassword',
     async (params,rejectWithValue)=>{
         const response = await StoreClient.updatePassword(params).catch(e=>rejectWithValue(e));
-        console.log(response);
         return response;
     }
 )
@@ -42,7 +41,6 @@ export const updatePartner = createAsyncThunk(
     'store/updatePartner',
     async (params,rejectWithValue)=>{
         const response = await StoreClient.updatePartner(params).catch(e=>rejectWithValue(e));
-        console.log(response);
         return response;
     }
 )
@@ -51,7 +49,6 @@ export const updateBill = createAsyncThunk(
     'store/updateBill',
     async (params,rejectWithValue)=>{
         const response = await StoreClient.updateBill(params).catch(e=>rejectWithValue(e));
-        console.log(response);
         return response;
     }
 )

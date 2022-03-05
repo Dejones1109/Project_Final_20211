@@ -41,7 +41,7 @@ const ShowCommonRoute = (props:{status:number}) => {
                                         leftElement:  <TextBase color={"light.400"}>Mã Order : </TextBase>,
                                         colElement:<TextBase >{item.orderCode}</TextBase>,
                                     }}
-                                    styled={{height:12}}
+                                    styled={{height:8}}
                                 />
                                 <FrameBase
                                     default
@@ -49,7 +49,7 @@ const ShowCommonRoute = (props:{status:number}) => {
                                         leftElement:<TextBase color={"light.400"}>Trạng thái</TextBase>,
                                         rightElement:<TextBase color={"light.400"}>{status(item.status)}</TextBase>,
                                     }}
-                                    styled={{height:6}}
+                                    styled={{height:8}}
                                 />
                                 <FrameBase
                                     default
@@ -57,7 +57,7 @@ const ShowCommonRoute = (props:{status:number}) => {
                                         leftElement:<TextBase color={"light.400"}>Sản lượng</TextBase>,
                                         rightElement:<TextBase color={"light.400"}>{item.totalQuantity}</TextBase>,
                                     }}
-                                    styled={{height:6}}
+                                    styled={{height:8}}
                                 />
                                 <FrameBase
                                     default
@@ -65,7 +65,7 @@ const ShowCommonRoute = (props:{status:number}) => {
                                         leftElement:<TextBase color={"light.400"}>Thành tiền</TextBase>,
                                         rightElement:<TextBase color={"red.500"}>{item.totalPrice} vnđ</TextBase>,
                                     }}
-                                    styled={{height:6}}
+                                    styled={{height:8}}
                                 />
                             </Center>
                         </TouchableOpacity>

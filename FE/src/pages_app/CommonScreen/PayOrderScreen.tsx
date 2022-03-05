@@ -233,6 +233,7 @@ const PayOrderScreen = (props:{route:any}) => {
                                 </Modal.Body>
                                 <Modal.Footer>
                                     <ButtonBase
+                                        bg={'blue.400'}
                                         flex="1"
                                         onPress={() => {
                                             cancel();

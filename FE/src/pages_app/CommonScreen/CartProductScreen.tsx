@@ -44,6 +44,11 @@ const LoadingCartProductScreen = (props:{route:any}) => {
                          showsVerticalScrollIndicator={false}
 
             >
+                {dataCp ? <></> :
+                    <Center mt={"90%"}>
+                        <ButtonBase m={3} onPress={()=>navigation.goBack()}  height={10} bg={"blue.400"} >Mua hàng</ButtonBase>
+                    </Center>
+                }
                 <Center>
                     <Center w={"95%"} >
                         <Col mt={500}>
@@ -132,9 +137,8 @@ const LoadingCartProductScreen = (props:{route:any}) => {
                                 keyExtractor={({index})=>index}
                             />
                         </Checkbox.Group>
-                        {dataCp ? <Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/> : <Center mt={"90%"}><ButtonBase m={3} onPress={()=>navigation.goBack()}  height={10} bg={"blue.400"} >Mua hàng</ButtonBase></Center> }
 
-                        {/*<Divider bg={"light.200"} width={Layout.window.width} height={1} my={3}/>*/}
+
                     </Center>
                 </Center>
             </ScrollView>

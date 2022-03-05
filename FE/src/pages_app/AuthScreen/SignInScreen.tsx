@@ -19,6 +19,7 @@ import {getData} from "../../helps/localStorage";
 import {NavigationContext} from "../../navigation/RootMobile";
 import {store} from "../../app/store";
 import {showMessage} from "react-native-flash-message";
+import {useNavigation} from "@react-navigation/native";
 
 export const LoginForm = (props:{navigation?:any}) => {
     const [user ,setUser] = useState("");
@@ -28,6 +29,7 @@ export const LoginForm = (props:{navigation?:any}) => {
         username:user,
         password:password,
     }
+    const navigation = useNavigation();
     // const data = useSelector(state=>state);
     // console.log(data );
     const dispatch = useDispatch();
@@ -61,7 +63,7 @@ export const LoginForm = (props:{navigation?:any}) => {
             else{
                 // @ts-ignore
                 await dispatch(userLogin(payload));
-                if(store.getState().auth.code !== 404 && store.getState().auth.code === 200){
+                if( store.getState().auth.code === 200){
 
                     getData("user").then(r =>{
                         if(r){
@@ -71,6 +73,7 @@ export const LoginForm = (props:{navigation?:any}) => {
                                 type: "success",
                             });
                             auth.setUser(r);
+                            navigation.navigate('home');
                         }
                         else{
                             alert('Tài khoản đã bị khóa vui lòng liên hệ lại với quản trị viên');
@@ -80,7 +83,7 @@ export const LoginForm = (props:{navigation?:any}) => {
 
                 }
                 else{
-                    // alert('Tài khoản hoặc mật khẩu không chính xác');
+                    alert('Tài khoản hoặc mật khẩu không chính xác');
                     setLoading(false );
                 }
             }

@@ -20,7 +20,7 @@ const LayoutStatisticsScreen = () => {
 
         const currentDate = selectedDate || date1;
         setShow1(Platform.OS === 'ios');
-        setDate1(currentDate);
+        setDate1(`${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth()+1}-${currentDate.getUTCDate()}`);
     };
     const onChange2 = (event:any, selectedDate :any) => {
 
@@ -40,7 +40,8 @@ const LayoutStatisticsScreen = () => {
     const show2Datepicker = () => {
         showMode2('date');
     };
-    let startDate =`${date1.getUTCFullYear()}-${date1.getUTCMonth()+1}-${date1.getUTCDate()}`;
+    let startDate ='2021-12-01';
+    // let startDate =`2021-12-01`;
     // let startDate =`2021-12-13`;
     let endDate = `${date2.getUTCFullYear()}-${date2.getUTCMonth()+1}-${date2.getUTCDate()}`;
     // get data for pie chart
@@ -141,8 +142,8 @@ const LayoutStatisticsScreen = () => {
                         mode={"date"}
                         timeZoneOffsetInMinutes={60}
                         is24Hour={true}
-                        display="default"
                         maximumDate={new Date()}
+                        display="default"
                         onChange={onChange1}
                     />
                 )}

@@ -13,7 +13,7 @@ function getStatusLogin (){
     }
 }
 const getIdUser = ()=> {
-    let id = store?.getState().auth.currentUser.id;
+    let id = store?.getState().auth.currentUser.id || 0;
     return id;
 }
 

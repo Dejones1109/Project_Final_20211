@@ -29,7 +29,7 @@ class StoreClient {
         return response.data;
     };
     async updatePassword (payload  , rejectWithValue){
-        const response = await client.put(`/partner/6`,{params:payload})
+        const response = await client.put(`/partner/${payload.partnerId}?query=password&password=${payload.password}`)
             .catch(error => rejectWithValue(error.json()));
         return response.data;
     };
