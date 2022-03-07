@@ -96,7 +96,7 @@ const LoadingCartProductScreen = (props:{route:any}) => {
                                                     <Col alignContent={"center"} >
                                                     </Col>
                                                     <Spacer />
-                                                    <TextBase color={"red.500"}>{saleValue * totalMoney} vnđ</TextBase>
+                                                    <TextBase color={"red.500"}>{saleValue/100  * totalMoney} vnđ</TextBase>
                                                 </Row>
                                             </Box>
                                         </Box>

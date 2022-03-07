@@ -60,11 +60,11 @@ const ShowDetailInfoScreenSection = (props:{item:any})=>{
         },
         {
             leftElement: <MainIcon name={"start-active"} />,
-            colElement:<TextBase>{item.createdDate}</TextBase>,
+            colElement:<TextBase>{item.startDate}</TextBase>,
         },
         {
             leftElement: <MainIcon name={"active"} />,
-            colElement:<TextBase>{item.updatedDate}</TextBase>,
+            colElement:<TextBase>{item.endDate}</TextBase>,
         },
         {
             leftElement: <MainIcon name={"status"} />,

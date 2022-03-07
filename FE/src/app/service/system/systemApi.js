@@ -28,7 +28,7 @@ export const systemApi = createApi({
             invalidatesTags:['systemApi'],
         }),
         getAllSale : builder.query({
-            query: () => "system",
+            query: (id) => `/system?query=saleAction&id=${id}`,
             providesTags:['systemApi'],
         }),
         updateStatusSale :builder.mutation({

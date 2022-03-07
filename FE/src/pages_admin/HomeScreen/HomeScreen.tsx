@@ -19,7 +19,6 @@ import {getData, storeData} from "../../helps/localStorage";
 
 const CardForCartWaiting = (props:{item:any, navigation ?:any})=>{
     const {partner,id,orderCode,updatedDate} = props.item;
-    console.log(props.item);
     return(
         <TouchableOpacity  onPress={()=>props.navigation.navigate('infoOrderScreen',{item:{idOrder:id, orderCode:orderCode}})}>
             <Center my={2}>

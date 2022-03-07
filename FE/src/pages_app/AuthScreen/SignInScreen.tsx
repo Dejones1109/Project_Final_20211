@@ -75,9 +75,7 @@ export const LoginForm = (props:{navigation?:any}) => {
                             auth.setUser(r);
                             navigation.navigate('home');
                         }
-                        else{
-                            alert('Tài khoản đã bị khóa vui lòng liên hệ lại với quản trị viên');
-                        }
+
                     });
                     setLoading(false );
 

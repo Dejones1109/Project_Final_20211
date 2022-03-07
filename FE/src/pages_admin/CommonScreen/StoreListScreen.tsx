@@ -151,6 +151,7 @@ const  LayoutStoreListScreen = (props:{navigation:any}) =>{
     const recoverData = ()=>{
         setListShow(data.data);
     }
+
     return (
         <>
             <ScrollView  minHeight={'100%'}  bg={"white"}

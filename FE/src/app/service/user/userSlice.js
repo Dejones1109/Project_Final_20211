@@ -8,6 +8,7 @@ import {store} from "../../store";
 let  initialState = {
     code: 404,
     currentUser:null,
+    message:""
 }
 
 export const userLogin = createAsyncThunk(
@@ -21,7 +22,9 @@ export const userLogin = createAsyncThunk(
             await storeData(`user`,String(encode));
             await storeData(`id`,String(id));
         }
-
+        if(response.message.includes('Tài khoản đã bị khóa vui lòng liên hệ lại với quản trị viên')){
+            alert(response.message);
+        }
 
         return response.data;
     }
@@ -47,8 +50,13 @@ export const userSlice = createSlice({
                 state.code  = 404;
             })
             .addCase(userLogin.fulfilled,(state,action )=>{
-                state.code  = 200;
+                if(action.payload){
+                    state.code  = 200;
+                }
+
+
                 state.currentUser = action.payload;
+
             })
             .addCase(userLogin.rejected, (state )=>{
                 state.code  = 500;

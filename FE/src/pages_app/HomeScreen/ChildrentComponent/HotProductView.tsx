@@ -7,7 +7,7 @@ const HotProductView = (props:{navigation?:any, data?:any}) => {
         <ScrollView
             horizontal
             _contentContainerStyle={{
-                mx: "auto",
+
                 mb: "1",
                 minW: "72",
             }}

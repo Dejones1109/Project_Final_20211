@@ -39,14 +39,14 @@ const LayoutHomeScreen = (props:LayoutHome) => {
                         {props.BannerView}
                         {props.AllProductTypeView}
                     </Box>
-                    <Heading  mx={{base:"2.5%",lg:"1%"}} size={"md"}>Sản phẩm hot</Heading>
+                    <Heading  mx={{base:"5%",lg:"1%"}} size={"md"}>Sản phẩm hot</Heading>
                     {props.HotProductView}
                 </Col>
                 <Center>
-                    <Center width={"95%"} >
-                        <Heading width={"100%"} mx={{base:"2.5%",lg:"1%"}} size={"md"}>Tìm kiếm phổ biến</Heading>
+                    <Center width={"100%"} >
+                        <Heading width={"100%"} mx={{base:"5%",lg:"1%"}} size={"md"}>Tìm kiếm phổ biến</Heading>
                         {props.CategoryTypeView}
-                        <Heading width={"100%"} mx={{base:"2.5%",lg:"1%"}} size={"md"}>Tất cả sản phẩm</Heading>
+                        <Heading width={"100%"} mx={{base:"5%",lg:"1%"}} size={"md"}>Tất cả sản phẩm</Heading>
                         {props.AllProductView}
                     </Center>
                 </Center>

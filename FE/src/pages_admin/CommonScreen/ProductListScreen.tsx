@@ -242,7 +242,7 @@ const  ShowProductListScreen = (props:{navigation?: any})=>{
                                 />
                                 <Row justifyContent={"space-around"} my={2}>
                                     <ButtonBase bg={"blue.400"} onPress={onClose}>Cancel</ButtonBase>
-                                    <ButtonBase bg={"danger.400"} onPress={()=>createPro()}>Đăng</ButtonBase>
+                                    <ButtonBase bg={"danger.400"} isDisabled={Object.values(crePro).includes('')} onPress={()=>createPro()}>Đăng</ButtonBase>
                                 </Row>
                             </Box>
                         </Actionsheet.Content>

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext,useEffect} from 'react';
 import FrameBase from "../../../components/FrameBase";
 import {
     FlatList,
@@ -54,7 +54,7 @@ const AllInfoView = (props:{navigation ?:any}) => {
     // ]
     const { isOpen, onOpen, onClose } = useDisclose();
     const {context }:any = useContext(LoadingContext);
-    const data = context[0].data;
+    const {data}= context[0].data;
     return (
         <>
             <FlatList
@@ -67,7 +67,7 @@ const AllInfoView = (props:{navigation ?:any}) => {
                 renderItem = {({item})=>
                     <SaleCardView item={item} navigation={navigation} routeName={'saleInfoScreen'} />
                 }
-                data={data.data}
+                data={data}
                 keyExtractor={(item) => item.id}
                 ItemSeparatorComponent={() => <Divider bg={"light.300"} />}
             />

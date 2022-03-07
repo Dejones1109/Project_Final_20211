@@ -11,7 +11,13 @@ import {useGetDashboardByProductTypeQuery} from "../../app/selectors";
 import {RankTableMoneyView, RankTableQuantityView} from "./ChildrentComponent";
 
 const LayoutStatisticsScreen = () => {
-    const [date1, setDate1] = useState(new Date());
+    let start = new Date();
+    start.setUTCDate(1);
+    start.setUTCMonth(11);
+    start.setUTCFullYear(2021);
+    console.log(start);
+    const [date1, setDate1] = useState(start);
+
     const [date2, setDate2] = useState(new Date());
     const [show1, setShow1] = useState(false);
     const [show2, setShow2] = useState(false);
@@ -20,7 +26,7 @@ const LayoutStatisticsScreen = () => {
 
         const currentDate = selectedDate || date1;
         setShow1(Platform.OS === 'ios');
-        setDate1(`${currentDate.getUTCFullYear()}-${currentDate.getUTCMonth()+1}-${currentDate.getUTCDate()}`);
+        setDate1(currentDate);
     };
     const onChange2 = (event:any, selectedDate :any) => {
 
@@ -40,7 +46,7 @@ const LayoutStatisticsScreen = () => {
     const show2Datepicker = () => {
         showMode2('date');
     };
-    let startDate ='2021-12-01';
+    let startDate =`${date1.getUTCFullYear()}-${date1.getUTCMonth()+1}-${date1.getUTCDate()}`;
     // let startDate =`2021-12-01`;
     // let startDate =`2021-12-13`;
     let endDate = `${date2.getUTCFullYear()}-${date2.getUTCMonth()+1}-${date2.getUTCDate()}`;

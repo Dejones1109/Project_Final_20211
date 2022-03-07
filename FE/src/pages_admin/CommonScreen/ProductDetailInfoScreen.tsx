@@ -75,7 +75,6 @@ const ProductDetailInfoScreen = (props:{route:any}) => {
     const dispatch = useDispatch();
     let [statusUser, setStatusUser] = React.useState(`${item.status}`);
     const { isOpen, onOpen, onClose } = useDisclose();
-
     // @ts-ignore
     const navigation = useNavigation();
     const changeStatus = (st: number)=>{

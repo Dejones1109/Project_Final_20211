@@ -25,7 +25,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {createPartner} from "../../app/service/store/storeSlice";
 import {storeApi} from "../../app/controller";
 import {Platform, TouchableOpacity} from "react-native";
-import {filterSomething, timeStamp} from "../../helps";
+import {filterSomething} from "../../helps";
 import {SaleCardView} from "../../components/common/SaleCardView";
 import {showMessage} from "react-native-flash-message";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -73,6 +73,15 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
     let startDate =`${date1.getUTCFullYear()}-${date1.getUTCMonth()+1}-${date1.getUTCDate()}`;
     // let startDate =`2021-12-13`;
     let endDate = `${date2.getUTCFullYear()}-${date2.getUTCMonth()+1}-${date2.getUTCDate()}`;
+    function timeStamp (date:any){
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        var strTime = hours + ':' + minutes + ':'+seconds;
+        let a =  date.getMonth()+1 <10 ? '0':'';
+        let b =  date.getDate() <10 ? '0':'';
+        return date.getFullYear() +'-'+`${a}${date.getMonth()+ 1}`+'-'+ `${b}${date.getDate()}`+ " " + strTime ;
+    }
     const dataSale= {
         "saleCode":saleCode,
         "saleName":saleName,
@@ -82,6 +91,8 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
         "startDate":timeStamp(date1),
         "endDate":timeStamp(date2)
     }
+
+
     const [createSale] = useCreateSaleMutation();
     const notification = (payload:any)=>{
         if(payload.code === "201" ){
@@ -173,7 +184,7 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
                                             timeZoneOffsetInMinutes={60}
                                             is24Hour={true}
                                             display="default"
-                                            maximumDate={new Date()}
+                                            minimumDate={new Date()}
                                             onChange={onChange1}
                                         />
                                     )}
@@ -186,7 +197,7 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
                                             mode={"date"}
                                             timeZoneOffsetInMinutes={60}
                                             is24Hour={true}
-                                            maximumDate={new Date()}
+                                            minimumDate={new Date()}
                                             display="default"
                                             onChange={onChange2}
                                         />
@@ -198,7 +209,7 @@ const  ShowSaleListScreen = (props:{navigation:any}) =>{
                                 </Row>
                                 <Row justifyContent={"space-around"} my={2}>
                                     <ButtonBase bg={"blue.400"} onPress={onClose}>Cancel</ButtonBase>
-                                    <ButtonBase bg={"danger.400"} onPress={()=>pushSale()}>Đăng</ButtonBase>
+                                    <ButtonBase bg={"danger.400"} isDisabled={Object.values(dataSale).includes('')} onPress={()=>pushSale()}>Đăng</ButtonBase>
                                 </Row>
                             </Box>
                         </Actionsheet.Content>

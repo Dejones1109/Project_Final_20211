@@ -8,7 +8,7 @@ import {createOrder} from "../../app/service/order/orderSlice";
 import {store} from "../../app/store";
 import {useIsFocused, useNavigation} from "@react-navigation/native";
 import {useDispatch, useSelector} from "react-redux";
-import {cartApi, orderApi} from "../../app/controller";
+import {cartApi, orderApi,systemApi} from "../../app/controller";
 import {TouchableOpacity} from "react-native";
 import {Col, Row} from "../../components/AutoLayout";
 import ButtonBase from "../../components/ButtonBase";
@@ -90,7 +90,7 @@ const AllInfoToOrderScreen = (props:{route:any}) => {
                 await dispatch(createBill(payload));
             }
             await dispatch(cartApi.util.invalidateTags(['cartApi']));
-            // await dispatch(productApi.util.invalidateTags(['productApi']));
+            await dispatch(systemApi.util.invalidateTags(['systemApi']));
             await  navigation.navigate('cartProductScreen');
         }
     }
